@@ -13,7 +13,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
 
   function styleActiveTo(pathname: string[]) {
     const isIncluded = pathname.find((name) => router.pathname === name)
-    return isIncluded ? 'white' : '#9D85C1'
+    return isIncluded ? 'white' : '#8d9fbb'
   }
 
   return (

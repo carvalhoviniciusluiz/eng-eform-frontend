@@ -7,7 +7,13 @@ type ToolbarProps = {
 export default function Toolbar({ children }: ToolbarProps) {
   return (
     <>
-      <AppBar position='static' elevation={0}>
+      <AppBar
+        position='static'
+        elevation={0}
+        style={{
+          backgroundColor: '#153d77'
+        }}
+      >
         <ToolbarMui
           style={{
             padding: 0,
@@ -17,7 +23,14 @@ export default function Toolbar({ children }: ToolbarProps) {
           {children}
         </ToolbarMui>
       </AppBar>
-      <AppBar component='div' position='static' elevation={0}>
+      <AppBar
+        component='div'
+        position='static'
+        elevation={0}
+        style={{
+          backgroundColor: '#153d77'
+        }}
+      >
         <ToolbarMui
           style={{
             minHeight: 78,
