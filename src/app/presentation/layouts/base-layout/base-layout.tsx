@@ -35,11 +35,11 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
           </Link>
           <Link
             style={{
-              color: styleActiveTo(['/#', '/#/new', '/#/edit']),
+              color: styleActiveTo(['/forms']),
               textDecoration: 'none',
               marginLeft: 18
             }}
-            href='/#'
+            href='/forms'
           >
             Gerenciar questionários
           </Link>

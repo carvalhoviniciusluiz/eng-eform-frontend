@@ -1,2 +1,2 @@
-export * from './account/authentication'
-export * from './account/register'
+export * from './account'
+export * from './form'

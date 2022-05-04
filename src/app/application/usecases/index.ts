@@ -1,2 +1,2 @@
-export * from './account/remote-authentication'
-export * from './account/remote-register'
+export * from './account'
+export * from './form'
