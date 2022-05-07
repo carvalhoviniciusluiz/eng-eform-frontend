@@ -1,14 +1,21 @@
 import { Box, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DebounceInput } from 'react-debounce-input'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import {
   MdClose as CloseIcon,
+  MdOutlineHorizontalSplit as BuildIcon,
   MdSearch as SearchIcon,
   MdSegment as FormIcon
 } from 'react-icons/md'
 import { DeleteForm, LoadForms } from '~/app/domain/usecases'
-import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
+import {
+  AlertDialog,
+  BarAction,
+  Breadcrumbs,
+  Link
+} from '~/app/presentation/components'
+import useStyles from './list-styles'
 
 type FormListProps = LoadForms.Response & {
   loadForms: LoadForms
@@ -21,7 +28,10 @@ export default function FormList({
   deleteForm
 }: FormListProps) {
   const [state, setState] = useState({
-    forms: data
+    forms: data,
+    open: false,
+    destroy: false,
+    formId: ''
   })
 
   function handleRehydrateForms(name?: string) {
@@ -37,12 +47,11 @@ export default function FormList({
   }
 
   function handleDestroy(formId: string) {
-    deleteForm.delete(formId).then(() => {
-      setState((prevState) => ({
-        ...prevState,
-        forms: state.forms.filter((form) => form.id !== formId)
-      }))
-    })
+    setState((prevState) => ({
+      ...prevState,
+      open: true,
+      formId
+    }))
   }
 
   async function handleSearchByName(
@@ -51,6 +60,23 @@ export default function FormList({
     const { value } = event.target
     handleRehydrateForms(value)
   }
+
+  useEffect(() => {
+    const hasFormId = !!state.formId
+    if (state.destroy && hasFormId) {
+      deleteForm.delete(state.formId).then(() => {
+        setState((prevState) => ({
+          ...prevState,
+          forms: state.forms.filter((form) => form.id !== state.formId),
+          open: false,
+          destroy: false,
+          formId: ''
+        }))
+      })
+    }
+  }, [state.destroy]) // eslint-disable-line
+
+  const classes = useStyles()
 
   return (
     <>
@@ -80,34 +106,16 @@ export default function FormList({
           </Box>
         </Box>
 
-        <Link
-          style={{
-            color: 'white',
-            width: 200,
-            height: 56,
-            borderRadius: 4,
-            backgroundColor: '#2469ce',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            letterSpacing: 0.2,
-            fontSize: 14,
-            textDecoration: 'none'
-          }}
-          href='/forms/new'
-        >
+        <Link className={classes.btnNew} href='/forms/new'>
           Cadastrar formulário
         </Link>
       </BarAction>
 
       <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
+        display={'flex'}
+        flexDirection={'column'}
+        alignItems={'center'}
+        justifyContent={'center'}
       >
         <Box
           style={{
@@ -139,6 +147,15 @@ export default function FormList({
           />
         </Box>
 
+        <AlertDialog
+          title='Confirmar delete?'
+          state={state}
+          setState={setState}
+        >
+          Esse registro poderá ser recuperado futuramente caso queira. Deseja
+          apagar essa linha?
+        </AlertDialog>
+
         <ul
           style={{
             margin: 0,
@@ -146,41 +163,11 @@ export default function FormList({
           }}
         >
           {state.forms.map((form) => (
-            <li
-              style={{
-                width: 613,
-                border: '1px solid #E9E9E9',
-                borderRadius: 6,
-                marginTop: 16
-              }}
-              key={form.id}
-            >
-              <Box
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <Box
-                  style={{
-                    margin: '9px 27px 9px 30px'
-                  }}
-                >
-                  <Box
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <Box
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        width: '26rem'
-                      }}
-                    >
+            <li className={classes.line} key={form.id}>
+              <Box display={'flex'} justifyContent={'space-between'}>
+                <Box display={'flex'} margin={'9px 27px 9px 30px'}>
+                  <Box display={'flex'} alignItems={'center'}>
+                    <Box className={classes.title}>
                       <Typography component='h1' fontSize={16}>
                         {form.name}
                       </Typography>
@@ -188,22 +175,26 @@ export default function FormList({
                   </Box>
                 </Box>
 
-                <Box
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Link href={`/forms/edit/${form.id}`}>
+                <Box display={'flex'} alignItems={'center'}>
+                  <Link
+                    className={classes.action}
+                    href={`/forms/build/${form.id}`}
+                  >
+                    <BuildIcon fill='#C8C8C8' size={32} />
+                  </Link>
+
+                  <Link
+                    className={classes.action}
+                    style={{
+                      marginLeft: 10
+                    }}
+                    href={`/forms/edit/${form.id}`}
+                  >
                     <EditIcon fill='#C8C8C8' size={32} />
                   </Link>
+
                   <button
-                    style={{
-                      margin: '0 30px',
-                      border: 0,
-                      background: 'transparent',
-                      cursor: 'pointer'
-                    }}
+                    className={classes.delete}
                     onClick={() => handleDestroy(form.id)}
                   >
                     <CloseIcon fill='#C8C8C8' size={32} />

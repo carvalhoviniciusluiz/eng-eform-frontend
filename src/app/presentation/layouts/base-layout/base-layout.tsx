@@ -31,7 +31,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
             }}
             href='/'
           >
-            Questionários
+            Formulários
           </Link>
           <Link
             style={{
@@ -41,7 +41,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
             }}
             href='/forms'
           >
-            Gerenciar questionários
+            Gerenciar formulários
           </Link>
         </Box>
       </Toolbar>
