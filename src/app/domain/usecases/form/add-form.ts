@@ -4,12 +4,12 @@ export interface AddForm {
 
 export namespace AddForm {
   export type Params = {
-    email: string
+    name: string
   }
 
   export type Response = {
     id: string
-    email: string
+    name: string
     updatedAt: Date
   }
 }
