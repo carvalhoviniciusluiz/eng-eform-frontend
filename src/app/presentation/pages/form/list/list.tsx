@@ -8,6 +8,7 @@ import {
   MdSearch as SearchIcon,
   MdSegment as FormIcon
 } from 'react-icons/md'
+import { RiUserSharedLine as UsersIcon } from 'react-icons/ri'
 import { DeleteForm, LoadForms } from '~/app/domain/usecases'
 import {
   AlertDialog,
@@ -176,6 +177,16 @@ export default function FormList({
                 </Box>
 
                 <Box display={'flex'} alignItems={'center'}>
+                  <Link
+                    className={classes.action}
+                    href={`/forms/users/${form.id}`}
+                    style={{
+                      marginRight: 10
+                    }}
+                  >
+                    <UsersIcon fill='#C8C8C8' size={32} />
+                  </Link>
+
                   <Link
                     className={classes.action}
                     href={`/forms/build/${form.id}`}
