@@ -154,7 +154,7 @@ export default function FormList({
           setState={setState}
         >
           Esse registro poderá ser recuperado futuramente caso queira. Deseja
-          apagar essa linha?
+          remove-lo mesmo assim?
         </AlertDialog>
 
         <ul
