@@ -4,12 +4,12 @@ export interface EditForm {
 
 export namespace EditForm {
   export type Params = {
-    email: string
+    name: string
   }
 
   export type Response = {
     id: string
-    email: string
+    name: string
     updatedAt: Date
   }
 }

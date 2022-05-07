@@ -5,7 +5,7 @@ export interface GetForm {
 export namespace GetForm {
   export type Response = {
     id: string
-    email: string
-    updatedAt: string
+    name: string
+    updatedAt: Date
   }
 }

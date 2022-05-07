@@ -3,11 +3,11 @@ import {
   makeRemoteDeleteForm,
   makeRemoteLoadForms
 } from '~/app/main/factories/usecases'
-import { FormList } from '~/app/presentation/pages'
+import { FormListTag } from '~/app/presentation/pages'
 
 export const makeFormList = (props: LoadForms.Response) => {
   return (
-    <FormList
+    <FormListTag
       {...props}
       loadForms={makeRemoteLoadForms()}
       deleteForm={makeRemoteDeleteForm()}
