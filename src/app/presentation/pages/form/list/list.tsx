@@ -18,16 +18,16 @@ import {
 } from '~/app/presentation/components'
 import useStyles from './list-styles'
 
-type FormListProps = LoadForms.Response & {
+type FormListComponentProps = LoadForms.Response & {
   loadForms: LoadForms
   deleteForm: DeleteForm
 }
 
-export default function FormList({
+export default function FormListComponent({
   data,
   loadForms,
   deleteForm
-}: FormListProps) {
+}: FormListComponentProps) {
   const [state, setState] = useState({
     forms: data,
     open: false,
@@ -179,7 +179,7 @@ export default function FormList({
                 <Box display={'flex'} alignItems={'center'}>
                   <Link
                     className={classes.action}
-                    href={`/forms/users/${form.id}`}
+                    href={`/forms/${form.id}/users`}
                     style={{
                       marginRight: 10
                     }}
@@ -189,7 +189,7 @@ export default function FormList({
 
                   <Link
                     className={classes.action}
-                    href={`/forms/build/${form.id}`}
+                    href={`/forms/${form.id}/surveys`}
                   >
                     <BuildIcon fill='#C8C8C8' size={32} />
                   </Link>
@@ -199,7 +199,7 @@ export default function FormList({
                     style={{
                       marginLeft: 10
                     }}
-                    href={`/forms/edit/${form.id}`}
+                    href={`/forms/${form.id}/edit`}
                   >
                     <EditIcon fill='#C8C8C8' size={32} />
                   </Link>

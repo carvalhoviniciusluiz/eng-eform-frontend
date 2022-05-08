@@ -4,12 +4,15 @@ import { useForm } from 'react-hook-form'
 import { Register as RegisterUseCase } from '~/app/domain/usecases'
 import { Link, PasswordField, TextField } from '~/app/presentation/components'
 
-type RegisterProps = {
+type RegisterComponentProps = {
   validation: any
   register: RegisterUseCase
 }
 
-export default function Register({ validation, register }: RegisterProps) {
+export default function RegisterComponent({
+  validation,
+  register
+}: RegisterComponentProps) {
   const { control, handleSubmit, formState } =
     useForm<RegisterUseCase.Params>(validation)
 

@@ -4,12 +4,15 @@ import { useForm } from 'react-hook-form'
 import { Authentication } from '~/app/domain/usecases'
 import { Link, PasswordField, TextField } from '~/app/presentation/components'
 
-type LoginProps = {
+type LoginComponentProps = {
   validation: any
   authentication: Authentication
 }
 
-export default function Login({ validation, authentication }: LoginProps) {
+export default function LoginComponent({
+  validation,
+  authentication
+}: LoginComponentProps) {
   const { control, handleSubmit, formState } =
     useForm<Authentication.Params>(validation)
 

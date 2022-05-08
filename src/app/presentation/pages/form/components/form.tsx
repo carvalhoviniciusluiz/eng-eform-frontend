@@ -5,19 +5,19 @@ import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { TextField } from '~/app/presentation/components'
 import makeStyles from './form-styles'
 
-type FormProps = {
+type FormComponentProps = {
   isSubmitting: boolean
   handleSubmit: any
   control: Control<any, any>
   title: string
 }
 
-export default function FormTag({
+export default function FormComponent({
   isSubmitting,
   handleSubmit,
   control,
   title
-}: FormProps) {
+}: FormComponentProps) {
   const classes = makeStyles()
 
   return (

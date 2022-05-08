@@ -1,10 +1,10 @@
 import { makeRemoteAuthenticationDecorator } from '~/app/main/factories/decorators'
 import { makeLoginValidation } from '~/app/main/factories/pages'
-import { Login } from '~/app/presentation/pages'
+import { LoginTag } from '~/app/presentation/pages'
 
 export const makeLogin = () => {
   return (
-    <Login
+    <LoginTag
       validation={makeLoginValidation()}
       authentication={makeRemoteAuthenticationDecorator()}
     />

@@ -5,11 +5,14 @@ import { MdSearch as SearchIcon, MdSegment as FormIcon } from 'react-icons/md'
 import { LoadForms } from '~/app/domain/usecases'
 import { BarAction, Breadcrumbs } from '~/app/presentation/components'
 
-type PublicFormsProps = LoadForms.Response & {
+type PublicFormsComponentProps = LoadForms.Response & {
   loadForms: LoadForms
 }
 
-export default function PublicForms({ data, loadForms }: PublicFormsProps) {
+export default function PublicFormsComponent({
+  data,
+  loadForms
+}: PublicFormsComponentProps) {
   const [state, setState] = useState({
     forms: data
   })

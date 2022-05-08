@@ -8,7 +8,7 @@ import { EditFormProps } from '~/app/main/factories/pages/form/edit'
 import { BarAction, Breadcrumbs } from '~/app/presentation/components'
 import { FormTag } from '../components'
 
-type EditProductFormParams = EditFormProps & {
+type EditFormComponentProps = EditFormProps & {
   editForm: EditForm
   validation: any
 }
@@ -18,7 +18,7 @@ export default function EditFormComponent({
   formId,
   editForm,
   validation
-}: EditProductFormParams) {
+}: EditFormComponentProps) {
   const { control, handleSubmit, formState, setValue } =
     useForm<EditForm.Params>(validation)
 

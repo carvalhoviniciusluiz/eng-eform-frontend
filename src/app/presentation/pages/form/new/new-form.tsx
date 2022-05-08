@@ -7,15 +7,15 @@ import { AddForm } from '~/app/domain/usecases'
 import { BarAction, Breadcrumbs } from '~/app/presentation/components'
 import { FormTag } from '~/app/presentation/pages/form/components'
 
-type NewProductFormProps = {
+type NewFormComponentProps = {
   validation: any
   addForm: AddForm
 }
 
-export default function NewProductForm({
+export default function NewFormComponent({
   validation,
   addForm
-}: NewProductFormProps) {
+}: NewFormComponentProps) {
   const { control, handleSubmit, formState } =
     useForm<AddForm.Params>(validation)
 

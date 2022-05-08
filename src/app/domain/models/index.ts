@@ -1,2 +1,3 @@
 export * from './form.model'
+export * from './survey.model'
 export * from './user.model'

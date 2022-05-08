@@ -3,9 +3,11 @@ import { AuthorizeHttpPatchClientDecorator } from '~/app/main/decorators'
 import { makeCookieAdapter } from '~/app/main/factories/cache'
 import { makeAxiosHttpClient } from '~/app/main/factories/http'
 
-export const makeAuthorizedHttpPatchClientDecorator = (): HttpPatchClient => {
+export const makeAuthorizedHttpPatchClientDecorator = (
+  context?: any
+): HttpPatchClient => {
   return new AuthorizeHttpPatchClientDecorator(
-    makeCookieAdapter(),
-    makeAxiosHttpClient()
+    makeCookieAdapter(context),
+    makeAxiosHttpClient(context)
   )
 }
