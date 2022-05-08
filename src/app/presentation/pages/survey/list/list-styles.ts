@@ -30,17 +30,27 @@ export default makeStyles({
     }
   },
   action: {
+    padding: '1px 6px',
     '&:hover > svg': {
       fill: '#838383'
     }
   },
   delete: {
-    margin: '0 20px',
     border: 0,
     background: 'transparent',
     cursor: 'pointer',
     '&:hover > svg': {
       fill: '#ea7474'
+    }
+  },
+  fieldIcon: {
+    '& > path, path': {
+      color: '#C8C8C8'
+    },
+    '&:hover': {
+      '& > path, path': {
+        color: '#838383'
+      }
     }
   }
 })

@@ -2,9 +2,11 @@ import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { DebounceInput } from 'react-debounce-input'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
+import { CgFormatSeparator as FieldIcon } from 'react-icons/cg'
 import {
   MdClose as CloseIcon,
   MdKeyboardArrowRight as ArrowRightIcon,
+  MdOutlineHorizontalSplit as BuildIcon,
   MdSearch as SearchIcon,
   MdSegment as FormIcon
 } from 'react-icons/md'
@@ -226,9 +228,20 @@ export default function SurveyListComponent({
               <Box display='flex' justifyContent='center'>
                 <Link
                   className={classes.action}
-                  style={{
-                    marginLeft: 10
-                  }}
+                  href={`/forms/${parentForm.id}/surveys/${survey.id}`}
+                >
+                  <BuildIcon fill='#C8C8C8' size={32} />
+                </Link>
+
+                <Link
+                  className={classes.action}
+                  href={`/forms/${parentForm.id}/surveys/${survey.id}/fields`}
+                >
+                  <FieldIcon size={32} className={classes.fieldIcon} />
+                </Link>
+
+                <Link
+                  className={classes.action}
                   href={`/forms/${parentForm.id}/surveys/${survey.id}/edit`}
                 >
                   <EditIcon fill='#C8C8C8' size={32} />
