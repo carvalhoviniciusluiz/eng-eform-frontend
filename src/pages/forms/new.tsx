@@ -8,8 +8,8 @@ export const getServerSideProps = handleSSRAuth(async () => {
   }
 })
 
-function NewProductFormPage() {
+function NewFormPage() {
   return <BaseLayout>{makeNewForm()}</BaseLayout>
 }
 
-export default NewProductFormPage
+export default NewFormPage
