@@ -15,7 +15,6 @@ export const getServerSideProps = handleSSRAuth(async (context) => {
   return {
     props: {
       ...httpResponse,
-      formSlug,
       parentForm
     }
   }
