@@ -135,7 +135,6 @@ export default function PublicFormsComponent({
                         marginTop: 16,
                         fontSize: 16,
                         letterSpacing: 0.2,
-                        textTransform: 'uppercase',
                         textAlign: 'center'
                       }}
                       component='h1'

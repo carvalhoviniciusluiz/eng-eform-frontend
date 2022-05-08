@@ -6,11 +6,10 @@ import handleSSRAuth from '~/pages/_handles/handle-ssr-auth'
 export const getServerSideProps = handleSSRAuth(async (context) => {
   const formSlug = context.query.formSlug as string
   const loadForm = makeRemoteGetForm(context)
-  const parentForm = await loadForm.get(formSlug)
+  const httpFormResponse = await loadForm.get(formSlug)
   return {
     props: {
-      formSlug,
-      parentForm
+      parentForm: httpFormResponse
     }
   }
 })

@@ -4,7 +4,6 @@ import { NewSurveyTag } from '~/app/presentation/pages'
 import { makeNewSurveyValidation } from './new-survey-validation-factory'
 
 export type NewSurveyProps = {
-  formSlug: string
   parentForm: FormModel
 }
 
@@ -12,7 +11,7 @@ export const makeNewSurvey = (props: NewSurveyProps) => {
   return (
     <NewSurveyTag
       {...props}
-      addSurvey={makeRemoteAddSurvey(props.formSlug)}
+      addSurvey={makeRemoteAddSurvey(props.parentForm.id)}
       validation={makeNewSurveyValidation()}
     />
   )

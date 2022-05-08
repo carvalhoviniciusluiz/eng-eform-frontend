@@ -3,11 +3,11 @@ import { GetSurvey } from '~/app/domain/usecases'
 import { makeAuthorizedHttpGetClientDecorator } from '~/app/main/factories/decorators'
 
 export const makeRemoteGetSurvey = (
-  formId: string,
+  formSlug: string,
   context?: any
 ): GetSurvey => {
   return new RemoteGetSurvey(
-    `/v1/forms/${formId}/surveys`,
+    `/v1/forms/${formSlug}/surveys`,
     makeAuthorizedHttpGetClientDecorator(context)
   )
 }
