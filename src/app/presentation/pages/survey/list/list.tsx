@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { DebounceInput } from 'react-debounce-input'
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import {
   MdClose as CloseIcon,
   MdKeyboardArrowRight as ArrowRightIcon,
@@ -186,13 +187,6 @@ export default function SurveyListComponent({
         >
           {state.surveys.map((survey) => (
             <li className={classes.line} key={survey.id}>
-              <div
-                className={classes.wrapIcon}
-                onClick={() => handleDestroy(survey.id)}
-              >
-                <CloseIcon fill='white' />
-              </div>
-
               <Box
                 style={{
                   display: 'flex',
@@ -228,6 +222,25 @@ export default function SurveyListComponent({
                     </Typography>
                   </Box>
                 </Box>
+              </Box>
+
+              <Box display='flex' justifyContent='center'>
+                <Link
+                  className={classes.action}
+                  style={{
+                    marginLeft: 10
+                  }}
+                  href={`/forms/${parentForm.id}/surveys/${survey.id}/edit`}
+                >
+                  <EditIcon fill='#C8C8C8' size={32} />
+                </Link>
+
+                <button
+                  className={classes.delete}
+                  onClick={() => handleDestroy(survey.id)}
+                >
+                  <CloseIcon fill='#C8C8C8' size={32} />
+                </button>
               </Box>
             </li>
           ))}

@@ -29,17 +29,18 @@ export default makeStyles({
       backgroundColor: '#f6f6f6'
     }
   },
-  wrapIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    content: '',
-    position: 'absolute',
-    borderRadius: '50%',
-    backgroundColor: '#ea7474',
-    right: -12,
-    top: -12,
-    width: 22,
-    height: 22
+  action: {
+    '&:hover > svg': {
+      fill: '#838383'
+    }
+  },
+  delete: {
+    margin: '0 20px',
+    border: 0,
+    background: 'transparent',
+    cursor: 'pointer',
+    '&:hover > svg': {
+      fill: '#ea7474'
+    }
   }
 })
