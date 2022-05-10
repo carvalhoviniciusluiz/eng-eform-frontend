@@ -3,24 +3,37 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult
 } from 'next'
-import { parseCookies } from 'nookies'
+import { destroyCookie, parseCookies } from 'nookies'
+import { AccessDeniedError } from '~/app/domain/errors'
 
 export default function handleSSRAuth<P>(fn: GetServerSideProps<P>) {
   return async (
     context: GetServerSidePropsContext
   ): Promise<GetServerSidePropsResult<P>> => {
+    const cookieKey = 'eform:account'
     const cookies = parseCookies(context)
-    const { 'eform:account': cookie } = cookies
-
-    if (!cookie) {
-      return {
-        redirect: {
-          destination: '/account/login',
-          permanent: false
-        }
+    const { [cookieKey]: cookie } = cookies
+    const toLogin = {
+      redirect: {
+        destination: '/account/login',
+        permanent: false
       }
     }
 
-    return await fn(context)
+    if (!cookie) {
+      return toLogin
+    }
+
+    try {
+      return await fn(context)
+    } catch (error) {
+      const isAccessDeniedError = error instanceof AccessDeniedError
+      if (isAccessDeniedError) {
+        destroyCookie(context, cookieKey)
+        return toLogin
+      }
+
+      throw error
+    }
   }
 }
