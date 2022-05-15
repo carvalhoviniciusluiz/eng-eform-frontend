@@ -4,11 +4,10 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { EditForm } from '~/app/domain/usecases'
-import { EditFormProps } from '~/app/main/factories/pages/form/edit'
 import { BarAction, Breadcrumbs } from '~/app/presentation/components'
 import { FormTag } from '../components'
 
-type EditFormComponentProps = EditFormProps & {
+type EditFormComponentProps = EditForm.Props & {
   editForm: EditForm
   validation: any
 }

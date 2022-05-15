@@ -5,11 +5,10 @@ import { useForm } from 'react-hook-form'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { AddSurvey } from '~/app/domain/usecases'
-import { NewSurveyProps } from '~/app/main/factories/pages'
 import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
 import { SurveyFormTag } from '~/app/presentation/pages/survey/components'
 
-type NewSurveyComponentProps = NewSurveyProps & {
+type NewSurveyComponentProps = AddSurvey.Props & {
   validation: any
   addSurvey: AddSurvey
 }
@@ -56,7 +55,7 @@ export default function NewSurveyComponent({
               }}
               href='/forms'
             >
-              Gerenciar Formulários
+              Gerenciador
             </Link>
 
             <Link

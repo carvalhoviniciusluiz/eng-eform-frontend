@@ -7,28 +7,30 @@ export namespace LoadForms {
     name?: string
   }
 
-  export type FormResponse = {
+  export type DataApi = {
     id: string
     name: string
     updatedAt: string
   }
 
+  export type MetaApi = {
+    count: number
+    firstItemOnPage: number
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+    isFirstPage: boolean
+    isLastPage: boolean
+    lastItemOnPage: number
+    numberOfFirstItemOnPage: number
+    numberOfLastItemOnPage: number
+    page: number
+    pageCount: number
+    pageNumberIsGood: boolean
+    pageSize: number
+  }
+
   export type Response = {
-    data: FormResponse[]
-    meta: {
-      count: number
-      firstItemOnPage: number
-      hasNextPage: boolean
-      hasPreviousPage: boolean
-      isFirstPage: boolean
-      isLastPage: boolean
-      lastItemOnPage: number
-      numberOfFirstItemOnPage: number
-      numberOfLastItemOnPage: number
-      page: number
-      pageCount: number
-      pageNumberIsGood: boolean
-      pageSize: number
-    }
+    data: DataApi[]
+    meta: MetaApi
   }
 }

@@ -22,7 +22,7 @@ export default function RegisterComponent({
     register
       .signUp(params)
       .then(() => {
-        router.push('/account/login')
+        router.push('/login')
       })
       .catch(console.error)
   }
@@ -116,7 +116,7 @@ export default function RegisterComponent({
           style={{
             margin: '8px 0'
           }}
-          href='/account/login'
+          href='/login'
         >
           Já tenho um conta!
         </Link>

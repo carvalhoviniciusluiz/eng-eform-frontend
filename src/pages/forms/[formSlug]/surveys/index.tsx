@@ -1,4 +1,5 @@
-import { makeSurveyList, SurveyListProps } from '~/app/main/factories/pages'
+import { LoadSurveys } from '~/app/domain/usecases'
+import { makeSurveyList } from '~/app/main/factories/pages'
 import {
   makeRemoteGetForm,
   makeRemoteLoadSurveys
@@ -6,21 +7,23 @@ import {
 import { BaseLayout } from '~/app/presentation/layouts'
 import handleSSRAuth from '~/pages/_handles/handle-ssr-auth'
 
-export const getServerSideProps = handleSSRAuth(async (context) => {
-  const formSlug = context.query.formSlug as string
-  const loadSurveys = makeRemoteLoadSurveys(formSlug, context)
-  const httpResponse = await loadSurveys.loadAll()
-  const loadForm = makeRemoteGetForm(context)
-  const parentForm = await loadForm.get(formSlug)
-  return {
-    props: {
-      ...httpResponse,
-      parentForm
+export const getServerSideProps = handleSSRAuth<LoadSurveys.Props>(
+  async (context) => {
+    const formSlug = context.query.formSlug as string
+    const loadSurveys = makeRemoteLoadSurveys(formSlug, context)
+    const httpResponse = await loadSurveys.loadAll()
+    const loadForm = makeRemoteGetForm(context)
+    const parentForm = await loadForm.get(formSlug)
+    return {
+      props: {
+        ...httpResponse,
+        parentForm
+      }
     }
   }
-})
+)
 
-function EditSurveyPage(props: SurveyListProps) {
+function EditSurveyPage(props: LoadSurveys.Props) {
   return <BaseLayout>{makeSurveyList({ ...props })}</BaseLayout>
 }
 

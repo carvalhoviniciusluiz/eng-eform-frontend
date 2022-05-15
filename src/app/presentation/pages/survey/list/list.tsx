@@ -11,7 +11,6 @@ import {
   MdSegment as FormIcon
 } from 'react-icons/md'
 import { DeleteSurvey, LoadSurveys } from '~/app/domain/usecases'
-import { SurveyListProps } from '~/app/main/factories/pages'
 import {
   AlertDialog,
   BarAction,
@@ -20,7 +19,7 @@ import {
 } from '~/app/presentation/components'
 import useStyles from './list-styles'
 
-type SurveyListComponentProps = SurveyListProps &
+type SurveyListComponentProps = LoadSurveys.Props &
   LoadSurveys.Response & {
     loadSurveys: LoadSurveys
     deleteSurvey: DeleteSurvey
@@ -97,7 +96,7 @@ export default function SurveyListComponent({
               }}
               href='/forms'
             >
-              Gerenciar Formulários
+              Gerenciador
             </Link>
 
             <Typography>Enquetes</Typography>
@@ -235,7 +234,7 @@ export default function SurveyListComponent({
 
                 <Link
                   className={classes.action}
-                  href={`/forms/${parentForm.id}/surveys/${survey.id}/fields`}
+                  href={`/forms/${parentForm.id}/surveys/${survey.id}/questions`}
                 >
                   <FieldIcon size={32} className={classes.fieldIcon} />
                 </Link>

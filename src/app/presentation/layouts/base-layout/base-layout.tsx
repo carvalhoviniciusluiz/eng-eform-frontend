@@ -41,7 +41,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
             }}
             href='/forms'
           >
-            Gerenciar formulários
+            Gerenciador
           </Link>
         </Box>
       </Toolbar>

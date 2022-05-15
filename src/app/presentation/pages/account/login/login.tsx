@@ -108,7 +108,7 @@ export default function LoginComponent({
             margin: '8px 0',
             fontSize: 16
           }}
-          href='/account/register'
+          href='/register'
         >
           Cadastre-se
         </Link>

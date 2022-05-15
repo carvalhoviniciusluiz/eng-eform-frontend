@@ -121,8 +121,8 @@ __NOTA__: caso tenha dúvidas veja a sessão `Configurações > Dotenv` & `Confi
 *   `#GET /` - Tela publica, exibe todos os produtos cadastrados de todos os usuários registrados.
 
 #### Auth
-*   `#GET /account/login` - Tela de login.
-*   `#GET /account/register` - Tela para registar uma conta de acesso.
+*   `#GET /login` - Tela de login.
+*   `#GET /register` - Tela para registar uma conta de acesso.
 
 ### **Credenticial de Acesso:** <a name="credentials"></a>
 

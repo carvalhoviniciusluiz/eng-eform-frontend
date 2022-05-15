@@ -12,4 +12,9 @@ export namespace EditForm {
     name: string
     updatedAt: Date
   }
+
+  export type Props = {
+    data: Response
+    formId: string
+  }
 }

@@ -1,4 +1,5 @@
-import { EditSurveyProps, makeEditSurvey } from '~/app/main/factories/pages'
+import { EditSurvey } from '~/app/domain/usecases'
+import { makeEditSurvey } from '~/app/main/factories/pages'
 import {
   makeRemoteGetForm,
   makeRemoteGetSurvey
@@ -6,7 +7,7 @@ import {
 import { BaseLayout } from '~/app/presentation/layouts'
 import handleSSRAuth from '~/pages/_handles/handle-ssr-auth'
 
-export const getServerSideProps = handleSSRAuth<EditSurveyProps>(
+export const getServerSideProps = handleSSRAuth<EditSurvey.Props>(
   async (context) => {
     const formSlug = context.query.formSlug as string
     const surveySlug = context.query.surveySlug as string
@@ -23,7 +24,7 @@ export const getServerSideProps = handleSSRAuth<EditSurveyProps>(
   }
 )
 
-function EditSurveyPage(props: EditSurveyProps) {
+function EditSurveyPage(props: EditSurvey.Props) {
   return <BaseLayout>{makeEditSurvey({ ...props })}</BaseLayout>
 }
 

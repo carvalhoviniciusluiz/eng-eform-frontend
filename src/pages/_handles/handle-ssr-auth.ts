@@ -15,7 +15,7 @@ export default function handleSSRAuth<P>(fn: GetServerSideProps<P>) {
     const { [cookieKey]: cookie } = cookies
     const toLogin = {
       redirect: {
-        destination: '/account/login',
+        destination: '/login',
         permanent: false
       }
     }

@@ -84,7 +84,7 @@ export default function FormListComponent({
       <BarAction>
         <Box>
           <Breadcrumbs>
-            <Typography>Gerenciar Formulários</Typography>
+            <Typography>Gerenciador</Typography>
           </Breadcrumbs>
 
           <Box
@@ -102,7 +102,7 @@ export default function FormListComponent({
                 marginLeft: 12
               }}
             >
-              Gerenciar Formulários
+              Gerenciador
             </Typography>
           </Box>
         </Box>
@@ -163,7 +163,7 @@ export default function FormListComponent({
             listStyleType: 'none'
           }}
         >
-          {state.forms.map((form) => (
+          {state.forms?.map((form) => (
             <li className={classes.line} key={form.id}>
               <Box display={'flex'} justifyContent={'space-between'}>
                 <Box display={'flex'} margin={'9px 27px 9px 30px'}>

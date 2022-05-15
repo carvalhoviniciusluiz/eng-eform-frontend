@@ -5,11 +5,10 @@ import { useForm } from 'react-hook-form'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { EditSurvey } from '~/app/domain/usecases'
-import { EditSurveyProps } from '~/app/main/factories/pages'
 import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
 import { SurveyFormTag } from '~/app/presentation/pages/survey/components'
 
-type EditSurveyComponentProps = EditSurveyProps & {
+type EditSurveyComponentProps = EditSurvey.Props & {
   editSurvey: EditSurvey
   validation: any
 }
@@ -52,7 +51,7 @@ export default function EditSurveyComponent({
               }}
               href='/forms'
             >
-              Gerenciar Formulários
+              Gerenciador
             </Link>
 
             <Link

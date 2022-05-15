@@ -1,3 +1,5 @@
+import { FormModel } from '~/app/domain/models'
+
 export interface AddSurvey {
   add: (params: AddSurvey.Params) => Promise<AddSurvey.Response>
 }
@@ -11,5 +13,9 @@ export namespace AddSurvey {
     id: string
     name: string
     updatedAt: Date
+  }
+
+  export type Props = {
+    parentForm: FormModel
   }
 }
