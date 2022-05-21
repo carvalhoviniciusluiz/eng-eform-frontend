@@ -1,11 +1,11 @@
 import { Box, Button, Checkbox, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormProps } from 'react-hook-form'
 import { Register as RegisterUseCase } from '~/app/domain/usecases'
 import { Link, PasswordField, TextField } from '~/app/presentation/components'
 
 type RegisterComponentProps = {
-  validation: any
+  validation: UseFormProps<RegisterUseCase.Params>
   register: RegisterUseCase
 }
 

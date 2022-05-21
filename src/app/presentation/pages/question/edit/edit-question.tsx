@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormProps } from 'react-hook-form'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { EditQuestion } from '~/app/domain/usecases'
@@ -10,7 +10,7 @@ import { QuestionFormTag } from '~/app/presentation/pages/question/components'
 
 type EditQuestionComponentProps = EditQuestion.Props & {
   editQuestion: EditQuestion
-  validation: any
+  validation: UseFormProps<EditQuestion.Params>
 }
 
 export default function EditQuestionComponent({
@@ -103,9 +103,8 @@ export default function EditQuestionComponent({
 
       <QuestionFormTag
         title='Editar Questão'
-        isSubmitting={formState.isSubmitting}
-        handleSubmit={handleSubmit(onSubmit)}
-        control={control}
+        onSubmit={onSubmit}
+        validation={validation as any}
       />
     </>
   )

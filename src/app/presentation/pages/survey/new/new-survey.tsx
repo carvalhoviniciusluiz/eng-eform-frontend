@@ -1,7 +1,7 @@
 import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormProps } from 'react-hook-form'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { AddSurvey } from '~/app/domain/usecases'
@@ -9,7 +9,7 @@ import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
 import { SurveyFormTag } from '~/app/presentation/pages/survey/components'
 
 type NewSurveyComponentProps = AddSurvey.Props & {
-  validation: any
+  validation: UseFormProps<AddSurvey.Params>
   addSurvey: AddSurvey
 }
 

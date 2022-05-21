@@ -1,7 +1,6 @@
 import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { UseFormProps } from 'react-hook-form'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { AddQuestion } from '~/app/domain/usecases'
@@ -9,7 +8,7 @@ import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
 import { QuestionFormTag } from '~/app/presentation/pages/question/components'
 
 type NewQuestionComponentProps = AddQuestion.Props & {
-  validation: any
+  validation: UseFormProps
   addQuestion: AddQuestion
 }
 
@@ -19,29 +18,14 @@ export default function NewQuestionComponent({
   validation,
   addQuestion
 }: NewQuestionComponentProps) {
-  const { control, handleSubmit, formState } =
-    useForm<AddQuestion.Params>(validation)
-
   const [state, setState] = useState({
     showAlert: false
   })
 
-  const router = useRouter()
-
   const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`
 
-  async function onSubmit(params: AddQuestion.Params) {
-    addQuestion
-      .add(params)
-      .then(() => {
-        router.push(GO_BACK)
-      })
-      .catch(() => {
-        setState((prevState) => ({
-          ...prevState,
-          showAlert: true
-        }))
-      })
+  function onSubmit(data: any) {
+    alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4))
   }
 
   return (
@@ -114,9 +98,8 @@ export default function NewQuestionComponent({
 
       <QuestionFormTag
         title='Cadastrar questão'
-        isSubmitting={formState.isSubmitting}
-        handleSubmit={handleSubmit(onSubmit)}
-        control={control}
+        validation={validation}
+        onSubmit={onSubmit}
       />
     </>
   )

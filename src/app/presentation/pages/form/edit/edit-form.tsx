@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormProps } from 'react-hook-form'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { EditForm } from '~/app/domain/usecases'
 import { BarAction, Breadcrumbs } from '~/app/presentation/components'
@@ -9,7 +9,7 @@ import { FormTag } from '../components'
 
 type EditFormComponentProps = EditForm.Props & {
   editForm: EditForm
-  validation: any
+  validation: UseFormProps<EditForm.Params>
 }
 
 export default function EditFormComponent({

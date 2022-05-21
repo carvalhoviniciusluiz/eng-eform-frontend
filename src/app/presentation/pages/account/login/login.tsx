@@ -1,11 +1,11 @@
 import { Box, Button, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormProps } from 'react-hook-form'
 import { Authentication } from '~/app/domain/usecases'
 import { Link, PasswordField, TextField } from '~/app/presentation/components'
 
 type LoginComponentProps = {
-  validation: any
+  validation: UseFormProps<Authentication.Params>
   authentication: Authentication
 }
 

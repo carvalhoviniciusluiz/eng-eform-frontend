@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormProps } from 'react-hook-form'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { EditSurvey } from '~/app/domain/usecases'
@@ -10,7 +10,7 @@ import { SurveyFormTag } from '~/app/presentation/pages/survey/components'
 
 type EditSurveyComponentProps = EditSurvey.Props & {
   editSurvey: EditSurvey
-  validation: any
+  validation: UseFormProps<EditSurvey.Params>
 }
 
 export default function EditSurveyComponent({
