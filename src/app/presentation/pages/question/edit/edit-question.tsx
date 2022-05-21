@@ -1,7 +1,5 @@
 import { Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { useForm, UseFormProps } from 'react-hook-form'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { EditQuestion } from '~/app/domain/usecases'
@@ -10,7 +8,7 @@ import { QuestionFormTag } from '~/app/presentation/pages/question/components'
 
 type EditQuestionComponentProps = EditQuestion.Props & {
   editQuestion: EditQuestion
-  validation: UseFormProps<EditQuestion.Params>
+  validation: any
 }
 
 export default function EditQuestionComponent({
@@ -20,22 +18,17 @@ export default function EditQuestionComponent({
   editQuestion,
   validation
 }: EditQuestionComponentProps) {
-  const { control, handleSubmit, formState, setValue } =
-    useForm<EditQuestion.Params>(validation)
-
   const router = useRouter()
 
-  useEffect(() => {
-    setValue('content', data.content)
-  }, []) // eslint-disable-line
-
   async function onSubmit(params: EditQuestion.Params) {
-    editQuestion
-      .edit(data.id, params)
-      .then(() => {
-        router.push(GO_BACK)
-      })
-      .catch(console.error)
+    console.log(data.id, params)
+
+    // editQuestion
+    //   .edit(data.id, params)
+    //   .then(() => {
+    //     router.push(GO_BACK)
+    //   })
+    //   .catch(console.error)
   }
 
   const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`
@@ -103,8 +96,9 @@ export default function EditQuestionComponent({
 
       <QuestionFormTag
         title='Editar Questão'
+        validation={validation}
         onSubmit={onSubmit}
-        validation={validation as any}
+        body={data}
       />
     </>
   )

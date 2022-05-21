@@ -1,6 +1,6 @@
 import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { UseFormProps } from 'react-hook-form'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
 import { AddQuestion } from '~/app/domain/usecases'
@@ -8,7 +8,7 @@ import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
 import { QuestionFormTag } from '~/app/presentation/pages/question/components'
 
 type NewQuestionComponentProps = AddQuestion.Props & {
-  validation: UseFormProps
+  validation: any
   addQuestion: AddQuestion
 }
 
@@ -22,16 +22,30 @@ export default function NewQuestionComponent({
     showAlert: false
   })
 
+  const router = useRouter()
+
   const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`
 
-  function onSubmit(data: any) {
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4))
+  async function onSubmit(params: AddQuestion.Params) {
+    console.log(params)
+
+    // addQuestion
+    //   .add(params)
+    //   .then(() => {
+    //     router.push(GO_BACK)
+    //   })
+    //   .catch(() => {
+    //     setState((prevState) => ({
+    //       ...prevState,
+    //       showAlert: true
+    //     }))
+    //   })
   }
 
   return (
     <>
       <BarAction>
-        <Box>
+        <Box width={'100%'}>
           <Breadcrumbs>
             <Link
               style={{
@@ -98,8 +112,8 @@ export default function NewQuestionComponent({
 
       <QuestionFormTag
         title='Cadastrar questão'
-        validation={validation}
         onSubmit={onSubmit}
+        validation={validation}
       />
     </>
   )
