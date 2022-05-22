@@ -26,20 +26,18 @@ export default function NewQuestionComponent({
 
   const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`
 
-  async function onSubmit(params: AddQuestion.Params) {
-    console.log(params)
-
-    // addQuestion
-    //   .add(params)
-    //   .then(() => {
-    //     router.push(GO_BACK)
-    //   })
-    //   .catch(() => {
-    //     setState((prevState) => ({
-    //       ...prevState,
-    //       showAlert: true
-    //     }))
-    //   })
+  async function onSubmit(params: AddQuestion.FormParams) {
+    addQuestion
+      .add(params)
+      .then(() => {
+        router.push(GO_BACK)
+      })
+      .catch(() => {
+        setState((prevState) => ({
+          ...prevState,
+          showAlert: true
+        }))
+      })
   }
 
   return (

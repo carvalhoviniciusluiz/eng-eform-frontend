@@ -1,12 +1,27 @@
-import { FormModel, SurveyModel } from '~/app/domain/models'
+import { AnswerTypeEnum } from '~/app/domain/enums'
+import { AnswerModel, FormModel, SurveyModel } from '~/app/domain/models'
 
 export interface AddQuestion {
-  add: (params: AddQuestion.Params) => Promise<AddQuestion.Response>
+  add: (params: AddQuestion.FormParams) => Promise<AddQuestion.Response>
 }
 
 export namespace AddQuestion {
-  export type Params = {
+  export type DataApi = {
     content: string
+  }
+
+  export type FormParams = {
+    content: string
+    answerType: AnswerTypeEnum
+    answers: AnswerModel[]
+  }
+
+  export type RequestParams = {
+    content: string
+    answers: {
+      type: AnswerTypeEnum
+      data: DataApi[]
+    }
   }
 
   export type Response = {

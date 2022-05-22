@@ -15,6 +15,7 @@ import { BiCopy as DupIcon } from 'react-icons/bi'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
 import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
+import { AnswerTypeEnum } from '~/app/domain/enums'
 import { EditQuestion } from '~/app/domain/usecases'
 import { TextField } from '~/app/presentation/components'
 import makeStyles from './form-styles'
@@ -41,7 +42,9 @@ export default function QuestionFormComponent({
     control
   })
 
-  const [answerType, setAnswerType] = useState('objective')
+  const [answerType, setAnswerType] = useState<AnswerTypeEnum>(
+    AnswerTypeEnum.OBJECTIVE
+  )
 
   const handleChange = (event: any) => {
     setAnswerType(event.target.value)
@@ -49,6 +52,10 @@ export default function QuestionFormComponent({
 
   useEffect(() => {
     setValue('content', body?.content)
+
+    //   body?.answers?.forEach(answer => {
+    //     append({ id: answer.id, content: answer.content })
+    //   })
   }, [body]) // eslint-disable-line
 
   useEffect(() => {
@@ -133,12 +140,12 @@ export default function QuestionFormComponent({
             onChange={handleChange}
           >
             <FormControlLabel
-              value='multiple'
+              value={AnswerTypeEnum.MULTIPLE}
               control={<Radio />}
               label='Questão de multiplas escolhas'
             />
             <FormControlLabel
-              value='objective'
+              value={AnswerTypeEnum.OBJECTIVE}
               control={<Radio />}
               label='Resposta objetiva'
             />

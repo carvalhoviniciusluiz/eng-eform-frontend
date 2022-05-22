@@ -9,17 +9,23 @@ export class RemoteAddQuestion implements AddQuestion {
   constructor(
     private readonly url: string,
     private readonly httpPostClient: HttpPostClient<
-      RemoteAddQuestion.Params,
+      RemoteAddQuestion.RequestParams,
       RemoteAddQuestion.Response
     >
   ) { }
 
   async add(
-    params: RemoteAddQuestion.Params
+    params: RemoteAddQuestion.FormParams
   ): Promise<RemoteAddQuestion.Response> {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
-      body: params
+      body: {
+        content: params.content,
+        answers: {
+          type: params.answerType,
+          data: params.answers
+        }
+      }
     })
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
@@ -32,6 +38,7 @@ export class RemoteAddQuestion implements AddQuestion {
 }
 
 export namespace RemoteAddQuestion {
-  export type Params = AddQuestion.Params
+  export type FormParams = AddQuestion.FormParams
+  export type RequestParams = AddQuestion.RequestParams
   export type Response = AddQuestion.Response
 }
