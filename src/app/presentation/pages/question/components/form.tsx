@@ -9,7 +9,7 @@ import {
   RadioGroup,
   Typography
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useFieldArray, useForm, UseFormProps } from 'react-hook-form'
 import { BiCopy as DupIcon } from 'react-icons/bi'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
@@ -27,6 +27,15 @@ type QuestionFormComponentProps = {
   body?: EditQuestion.ApiResponseData
 }
 
+// https://github.com/facebook/react/issues/14927#issuecomment-469878110
+function useIsMounted() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  return mounted
+}
+
 export default function QuestionFormComponent({
   title,
   validation,
@@ -35,7 +44,14 @@ export default function QuestionFormComponent({
 }: QuestionFormComponentProps) {
   const classes = makeStyles()
 
-  const { control, handleSubmit, formState, setValue } = useForm(validation)
+  const isMounted = useIsMounted()
+
+  const { control, handleSubmit, formState, setValue } = useForm({
+    ...validation,
+    defaultValues: {
+      content: body?.question?.content
+    }
+  })
   const { isSubmitting } = formState
   const { fields, append, remove } = useFieldArray({
     name: 'answers',
@@ -46,17 +62,17 @@ export default function QuestionFormComponent({
     body?.question?.type ?? AnswerTypeEnum.OBJECTIVE
   )
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswerType(event.target.value)
   }
 
   useEffect(() => {
-    setValue('content', body?.question?.content)
-
-    body?.answers?.forEach((answer) =>
-      append({ id: answer.id, content: answer.content })
-    )
-  }, []) // eslint-disable-line
+    if (isMounted) {
+      body?.answers?.forEach((answer) =>
+        append({ id: answer.id, content: answer.content })
+      )
+    }
+  }, [isMounted]) // eslint-disable-line
 
   useEffect(() => {
     setValue('answerType', answerType)
