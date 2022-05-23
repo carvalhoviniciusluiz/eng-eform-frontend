@@ -12,7 +12,7 @@ type EditQuestionComponentProps = EditQuestion.Props & {
 }
 
 export default function EditQuestionComponent({
-  data,
+  body,
   parentForm,
   parentSurvey,
   editQuestion,
@@ -21,10 +21,10 @@ export default function EditQuestionComponent({
   const router = useRouter()
 
   async function onSubmit(params: EditQuestion.Params) {
-    console.log(data.id, params)
+    console.log(body.question.id, params)
 
     // editQuestion
-    //   .edit(data.id, params)
+    //   .edit(body.id, params)
     //   .then(() => {
     //     router.push(GO_BACK)
     //   })
@@ -98,7 +98,7 @@ export default function EditQuestionComponent({
         title='Editar Questão'
         validation={validation}
         onSubmit={onSubmit}
-        body={data}
+        body={body}
       />
     </>
   )

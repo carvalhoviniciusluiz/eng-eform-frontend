@@ -3,9 +3,19 @@ export interface GetQuestion {
 }
 
 export namespace GetQuestion {
-  export type Response = {
+  export type AnswerApiResponseData = {
     id: string
     content: string
-    updatedAt: Date
+    updatedAt: string
+  }
+
+  export type Response = {
+    question: {
+      id: string
+      type: string
+      content: string
+      updatedAt: Date
+    }
+    answers: AnswerApiResponseData[]
   }
 }

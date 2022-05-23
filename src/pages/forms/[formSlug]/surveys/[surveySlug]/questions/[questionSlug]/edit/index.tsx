@@ -21,10 +21,10 @@ export const getServerSideProps = handleSSRAuth<EditQuestion.Props>(
     const parentForm = await getForm.get(formSlug)
 
     const getQuestion = makeRemoteGetQuestion(surveySlug, context)
-    const data = await getQuestion.get(questionSlug)
+    const response = await getQuestion.get(questionSlug)
     return {
       props: {
-        data,
+        body: response,
         parentForm,
         parentSurvey
       }

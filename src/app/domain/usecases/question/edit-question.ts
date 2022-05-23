@@ -18,8 +18,24 @@ export namespace EditQuestion {
     updatedAt: Date
   }
 
+  export type AnswerApiResponseData = {
+    id: string
+    content: string
+    updatedAt: string
+  }
+
+  export type ApiResponseData = {
+    question: {
+      id: string
+      type: string
+      content: string
+      updatedAt: Date
+    }
+    answers: AnswerApiResponseData[]
+  }
+
   export type Props = {
-    data: Response
+    body: ApiResponseData
     parentForm: FormModel
     parentSurvey: SurveyModel
   }

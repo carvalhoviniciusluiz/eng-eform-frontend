@@ -24,7 +24,7 @@ type QuestionFormComponentProps = {
   title: string
   validation: UseFormProps
   onSubmit: (params: any) => void
-  body?: EditQuestion.Response
+  body?: EditQuestion.ApiResponseData
 }
 
 export default function QuestionFormComponent({
@@ -42,8 +42,8 @@ export default function QuestionFormComponent({
     control
   })
 
-  const [answerType, setAnswerType] = useState<AnswerTypeEnum>(
-    AnswerTypeEnum.OBJECTIVE
+  const [answerType, setAnswerType] = useState<AnswerTypeEnum | string>(
+    body?.question?.type ?? AnswerTypeEnum.OBJECTIVE
   )
 
   const handleChange = (event: any) => {
@@ -51,12 +51,12 @@ export default function QuestionFormComponent({
   }
 
   useEffect(() => {
-    setValue('content', body?.content)
+    setValue('content', body?.question?.content)
 
-    //   body?.answers?.forEach(answer => {
-    //     append({ id: answer.id, content: answer.content })
-    //   })
-  }, [body]) // eslint-disable-line
+    body?.answers?.forEach((answer) =>
+      append({ id: answer.id, content: answer.content })
+    )
+  }, []) // eslint-disable-line
 
   useEffect(() => {
     setValue('answerType', answerType)
