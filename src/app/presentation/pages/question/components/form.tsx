@@ -18,6 +18,7 @@ import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
 import { AnswerTypeEnum } from '~/app/domain/enums'
 import { EditQuestion } from '~/app/domain/usecases'
 import { TextField } from '~/app/presentation/components'
+import { useIsMounted } from '~/app/presentation/hooks'
 import makeStyles from './form-styles'
 
 type QuestionFormComponentProps = {
@@ -25,15 +26,6 @@ type QuestionFormComponentProps = {
   validation: UseFormProps
   onSubmit: (params: any) => void
   body?: EditQuestion.ApiResponseData
-}
-
-// https://github.com/facebook/react/issues/14927#issuecomment-469878110
-function useIsMounted() {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-  return mounted
 }
 
 export default function QuestionFormComponent({
