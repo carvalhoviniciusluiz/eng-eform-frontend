@@ -6,8 +6,9 @@ export interface AddQuestion {
 }
 
 export namespace AddQuestion {
-  export type DataApi = {
-    content: string
+  export type Props = {
+    parentForm: FormModel
+    parentSurvey: SurveyModel
   }
 
   export type FormParams = {
@@ -20,18 +21,23 @@ export namespace AddQuestion {
     content: string
     answers: {
       type: AnswerTypeEnum
-      data: DataApi[]
+      data: AnswerApiResponseData[]
     }
   }
 
-  export type Response = {
-    id: string
+  export type AnswerApiResponseData = {
+    id?: string
     content: string
-    updatedAt: Date
+    updatedAt?: Date
   }
 
-  export type Props = {
-    parentForm: FormModel
-    parentSurvey: SurveyModel
+  export type Response = {
+    question: {
+      id: string
+      type: AnswerTypeEnum
+      content: string
+      updatedAt: Date
+    }
+    answers: AnswerApiResponseData[]
   }
 }

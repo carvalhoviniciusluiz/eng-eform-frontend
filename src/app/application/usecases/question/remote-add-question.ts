@@ -12,7 +12,7 @@ export class RemoteAddQuestion implements AddQuestion {
       RemoteAddQuestion.RequestParams,
       RemoteAddQuestion.Response
     >
-  ) { }
+  ) {}
 
   async add(
     params: RemoteAddQuestion.FormParams

@@ -9,18 +9,24 @@ export class RemoteEditQuestion implements EditQuestion {
   constructor(
     private readonly url: string,
     private readonly httpPatchClient: HttpPatchClient<
-      RemoteEditQuestion.Params,
+      RemoteEditQuestion.RequestParams,
       RemoteEditQuestion.Response
     >
-  ) { }
+  ) {}
 
   async edit(
     id: string,
-    params: RemoteEditQuestion.Params
+    params: RemoteEditQuestion.FormParams
   ): Promise<RemoteEditQuestion.Response> {
     const httpResponse = await this.httpPatchClient.patch({
       url: `${this.url}/${id}`,
-      body: params
+      body: {
+        content: params.content,
+        answers: {
+          type: params.answerType,
+          data: params.answers
+        }
+      }
     })
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
@@ -33,6 +39,7 @@ export class RemoteEditQuestion implements EditQuestion {
 }
 
 export namespace RemoteEditQuestion {
-  export type Params = EditQuestion.Params
+  export type FormParams = EditQuestion.FormParams
+  export type RequestParams = EditQuestion.RequestParams
   export type Response = EditQuestion.Response
 }

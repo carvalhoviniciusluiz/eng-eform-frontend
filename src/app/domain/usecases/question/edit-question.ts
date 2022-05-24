@@ -1,27 +1,38 @@
-import { FormModel, SurveyModel } from '~/app/domain/models'
+import { AnswerTypeEnum } from '~/app/domain/enums'
+import { FormModel, SurveyModel, AnswerModel } from '~/app/domain/models'
 
 export interface EditQuestion {
   edit: (
     id: string,
-    params: EditQuestion.Params
+    params: EditQuestion.FormParams
   ) => Promise<EditQuestion.Response>
 }
 
 export namespace EditQuestion {
-  export type Params = {
-    content: string
+  export type Props = {
+    body: ApiResponseData
+    parentForm: FormModel
+    parentSurvey: SurveyModel
   }
 
-  export type Response = {
-    id: string
+  export type FormParams = {
     content: string
-    updatedAt: Date
+    answerType: AnswerTypeEnum
+    answers: AnswerApiResponseData[]
+  }
+
+  export type RequestParams = {
+    content: string
+    answers: {
+      type: AnswerTypeEnum
+      data: AnswerApiResponseData[]
+    }
   }
 
   export type AnswerApiResponseData = {
-    id: string
+    id?: string
     content: string
-    updatedAt: string
+    updatedAt?: string
   }
 
   export type ApiResponseData = {
@@ -34,9 +45,13 @@ export namespace EditQuestion {
     answers: AnswerApiResponseData[]
   }
 
-  export type Props = {
-    body: ApiResponseData
-    parentForm: FormModel
-    parentSurvey: SurveyModel
+  export type Response = {
+    question: {
+      id: string
+      type: AnswerTypeEnum
+      content: string
+      updatedAt: Date
+    }
+    answers: AnswerApiResponseData[]
   }
 }

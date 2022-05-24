@@ -20,15 +20,13 @@ export default function EditQuestionComponent({
 }: EditQuestionComponentProps) {
   const router = useRouter()
 
-  async function onSubmit(params: EditQuestion.Params) {
-    console.log(body.question.id, params)
-
-    // editQuestion
-    //   .edit(body.id, params)
-    //   .then(() => {
-    //     router.push(GO_BACK)
-    //   })
-    //   .catch(console.error)
+  async function onSubmit(params: EditQuestion.FormParams) {
+    editQuestion
+      .edit(body.question.id, params)
+      .then(() => {
+        router.push(GO_BACK)
+      })
+      .catch(console.error)
   }
 
   const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`

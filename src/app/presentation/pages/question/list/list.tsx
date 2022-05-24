@@ -154,7 +154,7 @@ export default function QuestionListComponent({
             width: '60%',
             borderRadius: 5,
             border: '1px solid #E9E9E9',
-            margin: '40px 0 24px'
+            marginTop: 40
           }}
         >
           <Box
@@ -186,63 +186,72 @@ export default function QuestionListComponent({
           remove-lo mesmo assim?
         </AlertDialog>
 
-        <ul className={classes.list}>
-          {state.questions.map((question) => (
-            <li className={classes.line} key={question.id}>
-              <Box
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center'
-                }}
-                className='showcase'
-              >
+        <Box
+          style={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            margin: '24px 0'
+          }}
+        >
+          <ul className={classes.list}>
+            {state.questions.map((question) => (
+              <li className={classes.line} key={question.id}>
                 <Box
                   style={{
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center'
                   }}
+                  className='showcase'
                 >
                   <Box
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
                       alignItems: 'center'
                     }}
                   >
-                    <Typography
+                    <Box
                       style={{
-                        margin: 16,
-                        fontSize: 16,
-                        letterSpacing: 0.2,
-                        textAlign: 'left'
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center'
                       }}
-                      component='h1'
                     >
-                      {question.content}
-                    </Typography>
+                      <Typography
+                        style={{
+                          margin: 16,
+                          fontSize: 16,
+                          letterSpacing: 0.2,
+                          textAlign: 'left'
+                        }}
+                        component='h1'
+                      >
+                        {question.content}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
 
-              <Box display='flex' justifyContent='center'>
-                <Link
-                  className={classes.action}
-                  href={`/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions/${question.id}/edit`}
-                >
-                  <EditIcon fill='#C8C8C8' size={32} />
-                </Link>
+                <Box display='flex' justifyContent='center'>
+                  <Link
+                    className={classes.action}
+                    href={`/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions/${question.id}/edit`}
+                  >
+                    <EditIcon fill='#C8C8C8' size={32} />
+                  </Link>
 
-                <button
-                  className={classes.delete}
-                  onClick={() => handleDestroy(question.id)}
-                >
-                  <CloseIcon fill='#C8C8C8' size={32} />
-                </button>
-              </Box>
-            </li>
-          ))}
-        </ul>
+                  <button
+                    className={classes.delete}
+                    onClick={() => handleDestroy(question.id)}
+                  >
+                    <CloseIcon fill='#C8C8C8' size={32} />
+                  </button>
+                </Box>
+              </li>
+            ))}
+          </ul>
+        </Box>
       </Box>
     </>
   )
