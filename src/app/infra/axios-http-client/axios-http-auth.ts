@@ -13,7 +13,7 @@ export class AxiosHttpAuth {
     private readonly getStorage: SetStorage & GetStorage
   ) {}
 
-  isRefreshing = false
+  retry = false
   failedRequestQueue: FailedRequestQueueProps[] = []
 
   getAxiosInstance(): AxiosInstance {
@@ -25,8 +25,8 @@ export class AxiosHttpAuth {
         if (error.response?.status === 401 && credentials?.refreshToken) {
           const originalConfig = error.config
 
-          if (!this.isRefreshing) {
-            this.isRefreshing = true
+          if (!this.retry) {
+            this.retry = true
 
             this.axiosInstance
               .post(this.urlRefreshToken, null, {
@@ -47,7 +47,7 @@ export class AxiosHttpAuth {
               })
               .finally(() => {
                 this.failedRequestQueue = []
-                this.isRefreshing = false
+                this.retry = false
               })
 
             return await new Promise((resolve, reject) => {

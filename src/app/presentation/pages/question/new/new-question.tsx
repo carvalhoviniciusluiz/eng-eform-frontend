@@ -1,22 +1,24 @@
 import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { UseFormProps } from 'react-hook-form'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
-import { AddQuestion } from '~/app/domain/usecases'
+import { AddQuestion, DeleteAnswer } from '~/app/domain/usecases'
+import { isUUID } from '~/app/infra/utils'
 import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
 import { QuestionFormTag } from '~/app/presentation/pages/question/components'
 
 type NewQuestionComponentProps = AddQuestion.Props & {
-  validation: any
   addQuestion: AddQuestion
+  validation: UseFormProps
 }
 
 export default function NewQuestionComponent({
   parentForm,
   parentSurvey,
-  validation,
-  addQuestion
+  addQuestion,
+  validation
 }: NewQuestionComponentProps) {
   const [state, setState] = useState({
     showAlert: false
@@ -26,7 +28,7 @@ export default function NewQuestionComponent({
 
   const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`
 
-  async function onSubmit(params: AddQuestion.FormParams) {
+  function onSubmit(params: AddQuestion.FormParams) {
     addQuestion
       .add(params)
       .then(() => {

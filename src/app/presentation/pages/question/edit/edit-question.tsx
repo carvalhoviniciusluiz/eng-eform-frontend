@@ -1,14 +1,17 @@
 import { Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
+import { UseFormProps } from 'react-hook-form'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
-import { EditQuestion } from '~/app/domain/usecases'
+import { DeleteAnswer, EditQuestion } from '~/app/domain/usecases'
+import { isUUID } from '~/app/infra/utils'
 import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
 import { QuestionFormTag } from '~/app/presentation/pages/question/components'
 
 type EditQuestionComponentProps = EditQuestion.Props & {
   editQuestion: EditQuestion
-  validation: any
+  deleteAnswer: DeleteAnswer
+  validation: UseFormProps
 }
 
 export default function EditQuestionComponent({
@@ -16,17 +19,24 @@ export default function EditQuestionComponent({
   parentForm,
   parentSurvey,
   editQuestion,
+  deleteAnswer,
   validation
 }: EditQuestionComponentProps) {
   const router = useRouter()
 
-  async function onSubmit(params: EditQuestion.FormParams) {
+  function onSubmit(params: EditQuestion.FormParams) {
     editQuestion
       .edit(body.question.id, params)
       .then(() => {
         router.push(GO_BACK)
       })
       .catch(console.error)
+  }
+
+  function onAnswerDelete(answerId: string) {
+    if (isUUID(answerId)) {
+      deleteAnswer.delete(answerId)
+    }
   }
 
   const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`
@@ -96,6 +106,7 @@ export default function EditQuestionComponent({
         title='Editar Questão'
         validation={validation}
         onSubmit={onSubmit}
+        onAnswerDelete={onAnswerDelete}
         body={body}
       />
     </>

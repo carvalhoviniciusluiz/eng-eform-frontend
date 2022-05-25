@@ -1,5 +1,8 @@
 import { AddQuestion } from '~/app/domain/usecases'
-import { makeRemoteAddQuestion } from '~/app/main/factories/usecases'
+import {
+  makeRemoteAddQuestion,
+  makeRemoteDeleteAnswer
+} from '~/app/main/factories/usecases'
 import { NewQuestionTag } from '~/app/presentation/pages'
 import { makeNewQuestionValidation } from './new-question-validation-factory'
 

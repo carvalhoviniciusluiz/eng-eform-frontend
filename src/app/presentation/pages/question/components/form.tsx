@@ -9,7 +9,7 @@ import {
   RadioGroup,
   Typography
 } from '@mui/material'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useFieldArray, useForm, UseFormProps } from 'react-hook-form'
 import { BiCopy as DupIcon } from 'react-icons/bi'
 import { FaRegSave as SaveIcon } from 'react-icons/fa'
@@ -17,7 +17,7 @@ import { FiInfo as InfoIcon } from 'react-icons/fi'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
 import { AnswerTypeEnum } from '~/app/domain/enums'
 import { EditQuestion } from '~/app/domain/usecases'
-import { TextField } from '~/app/presentation/components'
+import { AlertDialog, TextField } from '~/app/presentation/components'
 import { useIsMounted } from '~/app/presentation/hooks'
 import makeStyles from './form-styles'
 
@@ -25,6 +25,7 @@ type QuestionFormComponentProps = {
   title: string
   validation: UseFormProps
   onSubmit: (params: any) => void
+  onAnswerDelete?: (answerId: string) => void
   body?: EditQuestion.ApiResponseData
 }
 
@@ -32,11 +33,20 @@ export default function QuestionFormComponent({
   title,
   validation,
   onSubmit,
+  onAnswerDelete,
   body
 }: QuestionFormComponentProps) {
   const classes = makeStyles()
 
   const isMounted = useIsMounted()
+
+  const [state, setState] = useState({
+    answerType: body?.question?.type ?? AnswerTypeEnum.OBJECTIVE,
+    open: false,
+    destroy: false,
+    answerIndex: -1,
+    answerId: ''
+  })
 
   const { control, handleSubmit, formState, setValue } = useForm({
     ...validation,
@@ -50,25 +60,51 @@ export default function QuestionFormComponent({
     control
   })
 
-  const [answerType, setAnswerType] = useState<AnswerTypeEnum | string>(
-    body?.question?.type ?? AnswerTypeEnum.OBJECTIVE
-  )
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAnswerType(event.target.value)
-  }
-
   useEffect(() => {
     if (isMounted) {
       body?.answers?.forEach((answer) =>
-        append({ id: answer.id, content: answer.content })
+        append({ _id: answer.id, content: answer.content })
       )
     }
   }, [isMounted]) // eslint-disable-line
 
   useEffect(() => {
-    setValue('answerType', answerType)
-  }, [answerType]) // eslint-disable-line
+    const hasAnswerIndex = !!~state.answerIndex
+    if (state.destroy && hasAnswerIndex) {
+      remove(state.answerIndex)
+      setState((prevState) => ({
+        ...prevState,
+        destroy: false,
+        answerIndex: -1,
+        answerId: ''
+      }))
+
+      const hasAnswerDelete = !!onAnswerDelete
+      if (hasAnswerDelete) {
+        onAnswerDelete(state.answerId)
+      }
+    }
+  }, [state.destroy]) // eslint-disable-line
+
+  useEffect(() => {
+    setValue('answerType', state.answerType)
+  }, [state.answerType]) // eslint-disable-line
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setState((prevState) => ({
+      ...prevState,
+      answerType: event.target.value
+    }))
+  }
+
+  function handleDestroy(answerIndex: number, answerId: string) {
+    setState((prevState) => ({
+      ...prevState,
+      open: true,
+      answerIndex,
+      answerId
+    }))
+  }
 
   return (
     <Box
@@ -77,6 +113,11 @@ export default function QuestionFormComponent({
         justifyContent: 'center'
       }}
     >
+      <AlertDialog title='Confirmar delete?' state={state} setState={setState}>
+        Esse registro poderá ser recuperado futuramente caso queira. Deseja
+        remove-lo mesmo assim?
+      </AlertDialog>
+
       <form
         style={{
           width: 571,
@@ -144,7 +185,7 @@ export default function QuestionFormComponent({
           <RadioGroup
             aria-labelledby='label-radio-buttons'
             name='controlled-radio-buttons-group'
-            value={answerType}
+            value={state.answerType}
             onChange={handleChange}
           >
             <FormControlLabel
@@ -209,7 +250,7 @@ export default function QuestionFormComponent({
                       cursor: 'pointer'
                     }}
                     position='end'
-                    onClick={() => remove(i)}
+                    onClick={() => handleDestroy(i, (item as any)._id)}
                   >
                     <TrashIcon />
                   </InputAdornment>
