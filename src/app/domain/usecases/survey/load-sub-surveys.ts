@@ -1,10 +1,10 @@
-import { FormModel } from '~/app/domain/models'
+import { FormModel, SurveyModel } from '~/app/domain/models'
 
-export interface LoadSurveys {
-  loadAll: (params?: LoadSurveys.Params) => Promise<LoadSurveys.Response>
+export interface LoadSubSurveys {
+  loadAll: (params?: LoadSubSurveys.Params) => Promise<LoadSubSurveys.Response>
 }
 
-export namespace LoadSurveys {
+export namespace LoadSubSurveys {
   export type Params = {
     name?: string
   }
@@ -32,11 +32,22 @@ export namespace LoadSurveys {
   }
 
   export type Response = {
+    form: {
+      id: string
+      name: string
+      updatedAt: Date
+    }
+    parent: {
+      id: string
+      name: string
+      updatedAt: Date
+    }
     data: DataApi[]
     meta: MetaApi
   }
 
   export type Props = Response & {
     parentForm: FormModel
+    parentSurvey: SurveyModel
   }
 }
