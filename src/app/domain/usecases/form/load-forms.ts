@@ -1,3 +1,5 @@
+import { FormModel } from '~/app/domain/models'
+
 export interface LoadForms {
   loadAll: (params?: LoadForms.Params) => Promise<LoadForms.Response>
 }
@@ -7,11 +9,7 @@ export namespace LoadForms {
     name?: string
   }
 
-  export type DataApi = {
-    id: string
-    name: string
-    updatedAt: string
-  }
+  export type DataApi = FormModel
 
   export type MetaApi = {
     count: number
@@ -32,5 +30,6 @@ export namespace LoadForms {
   export type Response = {
     data: DataApi[]
     meta: MetaApi
+    logged: boolean
   }
 }

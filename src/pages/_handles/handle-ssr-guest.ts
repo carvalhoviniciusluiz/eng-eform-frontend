@@ -9,8 +9,9 @@ export default function handleSSRGuest<P>(fn: GetServerSideProps<P>) {
   return async (
     context: GetServerSidePropsContext
   ): Promise<GetServerSidePropsResult<P>> => {
+    const cookieKey = 'eform:account'
     const cookies = parseCookies(context)
-    const { 'eform:account': cookie } = cookies
+    const { [cookieKey]: cookie } = cookies
 
     if (cookie) {
       return {

@@ -22,7 +22,7 @@ export default function LoginComponent({
     authentication
       .signIn(params)
       .then(() => {
-        router.push('/')
+        router.push('/forms')
       })
       .catch(console.error)
   }

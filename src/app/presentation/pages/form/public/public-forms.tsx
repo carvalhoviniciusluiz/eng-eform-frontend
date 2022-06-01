@@ -1,9 +1,20 @@
-import { Box, Typography } from '@mui/material'
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Grid,
+  Paper,
+  Typography
+} from '@mui/material'
 import { useState } from 'react'
 import { DebounceInput } from 'react-debounce-input'
-import { MdSearch as SearchIcon, MdSegment as FormIcon } from 'react-icons/md'
+import { AiOutlineLogin as LoginIcon } from 'react-icons/ai'
+import { BiUserCircle as UserIcon } from 'react-icons/bi'
+import { MdSearch as SearchIcon } from 'react-icons/md'
 import { LoadForms } from '~/app/domain/usecases'
-import { BarAction, Breadcrumbs } from '~/app/presentation/components'
+import { Fn } from '~/app/infra/utils'
+import { Link } from '~/app/presentation/components'
+import useStyles from './public-forms-styles'
 
 type PublicFormsComponentProps = LoadForms.Response & {
   loadForms: LoadForms
@@ -11,7 +22,8 @@ type PublicFormsComponentProps = LoadForms.Response & {
 
 export default function PublicFormsComponent({
   data,
-  loadForms
+  loadForms,
+  logged
 }: PublicFormsComponentProps) {
   const [state, setState] = useState({
     forms: data
@@ -36,43 +48,54 @@ export default function PublicFormsComponent({
     handleRehydrateForms(value)
   }
 
+  const classes = useStyles()
+
   return (
-    <>
-      <BarAction>
-        <Box>
-          <Breadcrumbs>
-            <Typography>Forms</Typography>
-          </Breadcrumbs>
-
-          <Box
-            style={{
-              marginTop: 28,
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <FormIcon size={23} />
-
-            <Typography
+    <Box
+      style={{
+        minHeight: '100vh',
+        backgroundColor: 'rgb(243, 244, 249)'
+      }}
+    >
+      <header className={classes.header}>
+        <Box display='flex' alignItems='center'>
+          <Box>
+            <Box
               style={{
-                fontSize: 24,
-                marginLeft: 12
+                width: 25,
+                height: 3,
+                margin: 5,
+                borderRadius: 10,
+                transition: 'width 0.3s ease 0s',
+                backgroundColor: 'rgb(36, 153, 239)'
               }}
-            >
-              Formulários
-            </Typography>
+            />
+            <Box
+              style={{
+                height: 3,
+                margin: 5,
+                borderRadius: 10,
+                transition: 'width 0.3s ease 0s',
+                backgroundColor: 'rgb(36, 153, 239)',
+                width: 15
+              }}
+            />
+            <Box
+              style={{
+                width: 25,
+                height: 3,
+                margin: 5,
+                borderRadius: 10,
+                transition: 'width 0.3s ease 0s',
+                backgroundColor: 'rgb(36, 153, 239)'
+              }}
+            />
           </Box>
+          <Typography variant='h2' component='h1' className={classes.title}>
+            eForm
+          </Typography>
         </Box>
-      </BarAction>
 
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
         <Box
           style={{
             display: 'flex',
@@ -80,7 +103,7 @@ export default function PublicFormsComponent({
             width: 415.95,
             borderRadius: 5,
             border: '1px solid #E9E9E9',
-            margin: '40px 0'
+            backgroundColor: 'white'
           }}
         >
           <Box
@@ -103,51 +126,105 @@ export default function PublicFormsComponent({
           />
         </Box>
 
-        <ul
+        {logged ? (
+          <UserIcon size={32} fill={'#1D2438'} />
+        ) : (
+          <Link href={`/login`}>
+            <LoginIcon size={32} fill={'#1D2438'} />
+          </Link>
+        )}
+      </header>
+
+      <Box
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <Box
           style={{
-            listStyleType: 'none',
-            margin: 0,
-            padding: 0
+            display: 'flex',
+            width: '60%',
+            justifyContent: 'center',
+            margin: '24px 0'
           }}
         >
-          {state.forms.map((form) => (
-            <li key={form.id}>
-              <Box
-                style={{
-                  cursor: 'pointer'
-                }}
-              >
-                <Box
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
+          <Grid
+            container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 4, sm: 8, md: 12 }}
+          >
+            {state.forms.map((form) => (
+              <Grid item xs={2} sm={4} md={4} key={form.id}>
+                <Paper elevation={0} className={classes.paper}>
                   <Box
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center'
+                      flexDirection: 'column'
                     }}
                   >
-                    <Typography
+                    <Box
                       style={{
-                        marginTop: 16,
-                        fontSize: 16,
-                        letterSpacing: 0.2,
-                        textAlign: 'center'
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
                       }}
-                      component='h1'
                     >
-                      {form.name}
-                    </Typography>
+                      <small
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 500,
+                          lineHeight: 1.5,
+                          textTransform: 'none',
+                          whiteSpace: 'normal'
+                        }}
+                      >
+                        {Fn.dateFormat(form.updatedAt)}
+                      </small>
+                    </Box>
+                    <Box
+                      style={{
+                        textAlign: 'center',
+                        paddingTop: 48,
+                        paddingBottom: 32
+                      }}
+                    >
+                      <Typography component='h3' className={classes.h3}>
+                        {form.name}
+                      </Typography>
+                      <Typography component='h6' className={classes.h6}>
+                        {form.status}
+                      </Typography>
+                    </Box>
+                    <span
+                      style={{
+                        display: 'block',
+                        height: 4,
+                        borderRadius: 3,
+                        backgroundColor: 'rgb(229, 234, 242)'
+                      }}
+                    />
+                    <Box
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        paddingTop: '1.5rem'
+                      }}
+                    >
+                      <Link href={`/${form.id}`} className={classes.link}>
+                        <small>Preencher</small>
+                      </Link>
+                    </Box>
                   </Box>
-                </Box>
-              </Box>
-            </li>
-          ))}
-        </ul>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
-    </>
+    </Box>
   )
 }

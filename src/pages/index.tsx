@@ -1,21 +1,29 @@
+import { parseCookies } from 'nookies'
 import { LoadForms } from '~/app/domain/usecases'
-import { makePublicForms } from '~/app/main/factories/pages/form/public/public-forms-factory'
+import { makePublicForms } from '~/app/main/factories/pages'
 import { makeRemoteLoadPublicForms } from '~/app/main/factories/usecases'
-import { BaseLayout } from '~/app/presentation/layouts'
 import handleSSRNeutral from '~/pages/_handles/handle-ssr-neutral'
 
 export const getServerSideProps = handleSSRNeutral<LoadForms.Response>(
   async (context) => {
     const loadForms = makeRemoteLoadPublicForms(context)
     const httpResponse = await loadForms.loadAll()
+
+    const cookieKey = 'eform:account'
+    const cookies = parseCookies(context)
+    const { [cookieKey]: cookie } = cookies
+
     return {
-      props: httpResponse
+      props: {
+        ...httpResponse,
+        logged: !!cookie
+      }
     }
   }
 )
 
-function MainPage(props: LoadForms.Response) {
-  return <BaseLayout>{makePublicForms({ ...props })}</BaseLayout>
+function PublicFormsPage(props: LoadForms.Response) {
+  return makePublicForms({ ...props })
 }
 
-export default MainPage
+export default PublicFormsPage
