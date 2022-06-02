@@ -1,16 +1,10 @@
-import {
-  Avatar,
-  AvatarGroup,
-  Box,
-  Grid,
-  Paper,
-  Typography
-} from '@mui/material'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 import { useState } from 'react'
 import { DebounceInput } from 'react-debounce-input'
 import { AiOutlineLogin as LoginIcon } from 'react-icons/ai'
 import { BiUserCircle as UserIcon } from 'react-icons/bi'
 import { MdSearch as SearchIcon } from 'react-icons/md'
+import { FormStatus } from '~/app/domain/models'
 import { LoadForms } from '~/app/domain/usecases'
 import { Fn } from '~/app/infra/utils'
 import { Link } from '~/app/presentation/components'
@@ -214,9 +208,13 @@ export default function PublicFormsComponent({
                         paddingTop: '1.5rem'
                       }}
                     >
-                      <Link href={`/${form.id}`} className={classes.link}>
-                        <small>Preencher</small>
-                      </Link>
+                      {form.status === FormStatus.PUBLISHED ? (
+                        <Link href={`/${form.id}`} className={classes.link}>
+                          <small>Preencher</small>
+                        </Link>
+                      ) : (
+                        <small className={classes.unpublished}>Preencher</small>
+                      )}
                     </Box>
                   </Box>
                 </Paper>

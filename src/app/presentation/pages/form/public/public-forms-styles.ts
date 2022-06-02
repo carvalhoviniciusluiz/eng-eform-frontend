@@ -72,5 +72,15 @@ export default makeStyles({
       color: 'white',
       backgroundColor: 'rgb(217 222 230)'
     }
+  },
+  unpublished: {
+    fontSize: 12,
+    lineHeight: 1.5,
+    backgroundColor: 'rgb(240 240 240)',
+    padding: '5px 15px',
+    borderRadius: 20,
+    marginLeft: 8,
+    color: 'rgb(197 201 209)',
+    fontWeight: 600
   }
 })
