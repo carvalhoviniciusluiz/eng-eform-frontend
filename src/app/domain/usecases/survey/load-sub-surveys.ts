@@ -1,4 +1,4 @@
-import { FormModel, SurveyModel } from '~/app/domain/models'
+import { FormStatus, FormModel, SurveyModel } from '~/app/domain/models'
 
 export interface LoadSubSurveys {
   loadAll: (params?: LoadSubSurveys.Params) => Promise<LoadSubSurveys.Response>
@@ -35,6 +35,7 @@ export namespace LoadSubSurveys {
     form: {
       id: string
       name: string
+      status: FormStatus
       updatedAt: Date
     }
     parent: {
