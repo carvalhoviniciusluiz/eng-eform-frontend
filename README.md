@@ -118,11 +118,15 @@ __NOTA__: caso tenha dúvidas veja a sessão `Configurações > Dotenv` & `Confi
 ### **Projeto Endpoints:** <a name="endpoints"></a>
 
 #### Questionarios
-*   `#GET /` - Tela publica, exibe todos os produtos cadastrados de todos os usuários registrados.
+*   `#GET /` - Tela publica, exibe todos formulários cadastrados e publicados de todos os usuários registrados.
+*   `#GET /{id}` - Tela publica, exibe um formulário específico apra ser alimentado.
 
 #### Auth
 *   `#GET /login` - Tela de login.
 *   `#GET /register` - Tela para registar uma conta de acesso.
+
+#### Gerenciador
+*   `#GET /forms` - Tela autenticada, exibe todas as opções de cadastro para se criar um formulário.
 
 ### **Credenticial de Acesso:** <a name="credentials"></a>
 
@@ -133,7 +137,7 @@ Dados de acesso:
 | Param | Value
 |---------|--------------
 | Email | carvalho.viniciusluiz@gmail.com
-| PASSWORD | 123Ch@nge
+| PASSWORD | Ch@nge123
 
 __OBS__ Caso não queira a conta padrão, use a tela de cadastro de usuários para registrar uma conta nova.
 
