@@ -1,22 +1,22 @@
-import { FormModel } from '~/app/domain/models'
+import { FormModel } from '~/app/domain/models';
 
 export interface EditSurvey {
-  edit: (id: string, params: EditSurvey.Params) => Promise<EditSurvey.Response>
+  edit: (id: string, params: EditSurvey.Params) => Promise<EditSurvey.Response>;
 }
 
 export namespace EditSurvey {
   export type Params = {
-    name: string
-  }
+    name: string;
+  };
 
   export type Response = {
-    id: string
-    name: string
-    updatedAt: Date
-  }
+    id: string;
+    name: string;
+    updatedAt: Date;
+  };
 
   export type Props = {
-    data: EditSurvey.Response
-    parentForm: FormModel
-  }
+    data: EditSurvey.Response;
+    parentForm: FormModel;
+  };
 }

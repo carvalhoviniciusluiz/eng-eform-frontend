@@ -1,10 +1,7 @@
-import { AddQuestion } from '~/app/domain/usecases'
-import {
-  makeRemoteAddQuestion,
-  makeRemoteDeleteAnswer
-} from '~/app/main/factories/usecases'
-import { NewQuestionTag } from '~/app/presentation/pages'
-import { makeNewQuestionValidation } from './new-question-validation-factory'
+import { AddQuestion } from '~/app/domain/usecases';
+import { makeRemoteAddQuestion } from '~/app/main/factories/usecases';
+import { NewQuestionTag } from '~/app/presentation/pages';
+import { makeNewQuestionValidation } from './new-question-validation-factory';
 
 export const makeNewQuestion = (props: AddQuestion.Props) => {
   return (
@@ -13,5 +10,5 @@ export const makeNewQuestion = (props: AddQuestion.Props) => {
       addQuestion={makeRemoteAddQuestion(props.parentSurvey.id)}
       validation={makeNewQuestionValidation()}
     />
-  )
-}
+  );
+};

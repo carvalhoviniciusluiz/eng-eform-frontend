@@ -1,6 +1,6 @@
-import { RemoteAddSubSurvey } from '~/app/application/usecases'
-import { AddSubSurvey } from '~/app/domain/usecases'
-import { makeAuthorizedHttpPostClientDecorator } from '~/app/main/factories/decorators'
+import { RemoteAddSubSurvey } from '~/app/application/usecases';
+import { AddSubSurvey } from '~/app/domain/usecases';
+import { makeAuthorizedHttpPostClientDecorator } from '~/app/main/factories/decorators';
 
 export const makeRemoteAddSubSurvey = (
   formSlug: string,
@@ -10,5 +10,5 @@ export const makeRemoteAddSubSurvey = (
   return new RemoteAddSubSurvey(
     `/v1/forms/${formSlug}/surveys/${SurveySlug}/surveys`,
     makeAuthorizedHttpPostClientDecorator(context)
-  )
-}
+  );
+};

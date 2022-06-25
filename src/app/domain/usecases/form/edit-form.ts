@@ -1,20 +1,20 @@
 export interface EditForm {
-  edit: (id: string, params: EditForm.Params) => Promise<EditForm.Response>
+  edit: (id: string, params: EditForm.Params) => Promise<EditForm.Response>;
 }
 
 export namespace EditForm {
   export type Params = {
-    name: string
-  }
+    name: string;
+  };
 
   export type Response = {
-    id: string
-    name: string
-    updatedAt: Date
-  }
+    id: string;
+    name: string;
+    updatedAt: Date;
+  };
 
   export type Props = {
-    data: Response
-    formId: string
-  }
+    data: Response;
+    formId: string;
+  };
 }

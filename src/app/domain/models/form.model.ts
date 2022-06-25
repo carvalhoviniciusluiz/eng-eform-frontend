@@ -5,8 +5,8 @@ export enum FormStatus {
 }
 
 export type FormModel = {
-  id: string
-  name: string
-  status: FormStatus
-  updatedAt: Date
-}
+  id: string;
+  name: string;
+  status: FormStatus;
+  updatedAt: Date;
+};

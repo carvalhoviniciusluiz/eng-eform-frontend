@@ -1,19 +1,19 @@
-import { Box } from '@mui/material'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { Link } from '~/app/presentation/components'
-import { Toolbar } from '~/app/presentation/layouts/components'
+import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { Link } from '~/app/presentation/components';
+import { Toolbar } from '~/app/presentation/layouts/components';
 
 type BaseLayoutProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function BaseLayout({ children }: BaseLayoutProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   function styleActiveTo(pathname: string[]) {
-    const isIncluded = pathname.find((name) => router.pathname === name)
-    return isIncluded ? 'white' : '#8d9fbb'
+    const isIncluded = pathname.find(name => router.pathname === name);
+    return isIncluded ? 'white' : '#8d9fbb';
   }
 
   return (
@@ -48,5 +48,5 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
 
       {children}
     </>
-  )
+  );
 }

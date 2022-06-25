@@ -1,10 +1,10 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import { Toolbar } from '~/app/presentation/layouts/components'
+import { Box } from '@mui/material';
+import React from 'react';
+import { Toolbar } from '~/app/presentation/layouts/components';
 
 type DefaultLayoutProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
@@ -27,5 +27,5 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

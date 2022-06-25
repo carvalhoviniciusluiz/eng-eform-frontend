@@ -1,1 +1,1 @@
-export * from './remote-delete-answer-factory'
+export * from './remote-delete-answer-factory';

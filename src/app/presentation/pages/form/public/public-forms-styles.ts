@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from '@mui/styles';
 
 export default makeStyles({
   header: {
@@ -83,4 +83,4 @@ export default makeStyles({
     color: 'rgb(197 201 209)',
     fontWeight: 600
   }
-})
+});

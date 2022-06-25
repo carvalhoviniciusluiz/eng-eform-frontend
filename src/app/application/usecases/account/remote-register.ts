@@ -1,9 +1,9 @@
 import {
   HttpPostClient,
   HttpStatusCode
-} from '~/app/application/protocols/http'
-import { UnexpectedError } from '~/app/domain/errors'
-import { Register } from '~/app/domain/usecases'
+} from '~/app/application/protocols/http';
+import { UnexpectedError } from '~/app/domain/errors';
+import { Register } from '~/app/domain/usecases';
 
 export class RemoteRegister implements Register {
   constructor(
@@ -20,23 +20,23 @@ export class RemoteRegister implements Register {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: params
-    })
+    });
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
-        return httpResponse.body as RemoteRegister.Response
+        return httpResponse.body as RemoteRegister.Response;
       default: {
         const {
           body: { errors }
-        } = httpResponse?.body as any
-        throw new UnexpectedError(errors)
+        } = httpResponse?.body as any;
+        throw new UnexpectedError(errors);
       }
     }
   }
 }
 
 export namespace RemoteRegister {
-  export type Params = Register.Params
-  export type Response = Register.Response
+  export type Params = Register.Params;
+  export type Response = Register.Response;
 }

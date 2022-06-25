@@ -1,30 +1,30 @@
-import { Box, Button, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useForm, UseFormProps } from 'react-hook-form'
-import { Authentication } from '~/app/domain/usecases'
-import { Link, PasswordField, TextField } from '~/app/presentation/components'
+import { Box, Button, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useForm, UseFormProps } from 'react-hook-form';
+import { Authentication } from '~/app/domain/usecases';
+import { Link, PasswordField, TextField } from '~/app/presentation/components';
 
 type LoginComponentProps = {
-  validation: UseFormProps<Authentication.Params>
-  authentication: Authentication
-}
+  validation: UseFormProps<Authentication.Params>;
+  authentication: Authentication;
+};
 
 export default function LoginComponent({
   validation,
   authentication
 }: LoginComponentProps) {
   const { control, handleSubmit, formState } =
-    useForm<Authentication.Params>(validation)
+    useForm<Authentication.Params>(validation);
 
-  const router = useRouter()
+  const router = useRouter();
 
   async function onSubmit(params: Authentication.Params) {
     authentication
       .signIn(params)
       .then(() => {
-        router.push('/forms')
+        router.push('/forms');
       })
-      .catch(console.error)
+      .catch(console.error);
   }
 
   return (
@@ -114,5 +114,5 @@ export default function LoginComponent({
         </Link>
       </Box>
     </form>
-  )
+  );
 }

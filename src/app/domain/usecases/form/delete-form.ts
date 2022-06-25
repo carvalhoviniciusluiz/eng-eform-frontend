@@ -1,7 +1,7 @@
 export interface DeleteForm {
-  delete: (id: string) => Promise<DeleteForm.Response>
+  delete: (id: string) => Promise<DeleteForm.Response>;
 }
 
 export namespace DeleteForm {
-  export type Response = {}
+  export type Response = {};
 }

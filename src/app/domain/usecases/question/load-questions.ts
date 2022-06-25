@@ -1,43 +1,43 @@
-import { FormModel, SurveyModel } from '~/app/domain/models'
+import { FormModel, SurveyModel } from '~/app/domain/models';
 
 export interface LoadQuestions {
-  loadAll: (params?: LoadQuestions.Params) => Promise<LoadQuestions.Response>
+  loadAll: (params?: LoadQuestions.Params) => Promise<LoadQuestions.Response>;
 }
 
 export namespace LoadQuestions {
   export type Params = {
-    content?: string
-  }
+    content?: string;
+  };
 
   export type DataApi = {
-    id: string
-    content: string
-    updatedAt: string
-  }
+    id: string;
+    content: string;
+    updatedAt: string;
+  };
 
   export type MetaApi = {
-    count: number
-    firstItemOnPage: number
-    hasNextPage: boolean
-    hasPreviousPage: boolean
-    isFirstPage: boolean
-    isLastPage: boolean
-    lastItemOnPage: number
-    numberOfFirstItemOnPage: number
-    numberOfLastItemOnPage: number
-    page: number
-    pageCount: number
-    pageNumberIsGood: boolean
-    pageSize: number
-  }
+    count: number;
+    firstItemOnPage: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    isFirstPage: boolean;
+    isLastPage: boolean;
+    lastItemOnPage: number;
+    numberOfFirstItemOnPage: number;
+    numberOfLastItemOnPage: number;
+    page: number;
+    pageCount: number;
+    pageNumberIsGood: boolean;
+    pageSize: number;
+  };
 
   export type Response = {
-    data: DataApi[]
-    meta: MetaApi
-  }
+    data: DataApi[];
+    meta: MetaApi;
+  };
 
   export type Props = Response & {
-    parentForm: FormModel
-    parentSurvey: SurveyModel
-  }
+    parentForm: FormModel;
+    parentSurvey: SurveyModel;
+  };
 }

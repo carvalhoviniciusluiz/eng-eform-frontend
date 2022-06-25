@@ -1,17 +1,17 @@
-import { Box, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { useForm, UseFormProps } from 'react-hook-form'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
-import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
-import { EditSurvey } from '~/app/domain/usecases'
-import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
-import { SurveyFormTag } from '~/app/presentation/pages/survey/components'
+import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useForm, UseFormProps } from 'react-hook-form';
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
+import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md';
+import { EditSurvey } from '~/app/domain/usecases';
+import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components';
+import { SurveyFormTag } from '~/app/presentation/pages/survey/components';
 
 type EditSurveyComponentProps = EditSurvey.Props & {
-  editSurvey: EditSurvey
-  validation: UseFormProps<EditSurvey.Params>
-}
+  editSurvey: EditSurvey;
+  validation: UseFormProps<EditSurvey.Params>;
+};
 
 export default function EditSurveyComponent({
   data,
@@ -20,24 +20,24 @@ export default function EditSurveyComponent({
   validation
 }: EditSurveyComponentProps) {
   const { control, handleSubmit, formState, setValue } =
-    useForm<EditSurvey.Params>(validation)
+    useForm<EditSurvey.Params>(validation);
 
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    setValue('name', data.name)
-  }, []) // eslint-disable-line
+    setValue('name', data.name);
+  }, []); // eslint-disable-line
 
   async function onSubmit(params: EditSurvey.Params) {
     editSurvey
       .edit(data.id, params)
       .then(() => {
-        router.push(GO_BACK)
+        router.push(GO_BACK);
       })
-      .catch(console.error)
+      .catch(console.error);
   }
 
-  const GO_BACK = `/forms/${parentForm.id}/surveys`
+  const GO_BACK = `/forms/${parentForm.id}/surveys`;
 
   return (
     <>
@@ -97,5 +97,5 @@ export default function EditSurveyComponent({
         control={control}
       />
     </>
-  )
+  );
 }

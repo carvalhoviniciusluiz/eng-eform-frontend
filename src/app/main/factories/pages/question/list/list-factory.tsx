@@ -1,9 +1,9 @@
-import { LoadQuestions } from '~/app/domain/usecases'
+import { LoadQuestions } from '~/app/domain/usecases';
 import {
   makeRemoteDeleteQuestion,
   makeRemoteLoadQuestions
-} from '~/app/main/factories/usecases'
-import { QuestionListTag } from '~/app/presentation/pages'
+} from '~/app/main/factories/usecases';
+import { QuestionListTag } from '~/app/presentation/pages';
 
 export const makeQuestionList = (props: LoadQuestions.Props) => {
   return (
@@ -12,5 +12,5 @@ export const makeQuestionList = (props: LoadQuestions.Props) => {
       loadQuestions={makeRemoteLoadQuestions(props.parentSurvey.id)}
       deleteQuestion={makeRemoteDeleteQuestion(props.parentSurvey.id)}
     />
-  )
-}
+  );
+};

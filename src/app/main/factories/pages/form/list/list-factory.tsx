@@ -1,9 +1,9 @@
-import { LoadForms } from '~/app/domain/usecases'
+import { LoadForms } from '~/app/domain/usecases';
 import {
   makeRemoteDeleteForm,
   makeRemoteLoadForms
-} from '~/app/main/factories/usecases'
-import { FormListTag } from '~/app/presentation/pages'
+} from '~/app/main/factories/usecases';
+import { FormListTag } from '~/app/presentation/pages';
 
 export const makeFormList = (props: LoadForms.Response) => {
   return (
@@ -12,5 +12,5 @@ export const makeFormList = (props: LoadForms.Response) => {
       loadForms={makeRemoteLoadForms()}
       deleteForm={makeRemoteDeleteForm()}
     />
-  )
-}
+  );
+};

@@ -1,16 +1,16 @@
 import {
   TextField as TextFieldMui,
   TextFieldProps as TextFieldPropsMui
-} from '@mui/material'
-import { Control, Controller } from 'react-hook-form'
+} from '@mui/material';
+import { Control, Controller } from 'react-hook-form';
 
 export type FieldProps = {
-  name: string
-  control: Control<any>
-  variant?: string
-}
+  name: string;
+  control: Control<any>;
+  variant?: string;
+};
 
-export type TextFieldProps = TextFieldPropsMui & FieldProps
+export type TextFieldProps = TextFieldPropsMui & FieldProps;
 
 export const TextField = ({
   name,
@@ -33,8 +33,8 @@ export const TextField = ({
             helperText={invalid ? error?.message : ''}
             variant={variant}
           />
-        )
+        );
       }}
     />
-  )
-}
+  );
+};

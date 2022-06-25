@@ -3,9 +3,9 @@ const dateFormat = (value: Date): string => {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
-  })
-}
+  });
+};
 
 export const Fn = {
   dateFormat
-}
+};

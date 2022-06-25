@@ -8,26 +8,26 @@ import {
   Radio,
   RadioGroup,
   Typography
-} from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useFieldArray, useForm, UseFormProps } from 'react-hook-form'
-import { BiCopy as DupIcon } from 'react-icons/bi'
-import { FaRegSave as SaveIcon } from 'react-icons/fa'
-import { FiInfo as InfoIcon } from 'react-icons/fi'
-import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
-import { AnswerTypeEnum } from '~/app/domain/enums'
-import { EditQuestion } from '~/app/domain/usecases'
-import { AlertDialog, TextField } from '~/app/presentation/components'
-import { useIsMounted } from '~/app/presentation/hooks'
-import makeStyles from './form-styles'
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useFieldArray, useForm, UseFormProps } from 'react-hook-form';
+import { BiCopy as DupIcon } from 'react-icons/bi';
+import { FaRegSave as SaveIcon } from 'react-icons/fa';
+import { FiInfo as InfoIcon } from 'react-icons/fi';
+import { HiOutlineTrash as TrashIcon } from 'react-icons/hi';
+import { AnswerTypeEnum } from '~/app/domain/enums';
+import { EditQuestion } from '~/app/domain/usecases';
+import { AlertDialog, TextField } from '~/app/presentation/components';
+import { useIsMounted } from '~/app/presentation/hooks';
+import makeStyles from './form-styles';
 
 type QuestionFormComponentProps = {
-  title: string
-  validation: UseFormProps
-  onSubmit: (params: any) => void
-  onAnswerDelete?: (answerId: string) => void
-  body?: EditQuestion.ApiResponseData
-}
+  title: string;
+  validation: UseFormProps;
+  onSubmit: (params: any) => void;
+  onAnswerDelete?: (answerId: string) => void;
+  body?: EditQuestion.ApiResponseData;
+};
 
 export default function QuestionFormComponent({
   title,
@@ -36,9 +36,9 @@ export default function QuestionFormComponent({
   onAnswerDelete,
   body
 }: QuestionFormComponentProps) {
-  const classes = makeStyles()
+  const classes = makeStyles();
 
-  const isMounted = useIsMounted()
+  const isMounted = useIsMounted();
 
   const [state, setState] = useState({
     answerType: body?.question?.type ?? AnswerTypeEnum.OBJECTIVE,
@@ -46,64 +46,64 @@ export default function QuestionFormComponent({
     destroy: false,
     answerIndex: -1,
     answerId: ''
-  })
+  });
 
   const { control, handleSubmit, formState, setValue } = useForm({
     ...validation,
     defaultValues: {
       content: body?.question?.content
     }
-  })
-  const { isSubmitting } = formState
+  });
+  const { isSubmitting } = formState;
   const { fields, append, remove } = useFieldArray({
     name: 'answers',
     control
-  })
+  });
 
   useEffect(() => {
     if (isMounted) {
-      body?.answers?.forEach((answer) =>
+      body?.answers?.forEach(answer =>
         append({ _id: answer.id, content: answer.content })
-      )
+      );
     }
-  }, [isMounted]) // eslint-disable-line
+  }, [isMounted]); // eslint-disable-line
 
   useEffect(() => {
-    const hasAnswerIndex = !!~state.answerIndex
+    const hasAnswerIndex = !!~state.answerIndex;
     if (state.destroy && hasAnswerIndex) {
-      remove(state.answerIndex)
-      setState((prevState) => ({
+      remove(state.answerIndex);
+      setState(prevState => ({
         ...prevState,
         destroy: false,
         answerIndex: -1,
         answerId: ''
-      }))
+      }));
 
-      const hasAnswerDelete = !!onAnswerDelete
+      const hasAnswerDelete = !!onAnswerDelete;
       if (hasAnswerDelete) {
-        onAnswerDelete(state.answerId)
+        onAnswerDelete(state.answerId);
       }
     }
-  }, [state.destroy]) // eslint-disable-line
+  }, [state.destroy]); // eslint-disable-line
 
   useEffect(() => {
-    setValue('answerType', state.answerType)
-  }, [state.answerType]) // eslint-disable-line
+    setValue('answerType', state.answerType);
+  }, [state.answerType]); // eslint-disable-line
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
       answerType: event.target.value
-    }))
+    }));
   }
 
   function handleDestroy(answerIndex: number, answerId: string) {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
       open: true,
       answerIndex,
       answerId
-    }))
+    }));
   }
 
   return (
@@ -267,7 +267,7 @@ export default function QuestionFormComponent({
               margin: '40px 0'
             }}
             onClick={() => {
-              append({ content: '' })
+              append({ content: '' });
             }}
           >
             <DupIcon size={20} fill='white' />
@@ -284,5 +284,5 @@ export default function QuestionFormComponent({
         </section>
       </form>
     </Box>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export { default as SubSurveyFormTag } from './form'
+export { default as SubSurveyFormTag } from './form';

@@ -1,2 +1,2 @@
-export * from './remote-authentication'
-export * from './remote-register'
+export * from './remote-authentication';
+export * from './remote-register';

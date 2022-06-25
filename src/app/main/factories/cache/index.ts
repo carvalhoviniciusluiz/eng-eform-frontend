@@ -1,1 +1,1 @@
-export * from './cookie-adapter-factory'
+export * from './cookie-adapter-factory';

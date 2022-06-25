@@ -1,1 +1,1 @@
-export * from './delete-answer'
+export * from './delete-answer';

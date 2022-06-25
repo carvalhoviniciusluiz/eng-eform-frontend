@@ -1,5 +1,5 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 export const makeEditQuestionValidation = () => {
   const validationSchema = Yup.object().shape({
@@ -11,8 +11,8 @@ export const makeEditQuestionValidation = () => {
         })
       )
       .min(2)
-  })
-  const formOptions = { resolver: yupResolver(validationSchema) }
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
 
-  return formOptions
-}
+  return formOptions;
+};

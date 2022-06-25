@@ -1,6 +1,6 @@
-import { RemoteLoadSubSurveys } from '~/app/application/usecases'
-import { LoadSubSurveys } from '~/app/domain/usecases'
-import { makeAuthorizedHttpGetClientDecorator } from '~/app/main/factories/decorators'
+import { RemoteLoadSubSurveys } from '~/app/application/usecases';
+import { LoadSubSurveys } from '~/app/domain/usecases';
+import { makeAuthorizedHttpGetClientDecorator } from '~/app/main/factories/decorators';
 
 export const makeRemoteLoadSubSurveys = (
   formSlug: string,
@@ -10,5 +10,5 @@ export const makeRemoteLoadSubSurveys = (
   return new RemoteLoadSubSurveys(
     `/v1/forms/${formSlug}/surveys/${SurveySlug}/surveys`,
     makeAuthorizedHttpGetClientDecorator(context)
-  )
-}
+  );
+};

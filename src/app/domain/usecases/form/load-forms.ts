@@ -1,35 +1,35 @@
-import { FormModel } from '~/app/domain/models'
+import { FormModel } from '~/app/domain/models';
 
 export interface LoadForms {
-  loadAll: (params?: LoadForms.Params) => Promise<LoadForms.Response>
+  loadAll: (params?: LoadForms.Params) => Promise<LoadForms.Response>;
 }
 
 export namespace LoadForms {
   export type Params = {
-    name?: string
-  }
+    name?: string;
+  };
 
-  export type DataApi = FormModel
+  export type DataApi = FormModel;
 
   export type MetaApi = {
-    count: number
-    firstItemOnPage: number
-    hasNextPage: boolean
-    hasPreviousPage: boolean
-    isFirstPage: boolean
-    isLastPage: boolean
-    lastItemOnPage: number
-    numberOfFirstItemOnPage: number
-    numberOfLastItemOnPage: number
-    page: number
-    pageCount: number
-    pageNumberIsGood: boolean
-    pageSize: number
-  }
+    count: number;
+    firstItemOnPage: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    isFirstPage: boolean;
+    isLastPage: boolean;
+    lastItemOnPage: number;
+    numberOfFirstItemOnPage: number;
+    numberOfLastItemOnPage: number;
+    page: number;
+    pageCount: number;
+    pageNumberIsGood: boolean;
+    pageSize: number;
+  };
 
   export type Response = {
-    data: DataApi[]
-    meta: MetaApi
-    logged: boolean
-  }
+    data: DataApi[];
+    meta: MetaApi;
+    logged: boolean;
+  };
 }

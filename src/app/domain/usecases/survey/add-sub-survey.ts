@@ -1,22 +1,22 @@
-import { FormModel, SurveyModel } from '~/app/domain/models'
+import { FormModel, SurveyModel } from '~/app/domain/models';
 
 export interface AddSubSurvey {
-  add: (params: AddSubSurvey.Params) => Promise<AddSubSurvey.Response>
+  add: (params: AddSubSurvey.Params) => Promise<AddSubSurvey.Response>;
 }
 
 export namespace AddSubSurvey {
   export type Params = {
-    name: string
-  }
+    name: string;
+  };
 
   export type Response = {
-    id: string
-    name: string
-    updatedAt: Date
-  }
+    id: string;
+    name: string;
+    updatedAt: Date;
+  };
 
   export type Props = {
-    parentForm: FormModel
-    parentSurvey: SurveyModel
-  }
+    parentForm: FormModel;
+    parentSurvey: SurveyModel;
+  };
 }

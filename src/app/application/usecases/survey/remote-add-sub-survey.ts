@@ -1,9 +1,9 @@
 import {
   HttpPostClient,
   HttpStatusCode
-} from '~/app/application/protocols/http'
-import { UnexpectedError } from '~/app/domain/errors'
-import { AddSubSurvey } from '~/app/domain/usecases'
+} from '~/app/application/protocols/http';
+import { UnexpectedError } from '~/app/domain/errors';
+import { AddSubSurvey } from '~/app/domain/usecases';
 
 export class RemoteAddSubSurvey implements AddSubSurvey {
   constructor(
@@ -20,18 +20,18 @@ export class RemoteAddSubSurvey implements AddSubSurvey {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: params
-    })
+    });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
-        return httpResponse.body as RemoteAddSubSurvey.Response
+        return httpResponse.body as RemoteAddSubSurvey.Response;
       default:
-        throw new UnexpectedError()
+        throw new UnexpectedError();
     }
   }
 }
 
 export namespace RemoteAddSubSurvey {
-  export type Params = AddSubSurvey.Params
-  export type Response = AddSubSurvey.Response
+  export type Params = AddSubSurvey.Params;
+  export type Response = AddSubSurvey.Response;
 }

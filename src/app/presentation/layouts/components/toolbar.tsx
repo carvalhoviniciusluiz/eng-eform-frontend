@@ -1,8 +1,8 @@
-import { AppBar, Toolbar as ToolbarMui } from '@mui/material'
+import { AppBar, Toolbar as ToolbarMui } from '@mui/material';
 
 type ToolbarProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 export default function Toolbar({ children }: ToolbarProps) {
   return (
@@ -62,5 +62,5 @@ export default function Toolbar({ children }: ToolbarProps) {
         </ToolbarMui>
       </AppBar>
     </>
-  )
+  );
 }

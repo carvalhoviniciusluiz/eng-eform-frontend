@@ -1,7 +1,7 @@
-import { AddSurvey } from '~/app/domain/usecases'
-import { makeRemoteAddSurvey } from '~/app/main/factories/usecases'
-import { NewSurveyTag } from '~/app/presentation/pages'
-import { makeNewSurveyValidation } from './new-survey-validation-factory'
+import { AddSurvey } from '~/app/domain/usecases';
+import { makeRemoteAddSurvey } from '~/app/main/factories/usecases';
+import { NewSurveyTag } from '~/app/presentation/pages';
+import { makeNewSurveyValidation } from './new-survey-validation-factory';
 
 export const makeNewSurvey = (props: AddSurvey.Props) => {
   return (
@@ -10,5 +10,5 @@ export const makeNewSurvey = (props: AddSurvey.Props) => {
       addSurvey={makeRemoteAddSurvey(props.parentForm.id)}
       validation={makeNewSurveyValidation()}
     />
-  )
-}
+  );
+};

@@ -1,2 +1,2 @@
-export * from './is-uuid'
-export * from './format'
+export * from './is-uuid';
+export * from './format';

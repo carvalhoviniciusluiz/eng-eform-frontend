@@ -1,27 +1,29 @@
-import { Box, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { DebounceInput } from 'react-debounce-input'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
+import { Box, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
 import {
   MdClose as CloseIcon,
   MdOutlineHorizontalSplit as BuildIcon,
   MdSearch as SearchIcon,
   MdSegment as FormIcon
-} from 'react-icons/md'
-import { RiUserSharedLine as UsersIcon } from 'react-icons/ri'
-import { DeleteForm, LoadForms } from '~/app/domain/usecases'
+} from 'react-icons/md';
+import { RiUserSharedLine as UsersIcon } from 'react-icons/ri';
+import { DeleteForm, LoadForms } from '~/app/domain/usecases';
 import {
   AlertDialog,
   BarAction,
   Breadcrumbs,
   Link
-} from '~/app/presentation/components'
-import useStyles from './list-styles'
+} from '~/app/presentation/components';
+import useStyles from './list-styles';
+
+type Text = {};
 
 type FormListComponentProps = LoadForms.Response & {
-  loadForms: LoadForms
-  deleteForm: DeleteForm
-}
+  loadForms: LoadForms;
+  deleteForm: DeleteForm;
+};
 
 export default function FormListComponent({
   data,
@@ -33,51 +35,51 @@ export default function FormListComponent({
     open: false,
     destroy: false,
     formId: ''
-  })
+  });
 
   function handleRehydrateForms(name?: string) {
     loadForms
       .loadAll({ name })
       .then(({ data }: LoadForms.Response) =>
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           forms: data
         }))
       )
-      .catch(console.error)
+      .catch(console.error);
   }
 
   function handleDestroy(formId: string) {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
       open: true,
       formId
-    }))
+    }));
   }
 
   async function handleSearchByName(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    const { value } = event.target
-    handleRehydrateForms(value)
+    const { value } = event.target;
+    handleRehydrateForms(value);
   }
 
   useEffect(() => {
-    const hasFormId = !!state.formId
+    const hasFormId = !!state.formId;
     if (state.destroy && hasFormId) {
       deleteForm.delete(state.formId).then(() => {
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
-          forms: state.forms.filter((form) => form.id !== state.formId),
+          forms: state.forms.filter(form => form.id !== state.formId),
           open: false,
           destroy: false,
           formId: ''
-        }))
-      })
+        }));
+      });
     }
-  }, [state.destroy]) // eslint-disable-line
+  }, [state.destroy]); // eslint-disable-line
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <>
@@ -163,7 +165,7 @@ export default function FormListComponent({
             listStyleType: 'none'
           }}
         >
-          {state.forms?.map((form) => (
+          {state.forms?.map(form => (
             <li className={classes.line} key={form.id}>
               <Box display={'flex'} justifyContent={'space-between'}>
                 <Box display={'flex'} margin={'9px 27px 9px 30px'}>
@@ -217,5 +219,5 @@ export default function FormListComponent({
         </ul>
       </Box>
     </>
-  )
+  );
 }

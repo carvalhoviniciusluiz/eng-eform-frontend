@@ -1,1 +1,1 @@
-export * from './new-sub-survey-factory'
+export * from './new-sub-survey-factory';

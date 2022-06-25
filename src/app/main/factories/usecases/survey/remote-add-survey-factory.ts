@@ -1,6 +1,6 @@
-import { RemoteAddSurvey } from '~/app/application/usecases'
-import { AddSurvey } from '~/app/domain/usecases'
-import { makeAuthorizedHttpPostClientDecorator } from '~/app/main/factories/decorators'
+import { RemoteAddSurvey } from '~/app/application/usecases';
+import { AddSurvey } from '~/app/domain/usecases';
+import { makeAuthorizedHttpPostClientDecorator } from '~/app/main/factories/decorators';
 
 export const makeRemoteAddSurvey = (
   formId: string,
@@ -9,5 +9,5 @@ export const makeRemoteAddSurvey = (
   return new RemoteAddSurvey(
     `/v1/forms/${formId}/surveys`,
     makeAuthorizedHttpPostClientDecorator(context)
-  )
-}
+  );
+};

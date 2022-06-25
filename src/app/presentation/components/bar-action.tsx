@@ -1,8 +1,8 @@
-import { AppBar, Box, Toolbar as ToolbarMui } from '@mui/material'
+import { AppBar, Box, Toolbar as ToolbarMui } from '@mui/material';
 
 type BarActionProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 export default function BarAction({ children }: BarActionProps) {
   return (
@@ -34,5 +34,5 @@ export default function BarAction({ children }: BarActionProps) {
         </Box>
       </ToolbarMui>
     </AppBar>
-  )
+  );
 }

@@ -2,7 +2,7 @@ import {
   GetServerSideProps,
   GetServerSidePropsContext,
   GetServerSidePropsResult
-} from 'next'
+} from 'next';
 
 export default function handleSSRNeutral<P>(fn: GetServerSideProps<P>) {
   return async (
@@ -10,6 +10,6 @@ export default function handleSSRNeutral<P>(fn: GetServerSideProps<P>) {
   ): Promise<GetServerSidePropsResult<P>> => {
     // something here..
 
-    return await fn(context)
-  }
+    return await fn(context);
+  };
 }

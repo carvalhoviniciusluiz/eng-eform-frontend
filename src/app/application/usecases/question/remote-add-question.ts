@@ -1,9 +1,9 @@
 import {
   HttpPostClient,
   HttpStatusCode
-} from '~/app/application/protocols/http'
-import { UnexpectedError } from '~/app/domain/errors'
-import { AddQuestion } from '~/app/domain/usecases'
+} from '~/app/application/protocols/http';
+import { UnexpectedError } from '~/app/domain/errors';
+import { AddQuestion } from '~/app/domain/usecases';
 
 export class RemoteAddQuestion implements AddQuestion {
   constructor(
@@ -26,19 +26,19 @@ export class RemoteAddQuestion implements AddQuestion {
           data: params.answers
         }
       }
-    })
+    });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
-        return httpResponse.body as RemoteAddQuestion.Response
+        return httpResponse.body as RemoteAddQuestion.Response;
       default:
-        throw new UnexpectedError()
+        throw new UnexpectedError();
     }
   }
 }
 
 export namespace RemoteAddQuestion {
-  export type FormParams = AddQuestion.FormParams
-  export type RequestParams = AddQuestion.RequestParams
-  export type Response = AddQuestion.Response
+  export type FormParams = AddQuestion.FormParams;
+  export type RequestParams = AddQuestion.RequestParams;
+  export type Response = AddQuestion.Response;
 }

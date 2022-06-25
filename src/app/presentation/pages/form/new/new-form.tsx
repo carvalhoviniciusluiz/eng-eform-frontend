@@ -1,42 +1,42 @@
-import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { useForm, UseFormProps } from 'react-hook-form'
-import { FaRegSave as SaveIcon } from 'react-icons/fa'
-import { AddForm } from '~/app/domain/usecases'
-import { BarAction, Breadcrumbs } from '~/app/presentation/components'
-import { FormTag } from '~/app/presentation/pages/form/components'
+import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, UseFormProps } from 'react-hook-form';
+import { FaRegSave as SaveIcon } from 'react-icons/fa';
+import { AddForm } from '~/app/domain/usecases';
+import { BarAction, Breadcrumbs } from '~/app/presentation/components';
+import { FormTag } from '~/app/presentation/pages/form/components';
 
 type NewFormComponentProps = {
-  validation: UseFormProps<AddForm.Params>
-  addForm: AddForm
-}
+  validation: UseFormProps<AddForm.Params>;
+  addForm: AddForm;
+};
 
 export default function NewFormComponent({
   validation,
   addForm
 }: NewFormComponentProps) {
   const { control, handleSubmit, formState } =
-    useForm<AddForm.Params>(validation)
+    useForm<AddForm.Params>(validation);
 
   const [state, setState] = useState({
     showAlert: false
-  })
+  });
 
-  const router = useRouter()
+  const router = useRouter();
 
   async function onSubmit(params: AddForm.Params) {
     addForm
       .add(params)
       .then(() => {
-        router.push('/forms')
+        router.push('/forms');
       })
       .catch(() => {
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           showAlert: true
-        }))
-      })
+        }));
+      });
   }
 
   return (
@@ -82,5 +82,5 @@ export default function NewFormComponent({
         control={control}
       />
     </>
-  )
+  );
 }

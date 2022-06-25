@@ -1,7 +1,7 @@
-import { AddSubSurvey } from '~/app/domain/usecases'
-import { makeRemoteAddSubSurvey } from '~/app/main/factories/usecases'
-import { NewSubSurveyTag } from '~/app/presentation/pages'
-import { makeNewSubSurveyValidation } from './new-sub-survey-validation-factory'
+import { AddSubSurvey } from '~/app/domain/usecases';
+import { makeRemoteAddSubSurvey } from '~/app/main/factories/usecases';
+import { NewSubSurveyTag } from '~/app/presentation/pages';
+import { makeNewSubSurveyValidation } from './new-sub-survey-validation-factory';
 
 export const makeNewSubSurvey = (props: AddSubSurvey.Props) => {
   return (
@@ -13,5 +13,5 @@ export const makeNewSubSurvey = (props: AddSubSurvey.Props) => {
       )}
       validation={makeNewSubSurveyValidation()}
     />
-  )
-}
+  );
+};

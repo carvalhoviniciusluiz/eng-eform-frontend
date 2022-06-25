@@ -1,16 +1,16 @@
-import { Box, Typography } from '@mui/material'
-import { Control } from 'react-hook-form'
-import { FaRegSave as SaveIcon } from 'react-icons/fa'
-import { FiInfo as InfoIcon } from 'react-icons/fi'
-import { TextField } from '~/app/presentation/components'
-import makeStyles from './form-styles'
+import { Box, Typography } from '@mui/material';
+import { Control } from 'react-hook-form';
+import { FaRegSave as SaveIcon } from 'react-icons/fa';
+import { FiInfo as InfoIcon } from 'react-icons/fi';
+import { TextField } from '~/app/presentation/components';
+import makeStyles from './form-styles';
 
 type SurveyFormComponentProps = {
-  isSubmitting: boolean
-  handleSubmit: any
-  control: Control<any, any>
-  title: string
-}
+  isSubmitting: boolean;
+  handleSubmit: any;
+  control: Control<any, any>;
+  title: string;
+};
 
 export default function SurveyFormComponent({
   isSubmitting,
@@ -18,7 +18,7 @@ export default function SurveyFormComponent({
   control,
   title
 }: SurveyFormComponentProps) {
-  const classes = makeStyles()
+  const classes = makeStyles();
 
   return (
     <Box
@@ -104,5 +104,5 @@ export default function SurveyFormComponent({
         </Box>
       </form>
     </Box>
-  )
+  );
 }

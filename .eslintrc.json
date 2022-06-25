@@ -6,16 +6,21 @@
   },
   "plugins": [
     "react",
-    "import-helpers",
-    "prettier"
+    "prettier",
+    "@typescript-eslint/eslint-plugin",
+    "import-helpers"
   ],
   "extends": [
     "next/core-web-vitals",
     "standard-with-typescript",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
-    "eslint-config-prettier"
+    "plugin:@typescript-eslint/recommended",
+    "eslint-config-prettier",
+    "prettier"
   ],
+  "root": true,
+  "ignorePatterns": [".eslintrc.js"],
   "parserOptions": {
     "project": "./tsconfig-eslint.json"
   },
@@ -23,9 +28,20 @@
     "prettier/prettier": [
       "warn",
       {
+        "quoteProps": "as-needed",
         "trailingComma": "none",
         "singleQuote": true,
+        "printWidth": 80,
         "jsxSingleQuote": true
+      }
+    ],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
       }
     ],
     "@typescript-eslint/triple-slash-reference": "off",
@@ -53,11 +69,7 @@
           "/^~/infra/",
           "/^~/main/",
           "/^~/presentation/",
-          [
-            "parent",
-            "sibling",
-            "index"
-          ]
+          ["parent", "sibling", "index"]
         ],
         "alphabetize": {
           "order": "asc",

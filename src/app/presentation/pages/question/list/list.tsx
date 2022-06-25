@@ -1,27 +1,27 @@
-import { Box, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { DebounceInput } from 'react-debounce-input'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
+import { Box, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
 import {
   MdClose as CloseIcon,
   MdKeyboardArrowRight as ArrowRightIcon,
   MdSearch as SearchIcon,
   MdSegment as FormIcon
-} from 'react-icons/md'
-import { DeleteQuestion, LoadQuestions } from '~/app/domain/usecases'
+} from 'react-icons/md';
+import { DeleteQuestion, LoadQuestions } from '~/app/domain/usecases';
 import {
   AlertDialog,
   BarAction,
   Breadcrumbs,
   Link
-} from '~/app/presentation/components'
-import useStyles from './list-styles'
+} from '~/app/presentation/components';
+import useStyles from './list-styles';
 
 type QuestionListComponentProps = LoadQuestions.Props &
   LoadQuestions.Response & {
-    loadQuestions: LoadQuestions
-    deleteQuestion: DeleteQuestion
-  }
+    loadQuestions: LoadQuestions;
+    deleteQuestion: DeleteQuestion;
+  };
 
 export default function QuestionListComponent({
   data,
@@ -35,53 +35,53 @@ export default function QuestionListComponent({
     open: false,
     destroy: false,
     questionId: ''
-  })
+  });
 
   function handleRehydrateQuestions(content?: string) {
     loadQuestions
       .loadAll({ content })
       .then(({ data }: LoadQuestions.Response) =>
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           questions: data
         }))
       )
-      .catch(console.error)
+      .catch(console.error);
   }
 
   function handleDestroy(questionId: string) {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
       open: true,
       questionId
-    }))
+    }));
   }
 
   async function handleSearchByName(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    const { value } = event.target
-    handleRehydrateQuestions(value)
+    const { value } = event.target;
+    handleRehydrateQuestions(value);
   }
 
   useEffect(() => {
-    const hasQuestionId = !!state.questionId
+    const hasQuestionId = !!state.questionId;
     if (state.destroy && hasQuestionId) {
       deleteQuestion.delete(state.questionId).then(() => {
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           questions: state.questions.filter(
-            (question) => question.id !== state.questionId
+            question => question.id !== state.questionId
           ),
           open: false,
           destroy: false,
           questionId: ''
-        }))
-      })
+        }));
+      });
     }
-  }, [state.destroy]) // eslint-disable-line
+  }, [state.destroy]); // eslint-disable-line
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <>
@@ -195,7 +195,7 @@ export default function QuestionListComponent({
           }}
         >
           <ul className={classes.list}>
-            {state.questions.map((question) => (
+            {state.questions.map(question => (
               <li className={classes.line} key={question.id}>
                 <Box
                   style={{
@@ -254,5 +254,5 @@ export default function QuestionListComponent({
         </Box>
       </Box>
     </>
-  )
+  );
 }

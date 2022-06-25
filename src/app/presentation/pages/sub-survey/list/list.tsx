@@ -1,29 +1,29 @@
-import { Box, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { DebounceInput } from 'react-debounce-input'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
-import { CgFormatSeparator as FieldIcon } from 'react-icons/cg'
+import { Box, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
+import { CgFormatSeparator as FieldIcon } from 'react-icons/cg';
 import {
   MdClose as CloseIcon,
   MdKeyboardArrowRight as ArrowRightIcon,
   MdOutlineHorizontalSplit as BuildIcon,
   MdSearch as SearchIcon,
   MdSegment as FormIcon
-} from 'react-icons/md'
-import { DeleteSurvey, LoadSubSurveys } from '~/app/domain/usecases'
+} from 'react-icons/md';
+import { DeleteSurvey, LoadSubSurveys } from '~/app/domain/usecases';
 import {
   AlertDialog,
   BarAction,
   Breadcrumbs,
   Link
-} from '~/app/presentation/components'
-import useStyles from './list-styles'
+} from '~/app/presentation/components';
+import useStyles from './list-styles';
 
 type SurveyListComponentProps = LoadSubSurveys.Props &
   LoadSubSurveys.Response & {
-    loadSubSurveys: LoadSubSurveys
-    deleteSurvey: DeleteSurvey
-  }
+    loadSubSurveys: LoadSubSurveys;
+    deleteSurvey: DeleteSurvey;
+  };
 
 export default function SurveyListComponent({
   data,
@@ -37,53 +37,51 @@ export default function SurveyListComponent({
     open: false,
     destroy: false,
     surveyId: ''
-  })
+  });
 
   function handleRehydrateSurveys(name?: string) {
     loadSubSurveys
       .loadAll({ name })
       .then(({ data }: LoadSubSurveys.Response) =>
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           surveys: data
         }))
       )
-      .catch(console.error)
+      .catch(console.error);
   }
 
   function handleDestroy(surveyId: string) {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
       open: true,
       surveyId
-    }))
+    }));
   }
 
   async function handleSearchByName(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    const { value } = event.target
-    handleRehydrateSurveys(value)
+    const { value } = event.target;
+    handleRehydrateSurveys(value);
   }
 
   useEffect(() => {
-    const hasSurveyId = !!state.surveyId
+    const hasSurveyId = !!state.surveyId;
     if (state.destroy && hasSurveyId) {
       deleteSurvey.delete(state.surveyId).then(() => {
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
-          surveys: state.surveys.filter(
-            (survey) => survey.id !== state.surveyId
-          ),
+          surveys: state.surveys.filter(survey => survey.id !== state.surveyId),
           open: false,
           destroy: false,
           surveyId: ''
-        }))
-      })
+        }));
+      });
     }
-  }, [state.destroy]) // eslint-disable-line
+  }, [state.destroy]); // eslint-disable-line
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <>
@@ -187,7 +185,7 @@ export default function SurveyListComponent({
             gridGap: 17
           }}
         >
-          {state.surveys.map((survey) => (
+          {state.surveys.map(survey => (
             <li className={classes.line} key={survey.id}>
               <Box
                 style={{
@@ -259,5 +257,5 @@ export default function SurveyListComponent({
         </ul>
       </Box>
     </>
-  )
+  );
 }

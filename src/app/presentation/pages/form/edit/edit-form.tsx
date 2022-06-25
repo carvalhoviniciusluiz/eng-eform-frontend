@@ -1,16 +1,16 @@
-import { Box, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { useForm, UseFormProps } from 'react-hook-form'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
-import { EditForm } from '~/app/domain/usecases'
-import { BarAction, Breadcrumbs } from '~/app/presentation/components'
-import { FormTag } from '../components'
+import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useForm, UseFormProps } from 'react-hook-form';
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
+import { EditForm } from '~/app/domain/usecases';
+import { BarAction, Breadcrumbs } from '~/app/presentation/components';
+import { FormTag } from '../components';
 
 type EditFormComponentProps = EditForm.Props & {
-  editForm: EditForm
-  validation: UseFormProps<EditForm.Params>
-}
+  editForm: EditForm;
+  validation: UseFormProps<EditForm.Params>;
+};
 
 export default function EditFormComponent({
   data,
@@ -19,21 +19,21 @@ export default function EditFormComponent({
   validation
 }: EditFormComponentProps) {
   const { control, handleSubmit, formState, setValue } =
-    useForm<EditForm.Params>(validation)
+    useForm<EditForm.Params>(validation);
 
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    setValue('name', data.name)
-  }, []) // eslint-disable-line
+    setValue('name', data.name);
+  }, []); // eslint-disable-line
 
   async function onSubmit(params: EditForm.Params) {
     editForm
       .edit(formId, params)
       .then(() => {
-        router.push('/forms')
+        router.push('/forms');
       })
-      .catch(console.error)
+      .catch(console.error);
   }
 
   return (
@@ -72,5 +72,5 @@ export default function EditFormComponent({
         control={control}
       />
     </>
-  )
+  );
 }

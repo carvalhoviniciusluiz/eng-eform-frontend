@@ -1,9 +1,9 @@
-import { LoadSubSurveys } from '~/app/domain/usecases'
+import { LoadSubSurveys } from '~/app/domain/usecases';
 import {
   makeRemoteDeleteSurvey,
   makeRemoteLoadSubSurveys
-} from '~/app/main/factories/usecases'
-import { SubSurveyListTag } from '~/app/presentation/pages'
+} from '~/app/main/factories/usecases';
+import { SubSurveyListTag } from '~/app/presentation/pages';
 
 export const makeSubSurveyList = (props: LoadSubSurveys.Props) => {
   return (
@@ -15,5 +15,5 @@ export const makeSubSurveyList = (props: LoadSubSurveys.Props) => {
       )}
       deleteSurvey={makeRemoteDeleteSurvey(props.parentForm.id)}
     />
-  )
-}
+  );
+};

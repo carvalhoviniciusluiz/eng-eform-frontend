@@ -1,36 +1,36 @@
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import DialogTitle from '@mui/material/DialogTitle'
-import * as React from 'react'
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import * as React from 'react';
 
 type AlertDialogProps = {
-  title: string
-  children?: React.ReactNode
-  state: any
-  setState: any
-}
+  title: string;
+  children?: React.ReactNode;
+  state: any;
+  setState: any;
+};
 
 export default function AlertDialog(props: AlertDialogProps) {
-  const { title, children, state, setState } = props
+  const { title, children, state, setState } = props;
 
   const handleClose = () => {
     setState((prevState: any) => ({
       ...prevState,
       open: false,
       destroy: false
-    }))
-  }
+    }));
+  };
 
   const handleConfirm = () => {
     setState((prevState: any) => ({
       ...prevState,
       open: false,
       destroy: true
-    }))
-  }
+    }));
+  };
 
   return (
     <Dialog
@@ -52,5 +52,5 @@ export default function AlertDialog(props: AlertDialogProps) {
         </Button>
       </DialogActions>
     </Dialog>
-  )
+  );
 }

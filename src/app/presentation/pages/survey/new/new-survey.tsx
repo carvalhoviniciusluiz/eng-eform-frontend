@@ -1,17 +1,17 @@
-import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { useForm, UseFormProps } from 'react-hook-form'
-import { FaRegSave as SaveIcon } from 'react-icons/fa'
-import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
-import { AddSurvey } from '~/app/domain/usecases'
-import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
-import { SurveyFormTag } from '~/app/presentation/pages/survey/components'
+import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, UseFormProps } from 'react-hook-form';
+import { FaRegSave as SaveIcon } from 'react-icons/fa';
+import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md';
+import { AddSurvey } from '~/app/domain/usecases';
+import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components';
+import { SurveyFormTag } from '~/app/presentation/pages/survey/components';
 
 type NewSurveyComponentProps = AddSurvey.Props & {
-  validation: UseFormProps<AddSurvey.Params>
-  addSurvey: AddSurvey
-}
+  validation: UseFormProps<AddSurvey.Params>;
+  addSurvey: AddSurvey;
+};
 
 export default function NewSurveyComponent({
   parentForm,
@@ -19,28 +19,28 @@ export default function NewSurveyComponent({
   addSurvey
 }: NewSurveyComponentProps) {
   const { control, handleSubmit, formState } =
-    useForm<AddSurvey.Params>(validation)
+    useForm<AddSurvey.Params>(validation);
 
   const [state, setState] = useState({
     showAlert: false
-  })
+  });
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const GO_BACK = `/forms/${parentForm.id}/surveys`
+  const GO_BACK = `/forms/${parentForm.id}/surveys`;
 
   async function onSubmit(params: AddSurvey.Params) {
     addSurvey
       .add(params)
       .then(() => {
-        router.push(GO_BACK)
+        router.push(GO_BACK);
       })
       .catch(() => {
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           showAlert: true
-        }))
-      })
+        }));
+      });
   }
 
   return (
@@ -108,5 +108,5 @@ export default function NewSurveyComponent({
         control={control}
       />
     </>
-  )
+  );
 }

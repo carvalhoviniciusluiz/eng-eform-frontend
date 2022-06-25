@@ -1,9 +1,9 @@
 import {
   HttpPatchClient,
   HttpStatusCode
-} from '~/app/application/protocols/http'
-import { UnexpectedError } from '~/app/domain/errors'
-import { EditQuestion } from '~/app/domain/usecases'
+} from '~/app/application/protocols/http';
+import { UnexpectedError } from '~/app/domain/errors';
+import { EditQuestion } from '~/app/domain/usecases';
 
 export class RemoteEditQuestion implements EditQuestion {
   constructor(
@@ -27,19 +27,19 @@ export class RemoteEditQuestion implements EditQuestion {
           data: params.answers
         }
       }
-    })
+    });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
-        return httpResponse.body as RemoteEditQuestion.Response
+        return httpResponse.body as RemoteEditQuestion.Response;
       default:
-        throw new UnexpectedError()
+        throw new UnexpectedError();
     }
   }
 }
 
 export namespace RemoteEditQuestion {
-  export type FormParams = EditQuestion.FormParams
-  export type RequestParams = EditQuestion.RequestParams
-  export type Response = EditQuestion.Response
+  export type FormParams = EditQuestion.FormParams;
+  export type RequestParams = EditQuestion.RequestParams;
+  export type Response = EditQuestion.Response;
 }

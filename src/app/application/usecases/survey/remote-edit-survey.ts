@@ -1,9 +1,9 @@
 import {
   HttpPatchClient,
   HttpStatusCode
-} from '~/app/application/protocols/http'
-import { UnexpectedError } from '~/app/domain/errors'
-import { EditSurvey } from '~/app/domain/usecases'
+} from '~/app/application/protocols/http';
+import { UnexpectedError } from '~/app/domain/errors';
+import { EditSurvey } from '~/app/domain/usecases';
 
 export class RemoteEditSurvey implements EditSurvey {
   constructor(
@@ -12,7 +12,7 @@ export class RemoteEditSurvey implements EditSurvey {
       RemoteEditSurvey.Params,
       RemoteEditSurvey.Response
     >
-  ) { }
+  ) {}
 
   async edit(
     id: string,
@@ -21,18 +21,18 @@ export class RemoteEditSurvey implements EditSurvey {
     const httpResponse = await this.httpPatchClient.patch({
       url: `${this.url}/${id}`,
       body: params
-    })
+    });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
-        return httpResponse.body as RemoteEditSurvey.Response
+        return httpResponse.body as RemoteEditSurvey.Response;
       default:
-        throw new UnexpectedError()
+        throw new UnexpectedError();
     }
   }
 }
 
 export namespace RemoteEditSurvey {
-  export type Params = EditSurvey.Params
-  export type Response = EditSurvey.Response
+  export type Params = EditSurvey.Params;
+  export type Response = EditSurvey.Response;
 }

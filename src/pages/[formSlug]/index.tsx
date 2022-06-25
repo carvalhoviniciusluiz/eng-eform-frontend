@@ -1,13 +1,13 @@
-import handleSSRNeutral from '~/pages/_handles/handle-ssr-neutral'
+import handleSSRNeutral from '~/pages/_handles/handle-ssr-neutral';
 
-export const getServerSideProps = handleSSRNeutral(async (context) => {
+export const getServerSideProps = handleSSRNeutral(async context => {
   return {
     props: {}
-  }
-})
+  };
+});
 
 function MainFormPage() {
-  return <h1>hello</h1>
+  return <h1>hello</h1>;
 }
 
-export default MainFormPage
+export default MainFormPage;

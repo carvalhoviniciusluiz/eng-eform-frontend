@@ -1,10 +1,10 @@
-import { Breadcrumbs as BreadcrumbsMui } from '@mui/material'
-import { MdNavigateNext as NavigateNextIcon } from 'react-icons/md'
-import { Link } from '~/app/presentation/components'
+import { Breadcrumbs as BreadcrumbsMui } from '@mui/material';
+import { MdNavigateNext as NavigateNextIcon } from 'react-icons/md';
+import { Link } from '~/app/presentation/components';
 
 type BreadcrumbsProps = {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 export default function Breadcrumbs({ children }: BreadcrumbsProps) {
   return (
@@ -24,5 +24,5 @@ export default function Breadcrumbs({ children }: BreadcrumbsProps) {
 
       {children}
     </BreadcrumbsMui>
-  )
+  );
 }

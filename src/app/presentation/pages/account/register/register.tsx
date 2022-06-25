@@ -1,30 +1,30 @@
-import { Box, Button, Checkbox, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useForm, UseFormProps } from 'react-hook-form'
-import { Register as RegisterUseCase } from '~/app/domain/usecases'
-import { Link, PasswordField, TextField } from '~/app/presentation/components'
+import { Box, Button, Checkbox, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useForm, UseFormProps } from 'react-hook-form';
+import { Register as RegisterUseCase } from '~/app/domain/usecases';
+import { Link, PasswordField, TextField } from '~/app/presentation/components';
 
 type RegisterComponentProps = {
-  validation: UseFormProps<RegisterUseCase.Params>
-  register: RegisterUseCase
-}
+  validation: UseFormProps<RegisterUseCase.Params>;
+  register: RegisterUseCase;
+};
 
 export default function RegisterComponent({
   validation,
   register
 }: RegisterComponentProps) {
   const { control, handleSubmit, formState } =
-    useForm<RegisterUseCase.Params>(validation)
+    useForm<RegisterUseCase.Params>(validation);
 
-  const router = useRouter()
+  const router = useRouter();
 
   function onSubmit(params: RegisterUseCase.Params) {
     register
       .signUp(params)
       .then(() => {
-        router.push('/login')
+        router.push('/login');
       })
-      .catch(console.error)
+      .catch(console.error);
   }
 
   return (
@@ -122,5 +122,5 @@ export default function RegisterComponent({
         </Link>
       </Box>
     </form>
-  )
+  );
 }

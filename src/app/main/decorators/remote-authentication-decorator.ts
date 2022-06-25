@@ -1,5 +1,5 @@
-import { SetStorage } from '~/app/application/protocols/cache'
-import { Authentication } from '~/app/domain/usecases'
+import { SetStorage } from '~/app/application/protocols/cache';
+import { Authentication } from '~/app/domain/usecases';
 
 export class RemoteAuthenticationDecorator implements Authentication {
   constructor(
@@ -10,8 +10,8 @@ export class RemoteAuthenticationDecorator implements Authentication {
   async signIn(
     params: Authentication.Params
   ): Promise<Authentication.Response> {
-    const httpResponse = await this.remoteAuthentication.signIn(params)
-    this.setStorage.set('eform:account', httpResponse)
-    return httpResponse
+    const httpResponse = await this.remoteAuthentication.signIn(params);
+    this.setStorage.set('eform:account', httpResponse);
+    return httpResponse;
   }
 }

@@ -1,4 +1,4 @@
 export type UserModel = {
-  name: string
-  email: string
-}
+  name: string;
+  email: string;
+};

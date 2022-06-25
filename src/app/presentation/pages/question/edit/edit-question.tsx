@@ -1,18 +1,18 @@
-import { Box, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { UseFormProps } from 'react-hook-form'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
-import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
-import { DeleteAnswer, EditQuestion } from '~/app/domain/usecases'
-import { isUUID } from '~/app/infra/utils'
-import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
-import { QuestionFormTag } from '~/app/presentation/pages/question/components'
+import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { UseFormProps } from 'react-hook-form';
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
+import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md';
+import { DeleteAnswer, EditQuestion } from '~/app/domain/usecases';
+import { isUUID } from '~/app/infra/utils';
+import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components';
+import { QuestionFormTag } from '~/app/presentation/pages/question/components';
 
 type EditQuestionComponentProps = EditQuestion.Props & {
-  editQuestion: EditQuestion
-  deleteAnswer: DeleteAnswer
-  validation: UseFormProps
-}
+  editQuestion: EditQuestion;
+  deleteAnswer: DeleteAnswer;
+  validation: UseFormProps;
+};
 
 export default function EditQuestionComponent({
   body,
@@ -22,24 +22,24 @@ export default function EditQuestionComponent({
   deleteAnswer,
   validation
 }: EditQuestionComponentProps) {
-  const router = useRouter()
+  const router = useRouter();
 
   function onSubmit(params: EditQuestion.FormParams) {
     editQuestion
       .edit(body.question.id, params)
       .then(() => {
-        router.push(GO_BACK)
+        router.push(GO_BACK);
       })
-      .catch(console.error)
+      .catch(console.error);
   }
 
   function onAnswerDelete(answerId: string) {
     if (isUUID(answerId)) {
-      deleteAnswer.delete(answerId)
+      deleteAnswer.delete(answerId);
     }
   }
 
-  const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`
+  const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`;
 
   return (
     <>
@@ -110,5 +110,5 @@ export default function EditQuestionComponent({
         body={body}
       />
     </>
-  )
+  );
 }

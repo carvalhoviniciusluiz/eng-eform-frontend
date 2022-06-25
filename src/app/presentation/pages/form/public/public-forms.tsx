@@ -1,18 +1,18 @@
-import { Box, Grid, Paper, Typography } from '@mui/material'
-import { useState } from 'react'
-import { DebounceInput } from 'react-debounce-input'
-import { AiOutlineLogin as LoginIcon } from 'react-icons/ai'
-import { BiUserCircle as UserIcon } from 'react-icons/bi'
-import { MdSearch as SearchIcon } from 'react-icons/md'
-import { FormStatus } from '~/app/domain/models'
-import { LoadForms } from '~/app/domain/usecases'
-import { Fn } from '~/app/infra/utils'
-import { Link } from '~/app/presentation/components'
-import useStyles from './public-forms-styles'
+import { Box, Grid, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import { AiOutlineLogin as LoginIcon } from 'react-icons/ai';
+import { BiUserCircle as UserIcon } from 'react-icons/bi';
+import { MdSearch as SearchIcon } from 'react-icons/md';
+import { FormStatus } from '~/app/domain/models';
+import { LoadForms } from '~/app/domain/usecases';
+import { Fn } from '~/app/infra/utils';
+import { Link } from '~/app/presentation/components';
+import useStyles from './public-forms-styles';
 
 type PublicFormsComponentProps = LoadForms.Response & {
-  loadForms: LoadForms
-}
+  loadForms: LoadForms;
+};
 
 export default function PublicFormsComponent({
   data,
@@ -21,28 +21,28 @@ export default function PublicFormsComponent({
 }: PublicFormsComponentProps) {
   const [state, setState] = useState({
     forms: data
-  })
+  });
 
   function handleRehydrateForms(name?: string) {
     loadForms
       .loadAll({ name })
       .then(({ data }: LoadForms.Response) =>
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           forms: data
         }))
       )
-      .catch(console.error)
+      .catch(console.error);
   }
 
   async function handleSearchByName(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
-    const { value } = event.target
-    handleRehydrateForms(value)
+    const { value } = event.target;
+    handleRehydrateForms(value);
   }
 
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <Box
@@ -150,7 +150,7 @@ export default function PublicFormsComponent({
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
-            {state.forms.map((form) => (
+            {state.forms.map(form => (
               <Grid item xs={2} sm={4} md={4} key={form.id}>
                 <Paper elevation={0} className={classes.paper}>
                   <Box
@@ -224,5 +224,5 @@ export default function PublicFormsComponent({
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from '@mui/styles';
 
 export default makeStyles({
   btnSave: {
@@ -14,4 +14,4 @@ export default makeStyles({
       backgroundColor: '#1658b8'
     }
   }
-})
+});

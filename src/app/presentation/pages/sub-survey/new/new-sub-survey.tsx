@@ -1,17 +1,17 @@
-import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { useForm, UseFormProps } from 'react-hook-form'
-import { FaRegSave as SaveIcon } from 'react-icons/fa'
-import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md'
-import { AddSubSurvey } from '~/app/domain/usecases'
-import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components'
-import { SubSurveyFormTag } from '~/app/presentation/pages/sub-survey/components'
+import { Alert, AlertTitle, Box, Collapse, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm, UseFormProps } from 'react-hook-form';
+import { FaRegSave as SaveIcon } from 'react-icons/fa';
+import { MdKeyboardArrowRight as ArrowRightIcon } from 'react-icons/md';
+import { AddSubSurvey } from '~/app/domain/usecases';
+import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components';
+import { SubSurveyFormTag } from '~/app/presentation/pages/sub-survey/components';
 
 type NewSubSurveyComponentProps = AddSubSurvey.Props & {
-  validation: UseFormProps<AddSubSurvey.Params>
-  addSubSurvey: AddSubSurvey
-}
+  validation: UseFormProps<AddSubSurvey.Params>;
+  addSubSurvey: AddSubSurvey;
+};
 
 export default function NewSubSurveyComponent({
   parentForm,
@@ -20,28 +20,28 @@ export default function NewSubSurveyComponent({
   addSubSurvey
 }: NewSubSurveyComponentProps) {
   const { control, handleSubmit, formState } =
-    useForm<AddSubSurvey.Params>(validation)
+    useForm<AddSubSurvey.Params>(validation);
 
   const [state, setState] = useState({
     showAlert: false
-  })
+  });
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}`
+  const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}`;
 
   async function onSubmit(params: AddSubSurvey.Params) {
     addSubSurvey
       .add(params)
       .then(() => {
-        router.push(GO_BACK)
+        router.push(GO_BACK);
       })
       .catch(() => {
-        setState((prevState) => ({
+        setState(prevState => ({
           ...prevState,
           showAlert: true
-        }))
-      })
+        }));
+      });
   }
 
   return (
@@ -109,5 +109,5 @@ export default function NewSubSurveyComponent({
         control={control}
       />
     </>
-  )
+  );
 }
