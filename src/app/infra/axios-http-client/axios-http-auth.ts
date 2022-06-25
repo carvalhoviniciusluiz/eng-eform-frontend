@@ -10,7 +10,7 @@ export class AxiosHttpAuth {
   constructor(
     private readonly urlRefreshToken: string,
     private readonly axiosInstance: AxiosInstance,
-    private readonly getStorage: SetStorage & GetStorage
+    private readonly serviceStorage: SetStorage & GetStorage
   ) {}
 
   retry = false
@@ -20,7 +20,7 @@ export class AxiosHttpAuth {
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => response,
       async (error: AxiosError) => {
-        const credentials = this.getStorage.get('eform:account')
+        const credentials = this.serviceStorage.get('eform:account')
 
         if (error.response?.status === 401 && credentials?.refreshToken) {
           const originalConfig = error.config
@@ -35,7 +35,7 @@ export class AxiosHttpAuth {
                 }
               })
               .then((response: AxiosResponse) => {
-                this.getStorage.set('eform:account', response.data)
+                this.serviceStorage.set('eform:account', response.data)
                 this.failedRequestQueue.forEach((request) => {
                   request.onSuccess(response.data?.accessToken)
                 })
@@ -67,7 +67,7 @@ export class AxiosHttpAuth {
         }
 
         if (error.response?.status === 403) {
-          this.getStorage.set('eform:account')
+          this.serviceStorage.set('eform:account')
         }
 
         return await Promise.reject(error)

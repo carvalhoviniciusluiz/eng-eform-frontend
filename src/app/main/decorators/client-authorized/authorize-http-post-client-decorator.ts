@@ -15,7 +15,7 @@ export class AuthorizeHttpPostClientDecorator implements HttpPostClient {
     const account = this.getStorage.get('eform:account')
     if (account?.accessToken) {
       Object.assign(params, {
-        headers: Object.assign(params.headers || {}, {
+        headers: Object.assign(params.headers ?? {}, {
           Authorization: `Bearer ${account.accessToken as string}`
         })
       })
