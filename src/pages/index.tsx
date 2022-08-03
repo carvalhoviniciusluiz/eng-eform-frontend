@@ -7,7 +7,7 @@ import handleSSRNeutral from '~/pages/_handles/handle-ssr-neutral';
 export const getServerSideProps = handleSSRNeutral<LoadForms.Response>(
   async context => {
     const loadForms = makeRemoteLoadPublicForms(context);
-    const httpResponse = await loadForms.loadAll();
+    const httpResponse = await loadForms.loadAll({ orderBy: 'updatedAt.desc' });
 
     const cookieKey = 'eform:account';
     const cookies = parseCookies(context);
