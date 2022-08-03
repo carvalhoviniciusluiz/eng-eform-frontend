@@ -3,11 +3,11 @@ import * as Yup from 'yup';
 
 export const makeEditQuestionValidation = () => {
   const validationSchema = Yup.object().shape({
-    content: Yup.string().required('Content is required'),
+    content: Yup.string().max(191).required('Content is required'),
     answers: Yup.array()
       .of(
         Yup.object().shape({
-          content: Yup.string().required('Content is required')
+          content: Yup.string().max(191).required('Content is required')
         })
       )
       .min(2)

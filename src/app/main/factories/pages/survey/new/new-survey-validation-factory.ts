@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 
 export const makeNewSurveyValidation = () => {
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required')
+    name: Yup.string().max(191).required('Name is required')
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
 

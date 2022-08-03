@@ -18,8 +18,6 @@ import {
 } from '~/app/presentation/components';
 import useStyles from './list-styles';
 
-type Text = {};
-
 type FormListComponentProps = LoadForms.Response & {
   loadForms: LoadForms;
   deleteForm: DeleteForm;
@@ -39,7 +37,7 @@ export default function FormListComponent({
 
   function handleRehydrateForms(name?: string) {
     loadForms
-      .loadAll({ name })
+      .loadAll({ name, orderBy: 'updatedAt.desc' })
       .then(({ data }: LoadForms.Response) =>
         setState(prevState => ({
           ...prevState,
@@ -162,6 +160,7 @@ export default function FormListComponent({
         <ul
           style={{
             margin: 0,
+            padding: 0,
             listStyleType: 'none'
           }}
         >

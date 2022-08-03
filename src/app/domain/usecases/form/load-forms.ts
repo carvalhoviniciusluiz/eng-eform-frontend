@@ -7,6 +7,7 @@ export interface LoadForms {
 export namespace LoadForms {
   export type Params = {
     name?: string;
+    orderBy?: string;
   };
 
   export type DataApi = FormModel;
