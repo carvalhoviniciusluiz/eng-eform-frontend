@@ -86,7 +86,13 @@ export default function PublicFormsComponent({
             />
           </Box>
           <Typography variant='h2' component='h1' className={classes.title}>
-            eForm
+            {logged ? (
+              <Link href={`/forms`} style={{ textDecoration: 'none' }}>
+                eForm
+              </Link>
+            ) : (
+              <>eForm</>
+            )}
           </Typography>
         </Box>
 
