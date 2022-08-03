@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "eslint": "eslint \"{src,pages,test}/**/*.ts\" --fix",
-    "update:packages": "yarn ncu -u"
+    "up:packs": "yarn ncu -ux faker @types/faker"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
