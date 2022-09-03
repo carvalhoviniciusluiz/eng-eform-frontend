@@ -1,7 +1,19 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Checkbox, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import { useState } from 'react';
-import { AiOutlineLogin as LoginIcon } from 'react-icons/ai';
+import {
+  AiOutlineDoubleRight as ExpandIcon,
+  AiOutlineLogin as LoginIcon
+} from 'react-icons/ai';
 import { BiUserCircle as UserIcon } from 'react-icons/bi';
+import { AnswerModel, QuestionModel, QuestionType } from '~/app/domain/models';
 import { GetForm } from '~/app/domain/usecases';
 import { Link } from '~/app/presentation/components';
 import useStyles from './public-form-styles';
@@ -21,6 +33,35 @@ export default function PublicFormComponent({
   });
 
   const classes = useStyles();
+
+  const handleInputToggle = (question: QuestionModel, answer: AnswerModel) => {
+    switch (question.type) {
+      case QuestionType.OBJECTIVE:
+        return (
+          <Radio
+            key={answer.id}
+            sx={{
+              '& .MuiSvgIcon-root': {
+                fontSize: 22
+              }
+            }}
+          />
+        );
+
+      case QuestionType.MULTIPLE:
+        return (
+          <Checkbox
+            key={answer.id}
+            value={answer.id}
+            sx={{
+              '& .MuiSvgIcon-root': {
+                fontSize: 22
+              }
+            }}
+          />
+        );
+    }
+  };
 
   return (
     <Box
@@ -63,7 +104,7 @@ export default function PublicFormComponent({
               }}
             />
           </Box>
-          <Typography variant='h2' component='h1' className={classes.title}>
+          <Typography variant='h2' component='h1' className={classes.logo}>
             {logged ? (
               <Link href={`/forms`} style={{ textDecoration: 'none' }}>
                 eForm
@@ -71,6 +112,15 @@ export default function PublicFormComponent({
             ) : (
               <>eForm</>
             )}
+          </Typography>
+        </Box>
+
+        <Box>
+          <Typography variant='h5' component='h1' className={classes.title1}>
+            {state.form.name}
+          </Typography>
+          <Typography component='span' className={classes.badge}>
+            {state.form.status}
           </Typography>
         </Box>
 
@@ -93,19 +143,58 @@ export default function PublicFormComponent({
       >
         <Box
           style={{
-            display: 'flex',
-            width: '60%',
-            justifyContent: 'center',
+            width: '777px',
             margin: '24px 0'
           }}
         >
-          <Grid
-            container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-          >
-            inputs
-          </Grid>
+          {state.surveys.map(survey => (
+            <Accordion key={survey.id}>
+              <AccordionSummary
+                expandIcon={<ExpandIcon />}
+                aria-controls={`${survey.id}-content`}
+                id={`${survey.id}-header`}
+              >
+                <Typography className={classes.title2}>
+                  {survey.name}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                {survey.questions?.map((question, i) => (
+                  <Box key={question.id}>
+                    <FormControl
+                      style={{
+                        marginLeft: '1.5rem',
+                        marginBottom: '1.5rem'
+                      }}
+                    >
+                      <FormLabel
+                        id={`${question.id}-buttons-group-label`}
+                        style={{
+                          fontSize: '1.5rem'
+                        }}
+                      >
+                        {question.content}
+                      </FormLabel>
+                      <RadioGroup
+                        aria-labelledby={`${question.id}-buttons-group-label`}
+                        defaultValue='female'
+                        name={`${question.id}-radio-buttons-group`}
+                      >
+                        {question.answers?.map(answer => (
+                          <FormControlLabel
+                            key={answer.id}
+                            value={answer.id}
+                            control={handleInputToggle(question, answer)}
+                            label={answer.content}
+                          />
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                  </Box>
+                ))}
+              </AccordionDetails>
+            </Accordion>
+          ))}
         </Box>
       </Box>
     </Box>
