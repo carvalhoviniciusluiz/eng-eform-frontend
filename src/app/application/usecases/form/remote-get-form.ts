@@ -13,7 +13,7 @@ export class RemoteGetForm implements GetForm {
 
   async get(id: string): Promise<RemoteGetForm.Response> {
     const httpResponse = await this.httpGetClient.get({
-      url: `${this.url}/${id}`
+      url: `${this.url}${id}`
     });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:

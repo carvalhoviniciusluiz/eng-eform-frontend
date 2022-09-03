@@ -11,4 +11,9 @@ export namespace GetForm {
     status: FormStatus;
     updatedAt: Date;
   };
+
+  export type Props = {
+    data: Response;
+    formId: string;
+  };
 }
