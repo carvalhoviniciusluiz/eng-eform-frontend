@@ -31,15 +31,62 @@ export default function PublicFormComponent({
 }: PublicFormComponentProps) {
   const [state, setState] = useState(() => {
     const { surveys, ...form } = data;
+    const value = 0;
     return {
       form,
-      surveys
+      surveys,
+      value,
+      questions: {}
     };
   });
 
-  const [value, setValue] = useState(0);
-
   const classes = useStyles();
+
+  const handleSubmit = () => {
+    console.log(state.questions);
+  };
+
+  const handleQuestionTypeMultipleStore = (
+    event: any,
+    question: QuestionModel
+  ) => {
+    setState(prevState => {
+      const questionsState = prevState.questions as any;
+      const questions = questionsState[question.id] || [];
+      const { checked, value } = event.target;
+
+      if (checked) {
+        questions.push(value);
+      } else {
+        const index = questions.indexOf(value);
+
+        if (index > -1) {
+          questions.splice(index, 1);
+        }
+      }
+
+      return {
+        ...prevState,
+        questions: {
+          ...prevState.questions,
+          [question.id]: questions
+        }
+      };
+    });
+  };
+
+  const handleQuestionTypeObjectiveStore = (
+    event: any,
+    question: QuestionModel
+  ) => {
+    setState(prevState => ({
+      ...prevState,
+      questions: {
+        ...prevState.questions,
+        [question.id]: event.target.value
+      }
+    }));
+  };
 
   const handleInputToggle = (question: QuestionModel, answer: AnswerModel) => {
     switch (question.type) {
@@ -52,6 +99,7 @@ export default function PublicFormComponent({
                 fontSize: 22
               }
             }}
+            onClick={event => handleQuestionTypeObjectiveStore(event, question)}
           />
         );
 
@@ -65,6 +113,7 @@ export default function PublicFormComponent({
                 fontSize: 22
               }
             }}
+            onClick={event => handleQuestionTypeMultipleStore(event, question)}
           />
         );
     }
@@ -221,14 +270,18 @@ export default function PublicFormComponent({
       >
         <BottomNavigation
           showLabels
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
+          value={state.value}
+          onChange={(_, value) => {
+            setState(prevState => ({
+              ...prevState,
+              value
+            }));
           }}
         >
           <BottomNavigationAction
             label='Salvar'
             icon={<SaveIcon fontSize={22} />}
+            onClick={handleSubmit}
           />
 
           <BottomNavigationAction
