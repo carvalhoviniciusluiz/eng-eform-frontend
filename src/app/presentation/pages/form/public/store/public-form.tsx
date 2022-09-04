@@ -2,15 +2,20 @@ import { Box, Checkbox, Typography } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+import Paper from '@mui/material/Paper';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import { useState } from 'react';
 import {
+  AiFillSave as SaveIcon,
   AiOutlineDoubleRight as ExpandIcon,
-  AiOutlineLogin as LoginIcon
+  AiOutlineLogin as LoginIcon,
+  AiOutlineRollback as BackIcon
 } from 'react-icons/ai';
 import { BiUserCircle as UserIcon } from 'react-icons/bi';
 import { AnswerModel, QuestionModel, QuestionType } from '~/app/domain/models';
@@ -31,6 +36,8 @@ export default function PublicFormComponent({
       surveys
     };
   });
+
+  const [value, setValue] = useState(0);
 
   const classes = useStyles();
 
@@ -115,15 +122,6 @@ export default function PublicFormComponent({
           </Typography>
         </Box>
 
-        <Box>
-          <Typography variant='h5' component='h1' className={classes.title1}>
-            {state.form.name}
-          </Typography>
-          <Typography component='span' className={classes.badge}>
-            {state.form.status}
-          </Typography>
-        </Box>
-
         {logged ? (
           <UserIcon size={32} fill={'#1D2438'} />
         ) : (
@@ -144,9 +142,28 @@ export default function PublicFormComponent({
         <Box
           style={{
             width: '777px',
-            margin: '24px 0'
+            margin: '24px 0 100px 0'
           }}
         >
+          <Box
+            style={{
+              marginBottom: 24
+            }}
+          >
+            <Typography
+              variant='h5'
+              component='h1'
+              style={{
+                marginBottom: 20
+              }}
+            >
+              {state.form.name}
+            </Typography>
+            <Typography component='span' className={classes.badge}>
+              {state.form.status}
+            </Typography>
+          </Box>
+
           {state.surveys.map(survey => (
             <Accordion key={survey.id}>
               <AccordionSummary
@@ -197,6 +214,33 @@ export default function PublicFormComponent({
           ))}
         </Box>
       </Box>
+
+      <Paper
+        sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
+        elevation={3}
+      >
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+        >
+          <BottomNavigationAction
+            label='Salvar'
+            icon={<SaveIcon fontSize={22} />}
+          />
+
+          <BottomNavigationAction
+            label='Voltar'
+            icon={
+              <Link href={`/`}>
+                <BackIcon fontSize={22} />
+              </Link>
+            }
+          />
+        </BottomNavigation>
+      </Paper>
     </Box>
   );
 }
