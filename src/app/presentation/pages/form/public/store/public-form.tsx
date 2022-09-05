@@ -10,6 +10,7 @@ import FormLabel from '@mui/material/FormLabel';
 import Paper from '@mui/material/Paper';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import {
   AiFillSave as SaveIcon,
@@ -19,14 +20,17 @@ import {
 } from 'react-icons/ai';
 import { BiUserCircle as UserIcon } from 'react-icons/bi';
 import { AnswerModel, QuestionModel, QuestionType } from '~/app/domain/models';
-import { GetForm } from '~/app/domain/usecases';
+import { AddPublicForm, GetForm } from '~/app/domain/usecases';
 import { Link } from '~/app/presentation/components';
 import useStyles from './public-form-styles';
 
-type PublicFormComponentProps = GetForm.Props;
+type PublicFormComponentProps = GetForm.Props & {
+  addPublicForm: AddPublicForm;
+};
 
 export default function PublicFormComponent({
   data,
+  addPublicForm,
   logged
 }: PublicFormComponentProps) {
   const [state, setState] = useState(() => {
@@ -36,14 +40,32 @@ export default function PublicFormComponent({
       form,
       surveys,
       value,
-      questions: {}
+      questions: {} as any,
+      loading: false
     };
   });
 
   const classes = useStyles();
 
+  const router = useRouter();
+
   const handleSubmit = () => {
-    console.log(state.questions);
+    setState(prevState => ({
+      ...prevState,
+      loading: true
+    }));
+
+    addPublicForm
+      .add(state.questions)
+      .then(async () => await router.push('/'))
+      .catch(error => {
+        console.error(error);
+
+        setState(prevState => ({
+          ...prevState,
+          loading: false
+        }));
+      });
   };
 
   const handleQuestionTypeMultipleStore = (
@@ -51,7 +73,7 @@ export default function PublicFormComponent({
     question: QuestionModel
   ) => {
     setState(prevState => {
-      const questionsState = prevState.questions as any;
+      const questionsState = prevState.questions;
       const questions = questionsState[question.id] || [];
       const { checked, value } = event.target;
 
@@ -282,6 +304,7 @@ export default function PublicFormComponent({
             label='Salvar'
             icon={<SaveIcon fontSize={22} />}
             onClick={handleSubmit}
+            disabled={state.loading}
           />
 
           <BottomNavigationAction
