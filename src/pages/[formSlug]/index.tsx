@@ -8,7 +8,6 @@ export const getServerSideProps = handleSSRNeutral(async context => {
   const formSlug = context.query.formSlug as string;
   const getForm = makeRemoteGetPublicForm(context);
   const httpResponse = await getForm.get(formSlug);
-
   const cookieKey = 'eform:account';
   const cookies = parseCookies(context);
   const { [cookieKey]: cookie } = cookies;

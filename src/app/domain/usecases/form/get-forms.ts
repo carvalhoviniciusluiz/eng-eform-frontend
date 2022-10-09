@@ -1,4 +1,4 @@
-import { FormStatus, SurveyModel } from '~/app/domain/models';
+import { FormStatus, QuestionModel } from '~/app/domain/models';
 
 export interface GetForm {
   get: (id: string) => Promise<GetForm.Response>;
@@ -10,7 +10,7 @@ export namespace GetForm {
     name: string;
     status: FormStatus;
     updatedAt: Date;
-    surveys: SurveyModel[];
+    questions: QuestionModel[];
   };
 
   export type Props = {

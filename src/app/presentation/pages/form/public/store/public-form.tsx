@@ -34,13 +34,14 @@ export default function PublicFormComponent({
   logged
 }: PublicFormComponentProps) {
   const [state, setState] = useState(() => {
-    const { surveys, ...form } = data;
+    const { questions, ...form } = data;
     const value = 0;
+
     return {
       form,
-      surveys,
+      questions,
       value,
-      questions: {} as any,
+      selectedQuestions: {} as any,
       loading: false
     };
   });
@@ -56,7 +57,7 @@ export default function PublicFormComponent({
     }));
 
     addPublicForm
-      .add(state.questions)
+      .add(state.selectedQuestions)
       .then(async () => await router.push('/'))
       .catch(error => {
         console.error(error);
@@ -73,7 +74,7 @@ export default function PublicFormComponent({
     question: QuestionModel
   ) => {
     setState(prevState => {
-      const questionsState = prevState.questions;
+      const questionsState = prevState.selectedQuestions;
       const questions = questionsState[question.id] || [];
       const { checked, value } = event.target;
 
@@ -89,8 +90,8 @@ export default function PublicFormComponent({
 
       return {
         ...prevState,
-        questions: {
-          ...prevState.questions,
+        selectedQuestions: {
+          ...prevState.selectedQuestions,
           [question.id]: questions
         }
       };
@@ -103,8 +104,8 @@ export default function PublicFormComponent({
   ) => {
     setState(prevState => ({
       ...prevState,
-      questions: {
-        ...prevState.questions,
+      selectedQuestions: {
+        ...prevState.selectedQuestions,
         [question.id]: event.target.value
       }
     }));
@@ -235,51 +236,70 @@ export default function PublicFormComponent({
             </Typography>
           </Box>
 
-          {state.surveys.map(survey => (
-            <Accordion key={survey.id}>
+          {state.questions.map(question => (
+            <Accordion key={question.id}>
               <AccordionSummary
                 expandIcon={<ExpandIcon />}
-                aria-controls={`${survey.id}-content`}
-                id={`${survey.id}-header`}
+                aria-controls={`${question.id}-content`}
+                id={`${question.id}-header`}
               >
                 <Typography className={classes.title2}>
-                  {survey.name}
+                  {question.content}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {survey.questions?.map((question, i) => (
-                  <Box key={question.id}>
-                    <FormControl
-                      style={{
-                        marginLeft: '1.5rem',
-                        marginBottom: '1.5rem'
-                      }}
-                    >
-                      <FormLabel
-                        id={`${question.id}-buttons-group-label`}
-                        style={{
-                          fontSize: '1.5rem'
-                        }}
-                      >
-                        {question.content}
-                      </FormLabel>
-                      <RadioGroup
-                        aria-labelledby={`${question.id}-buttons-group-label`}
-                        defaultValue='female'
-                        name={`${question.id}-radio-buttons-group`}
-                      >
-                        {question.answers?.map(answer => (
-                          <FormControlLabel
-                            key={answer.id}
-                            value={answer.id}
-                            control={handleInputToggle(question, answer)}
-                            label={answer.content}
-                          />
-                        ))}
-                      </RadioGroup>
-                    </FormControl>
-                  </Box>
-                ))}
+                {question.children ? (
+                  <>
+                    {question.children.map((child, i) => (
+                      <Box key={child.id}>
+                        <FormControl
+                          style={{
+                            marginLeft: '1.5rem',
+                            marginBottom: '1.5rem'
+                          }}
+                        >
+                          <FormLabel
+                            id={`${child.id}-buttons-group-label`}
+                            style={{
+                              fontSize: '1.5rem'
+                            }}
+                          >
+                            {child.content}
+                          </FormLabel>
+                          <RadioGroup
+                            aria-labelledby={`${child.id}-buttons-group-label`}
+                            defaultValue='female'
+                            name={`${child.id}-radio-buttons-group`}
+                          >
+                            {child.answers?.map(answer => (
+                              <FormControlLabel
+                                key={answer.id}
+                                value={answer.id}
+                                control={handleInputToggle(child, answer)}
+                                label={answer.content}
+                              />
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                      </Box>
+                    ))}
+                  </>
+                ) : (
+                  <RadioGroup
+                    aria-labelledby={`${question.id}-buttons-group-label`}
+                    defaultValue='female'
+                    name={`${question.id}-radio-buttons-group`}
+                  >
+                    {question.answers?.map(answer => (
+                      <FormControlLabel
+                        key={answer.id}
+                        value={answer.id}
+                        control={handleInputToggle(question, answer)}
+                        label={answer.content}
+                      />
+                    ))}
+                  </RadioGroup>
+                )}
               </AccordionDetails>
             </Accordion>
           ))}

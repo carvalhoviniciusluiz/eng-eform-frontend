@@ -11,4 +11,5 @@ export type QuestionModel = {
   updatedAt: Date;
   type: QuestionType;
   answers?: AnswerModel[];
+  children?: QuestionModel[];
 };
