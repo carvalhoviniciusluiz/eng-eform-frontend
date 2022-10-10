@@ -13,7 +13,7 @@ type EditFormComponentProps = EditForm.Props & {
 };
 
 export default function EditFormComponent({
-  data,
+  form,
   formId,
   editForm,
   validation
@@ -24,7 +24,7 @@ export default function EditFormComponent({
   const router = useRouter();
 
   useEffect(() => {
-    setValue('name', data.name);
+    setValue('name', form.name);
   }, []); // eslint-disable-line
 
   async function onSubmit(params: EditForm.Params) {

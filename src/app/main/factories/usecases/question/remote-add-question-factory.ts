@@ -7,7 +7,7 @@ export const makeRemoteAddQuestion = (
   context?: any
 ): AddQuestion => {
   return new RemoteAddQuestion(
-    `/v1/surveys/${surveySlug}/questions`,
+    `/v1/forms/${surveySlug}/questions`,
     makeAuthorizedHttpPostClientDecorator(context)
   );
 };

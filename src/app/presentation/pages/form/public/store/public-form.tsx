@@ -34,7 +34,7 @@ export default function PublicFormComponent({
   logged
 }: PublicFormComponentProps) {
   const [state, setState] = useState(() => {
-    const { questions, ...form } = data;
+    const { form, questions } = data;
     const value = 0;
 
     return {
@@ -236,7 +236,7 @@ export default function PublicFormComponent({
             </Typography>
           </Box>
 
-          {state.questions.map(question => (
+          {state.questions?.map(question => (
             <Accordion key={question.id}>
               <AccordionSummary
                 expandIcon={<ExpandIcon />}

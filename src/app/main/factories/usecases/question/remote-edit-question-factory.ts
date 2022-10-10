@@ -3,11 +3,11 @@ import { EditQuestion } from '~/app/domain/usecases';
 import { makeAuthorizedHttpPatchClientDecorator } from '~/app/main/factories/decorators';
 
 export const makeRemoteEditQuestion = (
-  surveySlug: string,
+  formSlug: string,
   context?: any
 ): EditQuestion => {
   return new RemoteEditQuestion(
-    `/v1/surveys/${surveySlug}/questions`,
+    `/v1/forms/${formSlug}/questions`,
     makeAuthorizedHttpPatchClientDecorator(context)
   );
 };

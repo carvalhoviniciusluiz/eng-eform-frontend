@@ -21,12 +21,11 @@ import { AlertDialog, TextField } from '~/app/presentation/components';
 import { useIsMounted } from '~/app/presentation/hooks';
 import makeStyles from './form-styles';
 
-type QuestionFormComponentProps = {
+type QuestionFormComponentProps = EditQuestion.ApiResponseData & {
   title: string;
   validation: UseFormProps;
   onSubmit: (params: any) => void;
   onAnswerDelete?: (answerId: string) => void;
-  body?: EditQuestion.ApiResponseData;
 };
 
 export default function QuestionFormComponent({
@@ -34,14 +33,15 @@ export default function QuestionFormComponent({
   validation,
   onSubmit,
   onAnswerDelete,
-  body
+  question,
+  answers
 }: QuestionFormComponentProps) {
   const classes = makeStyles();
 
   const isMounted = useIsMounted();
 
   const [state, setState] = useState({
-    answerType: body?.question?.type ?? AnswerTypeEnum.OBJECTIVE,
+    answerType: question?.type ?? AnswerTypeEnum.OBJECTIVE,
     open: false,
     destroy: false,
     answerIndex: -1,
@@ -51,7 +51,7 @@ export default function QuestionFormComponent({
   const { control, handleSubmit, formState, setValue } = useForm({
     ...validation,
     defaultValues: {
-      content: body?.question?.content
+      content: question?.content
     }
   });
   const { isSubmitting } = formState;
@@ -62,7 +62,7 @@ export default function QuestionFormComponent({
 
   useEffect(() => {
     if (isMounted) {
-      body?.answers?.forEach(answer =>
+      answers?.forEach(answer =>
         append({ _id: answer.id, content: answer.content })
       );
     }
@@ -125,11 +125,9 @@ export default function QuestionFormComponent({
         }}
         onSubmit={handleSubmit(onSubmit)}
       >
-        {fields.length < 2 && (
-          <Alert severity='warning' style={{ marginTop: 72 }}>
-            Você deve informar pelo menos duas resposta para sua questão
-          </Alert>
-        )}
+        <Alert severity='warning' style={{ marginTop: 72 }}>
+          Você não pode informar menos de duas respostas
+        </Alert>
 
         <Box
           style={{

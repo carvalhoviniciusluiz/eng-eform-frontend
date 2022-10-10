@@ -15,6 +15,7 @@ export class RemoteGetQuestion implements GetQuestion {
     const httpResponse = await this.httpGetClient.get({
       url: `${this.url}/${id}`
     });
+
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
         return httpResponse.body as RemoteGetQuestion.Response;

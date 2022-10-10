@@ -14,8 +14,7 @@ type NewQuestionComponentProps = AddQuestion.Props & {
 };
 
 export default function NewQuestionComponent({
-  parentForm,
-  parentSurvey,
+  form,
   addQuestion,
   validation
 }: NewQuestionComponentProps) {
@@ -25,7 +24,7 @@ export default function NewQuestionComponent({
 
   const router = useRouter();
 
-  const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`;
+  const GO_BACK = `/forms/${form.id}/questions`;
 
   function onSubmit(params: AddQuestion.FormParams) {
     addQuestion
@@ -61,7 +60,7 @@ export default function NewQuestionComponent({
                 color: '#B5B5B5',
                 textDecoration: 'none'
               }}
-              href={`/forms/${parentForm.id}/surveys`}
+              href={`/forms/${form.id}/surveys`}
             >
               Enquetes
             </Link>
@@ -96,7 +95,7 @@ export default function NewQuestionComponent({
                 marginLeft: 12
               }}
             >
-              {parentSurvey.name} <ArrowRightIcon /> Cadastrar Questão
+              {form.name} <ArrowRightIcon /> Cadastrar Questão
             </Typography>
           </Box>
         </Box>
@@ -113,6 +112,8 @@ export default function NewQuestionComponent({
         title='Cadastrar questão'
         onSubmit={onSubmit}
         validation={validation}
+        question={undefined as any}
+        answers={undefined as any}
       />
     </>
   );

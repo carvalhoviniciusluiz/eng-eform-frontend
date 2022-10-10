@@ -1,5 +1,5 @@
 import { AnswerTypeEnum } from '~/app/domain/enums';
-import { AnswerModel, FormModel, SurveyModel } from '~/app/domain/models';
+import { AnswerModel, FormModel } from '~/app/domain/models';
 
 export interface AddQuestion {
   add: (params: AddQuestion.FormParams) => Promise<AddQuestion.Response>;
@@ -7,8 +7,7 @@ export interface AddQuestion {
 
 export namespace AddQuestion {
   export type Props = {
-    parentForm: FormModel;
-    parentSurvey: SurveyModel;
+    form: FormModel;
   };
 
   export type FormParams = {

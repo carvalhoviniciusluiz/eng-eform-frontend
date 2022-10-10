@@ -1,5 +1,5 @@
 import { AnswerTypeEnum } from '~/app/domain/enums';
-import { FormModel, SurveyModel, AnswerModel } from '~/app/domain/models';
+import { FormModel } from '~/app/domain/models';
 
 export interface EditQuestion {
   edit: (
@@ -9,10 +9,8 @@ export interface EditQuestion {
 }
 
 export namespace EditQuestion {
-  export type Props = {
-    body: ApiResponseData;
-    parentForm: FormModel;
-    parentSurvey: SurveyModel;
+  export type Props = ApiResponseData & {
+    form: FormModel;
   };
 
   export type FormParams = {

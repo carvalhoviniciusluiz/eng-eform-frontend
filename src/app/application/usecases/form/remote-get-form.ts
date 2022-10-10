@@ -3,7 +3,7 @@ import {
   HttpStatusCode
 } from '~/app/application/protocols/http';
 import { AccessDeniedError, UnexpectedError } from '~/app/domain/errors';
-import { GetForm } from '~/app/domain/usecases';
+import type { GetForm } from '~/app/domain/usecases';
 
 export class RemoteGetForm implements GetForm {
   constructor(
@@ -15,6 +15,7 @@ export class RemoteGetForm implements GetForm {
     const httpResponse = await this.httpGetClient.get({
       url: `${this.url}${id}`
     });
+
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
         return httpResponse.body as RemoteGetForm.Response;

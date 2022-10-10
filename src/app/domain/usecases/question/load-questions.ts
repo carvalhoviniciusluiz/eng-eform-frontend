@@ -1,4 +1,7 @@
-import { FormModel, SurveyModel } from '~/app/domain/models';
+import type {
+  FormModelWithoutQuestions,
+  QuestionModel
+} from '~/app/domain/models';
 
 export interface LoadQuestions {
   loadAll: (params?: LoadQuestions.Params) => Promise<LoadQuestions.Response>;
@@ -13,6 +16,13 @@ export namespace LoadQuestions {
     id: string;
     content: string;
     updatedAt: string;
+  };
+
+  export type QuestionDataApi = {
+    id: string;
+    content: string;
+    type: string;
+    updatedAt: Date;
   };
 
   export type MetaApi = {
@@ -36,8 +46,14 @@ export namespace LoadQuestions {
     meta: MetaApi;
   };
 
-  export type Props = Response & {
-    parentForm: FormModel;
-    parentSurvey: SurveyModel;
+  export type Props = {
+    form: FormModelWithoutQuestions;
+    questions?: QuestionModel[];
+  };
+
+  export type ChildrenProps = {
+    form: FormModelWithoutQuestions;
+    question: QuestionModel;
+    children: QuestionDataApi[];
   };
 }

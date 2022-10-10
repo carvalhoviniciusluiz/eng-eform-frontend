@@ -15,9 +15,9 @@ type EditQuestionComponentProps = EditQuestion.Props & {
 };
 
 export default function EditQuestionComponent({
-  body,
-  parentForm,
-  parentSurvey,
+  question,
+  answers,
+  form,
   editQuestion,
   deleteAnswer,
   validation
@@ -26,7 +26,7 @@ export default function EditQuestionComponent({
 
   function onSubmit(params: EditQuestion.FormParams) {
     editQuestion
-      .edit(body.question.id, params)
+      .edit(question.id, params)
       .then(() => {
         router.push(GO_BACK);
       })
@@ -39,7 +39,7 @@ export default function EditQuestionComponent({
     }
   }
 
-  const GO_BACK = `/forms/${parentForm.id}/surveys/${parentSurvey.id}/questions`;
+  const GO_BACK = `/forms/${form.id}/questions`;
 
   return (
     <>
@@ -61,7 +61,7 @@ export default function EditQuestionComponent({
                 color: '#B5B5B5',
                 textDecoration: 'none'
               }}
-              href={`/forms/${parentForm.id}/surveys`}
+              href={`/forms/${form.id}/surveys`}
             >
               Enquetes
             </Link>
@@ -96,7 +96,7 @@ export default function EditQuestionComponent({
                 marginLeft: 12
               }}
             >
-              {parentSurvey.name} <ArrowRightIcon /> Editar Questão
+              {form.name} <ArrowRightIcon /> Editar Questão
             </Typography>
           </Box>
         </Box>
@@ -107,7 +107,8 @@ export default function EditQuestionComponent({
         validation={validation}
         onSubmit={onSubmit}
         onAnswerDelete={onAnswerDelete}
-        body={body}
+        question={question}
+        answers={answers}
       />
     </>
   );

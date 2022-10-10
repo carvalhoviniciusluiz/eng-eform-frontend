@@ -1,18 +1,21 @@
 import { EditQuestion } from '~/app/domain/usecases';
 import {
-  makeRemoteEditQuestion,
-  makeRemoteDeleteAnswer
+  makeRemoteDeleteAnswer,
+  makeRemoteEditQuestion
 } from '~/app/main/factories/usecases';
+import { BaseLayout } from '~/app/presentation/layouts';
 import { EditQuestionTag } from '~/app/presentation/pages';
 import { makeEditQuestionValidation } from './edit-question-validation-factory';
 
 export const makeEditQuestion = (props: EditQuestion.Props) => {
   return (
-    <EditQuestionTag
-      {...props}
-      editQuestion={makeRemoteEditQuestion(props.parentSurvey.id)}
-      deleteAnswer={makeRemoteDeleteAnswer(props.body.question.id)} // <--
-      validation={makeEditQuestionValidation()}
-    />
+    <BaseLayout>
+      <EditQuestionTag
+        {...props}
+        editQuestion={makeRemoteEditQuestion(props.form.id)}
+        deleteAnswer={makeRemoteDeleteAnswer(props.question.id)}
+        validation={makeEditQuestionValidation()}
+      />
+    </BaseLayout>
   );
 };

@@ -1,11 +1,10 @@
-import { Box, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
 import {
   MdClose as CloseIcon,
   MdKeyboardArrowRight as ArrowRightIcon,
-  MdOutlineHorizontalSplit as BuildIcon,
   MdSearch as SearchIcon,
   MdSegment as FormIcon
 } from 'react-icons/md';
@@ -16,28 +15,28 @@ import {
   Breadcrumbs,
   Link
 } from '~/app/presentation/components';
-import useStyles from './list-styles';
+import useStyles from './children-question-styles';
 
-type QuestionListComponentProps = LoadQuestions.Props & {
+type ChildrenQuestionListComponentProps = LoadQuestions.ChildrenProps & {
   loadQuestions: LoadQuestions;
   deleteQuestion: DeleteQuestion;
 };
 
-export default function QuestionListComponent({
+export default function ChildrenQuestionListComponent({
   form,
-  questions,
+  question,
+  children,
   loadQuestions,
   deleteQuestion
-}: QuestionListComponentProps) {
+}: ChildrenQuestionListComponentProps) {
   const [state, setState] = useState({
-    questions,
+    children,
     open: false,
     destroy: false,
     questionId: ''
   });
 
   function handleRehydrateQuestions(content?: string) {
-    console.log(content);
     // loadQuestions
     //   .loadAll({ content })
     //   .then(({ questions }: LoadQuestions.Props) => {
@@ -70,7 +69,7 @@ export default function QuestionListComponent({
       deleteQuestion.delete(state.questionId).then(() => {
         setState(prevState => ({
           ...prevState,
-          questions: state.questions?.filter(
+          children: state.children?.filter(
             question => question.id !== state.questionId
           ),
           open: false,
@@ -147,6 +146,10 @@ export default function QuestionListComponent({
         alignItems={'center'}
         justifyContent={'center'}
       >
+        <Alert severity='info' color='info' style={{ width: '100%' }}>
+          <AlertTitle style={{ fontSize: 18 }}>{question.content}</AlertTitle>
+        </Alert>
+
         <Box
           style={{
             display: 'flex',
@@ -195,8 +198,8 @@ export default function QuestionListComponent({
           }}
         >
           <ul className={classes.list}>
-            {state.questions?.map(question => (
-              <li className={classes.line} key={question.id}>
+            {state.children?.map(child => (
+              <li className={classes.line} key={child.id}>
                 <Box
                   style={{
                     display: 'flex',
@@ -227,7 +230,7 @@ export default function QuestionListComponent({
                         }}
                         component='h1'
                       >
-                        {question.content}
+                        {child.content}
                       </Typography>
                     </Box>
                   </Box>
@@ -237,14 +240,7 @@ export default function QuestionListComponent({
                   <Box display='flex' justifyContent='center'>
                     <Link
                       className={classes.action}
-                      href={`/forms/${form.id}/questions/${question.id}`}
-                    >
-                      <BuildIcon fill='#C8C8C8' size={32} />
-                    </Link>
-
-                    <Link
-                      className={classes.action}
-                      href={`/forms/${form.id}/questions/${question.id}/edit`}
+                      href={`/forms/${form.id}/questions/${child.id}/edit`}
                     >
                       <EditIcon fill='#C8C8C8' size={32} />
                     </Link>
@@ -253,7 +249,7 @@ export default function QuestionListComponent({
                   <Box display='flex' justifyContent='center'>
                     <button
                       className={classes.delete}
-                      onClick={() => handleDestroy(question.id)}
+                      onClick={() => handleDestroy(child.id)}
                     >
                       <CloseIcon fill='#C8C8C8' size={32} />
                     </button>

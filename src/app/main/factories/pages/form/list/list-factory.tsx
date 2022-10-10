@@ -3,14 +3,17 @@ import {
   makeRemoteDeleteForm,
   makeRemoteLoadForms
 } from '~/app/main/factories/usecases';
+import { BaseLayout } from '~/app/presentation/layouts';
 import { FormListTag } from '~/app/presentation/pages';
 
 export const makeFormList = (props: LoadForms.Response) => {
   return (
-    <FormListTag
-      {...props}
-      loadForms={makeRemoteLoadForms()}
-      deleteForm={makeRemoteDeleteForm()}
-    />
+    <BaseLayout>
+      <FormListTag
+        {...props}
+        loadForms={makeRemoteLoadForms()}
+        deleteForm={makeRemoteDeleteForm()}
+      />
+    </BaseLayout>
   );
 };

@@ -17,16 +17,23 @@ export class RemoteAddQuestion implements AddQuestion {
   async add(
     params: RemoteAddQuestion.FormParams
   ): Promise<RemoteAddQuestion.Response> {
-    const httpResponse = await this.httpPostClient.post({
+    const options: any = {
       url: this.url,
       body: {
-        content: params.content,
-        answers: {
-          type: params.answerType,
-          data: params.answers
-        }
+        content: params.content
       }
-    });
+    };
+
+    const haAnswers = !!params.answers.length;
+
+    if (haAnswers) {
+      options.body.answers = {
+        type: params.answerType,
+        data: params.answers
+      };
+    }
+
+    const httpResponse = await this.httpPostClient.post(options);
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:

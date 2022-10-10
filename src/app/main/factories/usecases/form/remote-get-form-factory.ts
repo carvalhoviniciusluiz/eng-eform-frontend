@@ -7,7 +7,7 @@ export const makeRemoteGetForm = (
   context?: GetServerSidePropsContext
 ): GetForm => {
   return new RemoteGetForm(
-    '/v1/forms',
+    '/v1/forms/',
     makeAuthorizedHttpGetClientDecorator(context)
   );
 };

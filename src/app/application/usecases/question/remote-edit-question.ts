@@ -18,16 +18,24 @@ export class RemoteEditQuestion implements EditQuestion {
     id: string,
     params: RemoteEditQuestion.FormParams
   ): Promise<RemoteEditQuestion.Response> {
-    const httpResponse = await this.httpPatchClient.patch({
+    const options: any = {
       url: `${this.url}/${id}`,
       body: {
-        content: params.content,
-        answers: {
-          type: params.answerType,
-          data: params.answers
-        }
+        content: params.content
       }
-    });
+    };
+
+    const haAnswers = !!params.answers.length;
+
+    if (haAnswers) {
+      options.body.answers = {
+        type: params.answerType,
+        data: params.answers
+      };
+    }
+
+    const httpResponse = await this.httpPatchClient.patch(options);
+
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:

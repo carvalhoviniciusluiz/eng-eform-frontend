@@ -1,5 +1,4 @@
 import { makeRegister } from '~/app/main/factories/pages';
-import { DefaultLayout } from '~/app/presentation/layouts';
 import handleSSRGuest from '~/pages/_handles/handle-ssr-guest';
 
 export const getServerSideProps = handleSSRGuest(async () => {
@@ -9,7 +8,7 @@ export const getServerSideProps = handleSSRGuest(async () => {
 });
 
 function RegisterPage() {
-  return <DefaultLayout>{makeRegister()}</DefaultLayout>;
+  return makeRegister();
 }
 
 export default RegisterPage;
