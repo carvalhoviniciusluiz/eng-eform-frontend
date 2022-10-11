@@ -190,7 +190,7 @@ export default function FormListComponent({
 
                   <Link
                     className={classes.action}
-                    href={`/forms/${form.id}/surveys`}
+                    href={`/forms/${form.id}/questions`}
                   >
                     <BuildIcon fill='#C8C8C8' size={32} />
                   </Link>

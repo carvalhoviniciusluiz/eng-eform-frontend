@@ -60,7 +60,7 @@ export default function NewQuestionComponent({
                 color: '#B5B5B5',
                 textDecoration: 'none'
               }}
-              href={`/forms/${form.id}/surveys`}
+              href={`/forms/${form.id}/questions`}
             >
               Enquetes
             </Link>
