@@ -30,7 +30,10 @@ export class RemoteEditQuestion implements EditQuestion {
     if (haAnswers) {
       options.body.answers = {
         type: params.answerType,
-        data: params.answers
+        data: params.answers.map(answer => ({
+          id: answer.answerId,
+          content: answer.content
+        }))
       };
     }
 

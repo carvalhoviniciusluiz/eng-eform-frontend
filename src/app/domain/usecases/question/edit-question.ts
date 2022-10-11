@@ -16,7 +16,11 @@ export namespace EditQuestion {
   export type FormParams = {
     content: string;
     answerType: AnswerTypeEnum;
-    answers: AnswerApiResponseData[];
+    answers: AnswerResponseWithAnswerId[];
+  };
+
+  export type AnswerResponseWithAnswerId = Omit<AnswerApiResponseData, 'id'> & {
+    answerId: string;
   };
 
   export type RequestParams = {

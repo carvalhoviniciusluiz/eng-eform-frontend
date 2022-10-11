@@ -35,7 +35,7 @@ export default function EditQuestionComponent({
 
   function onAnswerDelete(answerId: string) {
     if (isUUID(answerId)) {
-      deleteAnswer.delete(answerId);
+      deleteAnswer.delete(answerId).catch(console.error);
     }
   }
 

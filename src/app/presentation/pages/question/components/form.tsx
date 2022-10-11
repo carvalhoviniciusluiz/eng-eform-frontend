@@ -63,7 +63,7 @@ export default function QuestionFormComponent({
   useEffect(() => {
     if (isMounted) {
       answers?.forEach(answer =>
-        append({ _id: answer.id, content: answer.content })
+        append({ answerId: answer.id, content: answer.content })
       );
     }
   }, [isMounted]); // eslint-disable-line
@@ -248,7 +248,7 @@ export default function QuestionFormComponent({
                       cursor: 'pointer'
                     }}
                     position='end'
-                    onClick={() => handleDestroy(i, (item as any)._id)}
+                    onClick={() => handleDestroy(i, (item as any).answerId)}
                   >
                     <TrashIcon />
                   </InputAdornment>
