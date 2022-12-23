@@ -37,7 +37,6 @@ export default function QuestionListComponent({
   });
 
   function handleRehydrateQuestions(content?: string) {
-    console.log(content);
     // loadQuestions
     //   .loadAll({ content })
     //   .then(({ questions }: LoadQuestions.Props) => {
