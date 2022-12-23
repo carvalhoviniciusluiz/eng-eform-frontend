@@ -4,7 +4,9 @@ import {
   GetServerSidePropsResult
 } from 'next';
 
-export default function handleSSRNeutral<P>(fn: GetServerSideProps<P>) {
+export default function handleSSRNeutral<P extends { [key: string]: any }>(
+  fn: GetServerSideProps<P>
+) {
   return async (
     context: GetServerSidePropsContext
   ): Promise<GetServerSidePropsResult<P>> => {

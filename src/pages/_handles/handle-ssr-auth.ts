@@ -6,7 +6,9 @@ import {
 import { destroyCookie, parseCookies } from 'nookies';
 import { AccessDeniedError } from '~/app/domain/errors';
 
-export default function handleSSRAuth<P>(fn: GetServerSideProps<P>) {
+export default function handleSSRAuth<P extends { [key: string]: any }>(
+  fn: GetServerSideProps<P>
+) {
   return async (
     context: GetServerSidePropsContext
   ): Promise<GetServerSidePropsResult<P>> => {
@@ -15,6 +17,7 @@ export default function handleSSRAuth<P>(fn: GetServerSideProps<P>) {
     const { [cookieKey]: cookie } = cookies;
     const toLogin = {
       redirect: {
+        source: '/',
         destination: '/login',
         permanent: false
       }
