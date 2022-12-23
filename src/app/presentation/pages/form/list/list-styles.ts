@@ -26,7 +26,7 @@ export default makeStyles({
     }
   },
   line: {
-    width: 613,
+    width: 600,
     border: '1px solid #E9E9E9',
     borderRadius: 6,
     marginTop: 16,

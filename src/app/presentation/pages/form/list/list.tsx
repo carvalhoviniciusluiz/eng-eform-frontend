@@ -5,6 +5,7 @@ import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
 import {
   MdClose as CloseIcon,
   MdOutlineHorizontalSplit as BuildIcon,
+  MdOutlineQueryStats as StatsIcon,
   MdSearch as SearchIcon,
   MdSegment as FormIcon
 } from 'react-icons/md';
@@ -203,6 +204,15 @@ export default function FormListComponent({
                     href={`/forms/${form.id}/edit`}
                   >
                     <EditIcon fill='#C8C8C8' size={32} />
+                  </Link>
+                  <Link
+                    className={classes.action}
+                    style={{
+                      marginLeft: 10
+                    }}
+                    href={`/forms/${form.id}/stats`}
+                  >
+                    <StatsIcon fill='#C8C8C8' size={32} />
                   </Link>
 
                   <button
