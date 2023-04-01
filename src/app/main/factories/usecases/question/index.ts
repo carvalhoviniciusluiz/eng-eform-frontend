@@ -1,4 +1,5 @@
 export * from './remote-add-question-factory';
+export * from './remote-children-add-question-factory';
 export * from './remote-delete-question-factory';
 export * from './remote-edit-question-factory';
 export * from './remote-get-question-factory';

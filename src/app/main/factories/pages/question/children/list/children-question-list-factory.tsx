@@ -4,14 +4,14 @@ import {
   makeRemoteLoadQuestions
 } from '~/app/main/factories/usecases';
 import { BaseLayout } from '~/app/presentation/layouts';
-import { QuestionChildrenListTag } from '~/app/presentation/pages';
+import { ChildrenQuestionListTag } from '~/app/presentation/pages';
 
 export const makeQuestionChildrenList = (
   props: LoadQuestions.ChildrenProps
 ) => {
   return (
     <BaseLayout>
-      <QuestionChildrenListTag
+      <ChildrenQuestionListTag
         {...props}
         loadQuestions={makeRemoteLoadQuestions(props.form.id)}
         deleteQuestion={makeRemoteDeleteQuestion(props.form.id)}

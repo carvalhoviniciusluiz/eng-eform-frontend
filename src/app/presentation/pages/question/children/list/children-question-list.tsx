@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
 import {
-  MdClose as CloseIcon,
   MdKeyboardArrowRight as ArrowRightIcon,
-  MdSearch as SearchIcon,
-  MdSegment as FormIcon
+  MdClose as CloseIcon,
+  MdSegment as FormIcon,
+  MdSearch as SearchIcon
 } from 'react-icons/md';
 import { DeleteQuestion, LoadQuestions } from '~/app/domain/usecases';
 import {
@@ -15,7 +15,7 @@ import {
   Breadcrumbs,
   Link
 } from '~/app/presentation/components';
-import useStyles from './children-question-styles';
+import useStyles from './children-question-list-styles';
 
 type ChildrenQuestionListComponentProps = LoadQuestions.ChildrenProps & {
   loadQuestions: LoadQuestions;
@@ -35,6 +35,7 @@ export default function ChildrenQuestionListComponent({
     destroy: false,
     questionId: ''
   });
+  const classes = useStyles();
 
   function handleRehydrateQuestions(content?: string) {
     // loadQuestions
@@ -65,22 +66,19 @@ export default function ChildrenQuestionListComponent({
 
   useEffect(() => {
     const hasQuestionId = !!state.questionId;
-    if (state.destroy && hasQuestionId) {
-      deleteQuestion.delete(state.questionId).then(() => {
-        setState(prevState => ({
-          ...prevState,
-          children: state.children?.filter(
-            question => question.id !== state.questionId
-          ),
-          open: false,
-          destroy: false,
-          questionId: ''
-        }));
-      });
-    }
-  }, [state.destroy]); // eslint-disable-line
-
-  const classes = useStyles();
+    if (!state.destroy && !hasQuestionId) return;
+    deleteQuestion.delete(state.questionId).then(() => {
+      setState(prevState => ({
+        ...prevState,
+        children: state.children?.filter(
+          question => question.id !== state.questionId
+        ),
+        open: false,
+        destroy: false,
+        questionId: ''
+      }));
+    });
+  }, [state.destroy, state.questionId]); // eslint-disable-line
 
   return (
     <>
@@ -96,7 +94,6 @@ export default function ChildrenQuestionListComponent({
             >
               Gerenciador
             </Link>
-
             <Link
               style={{
                 color: '#B5B5B5',
@@ -106,10 +103,8 @@ export default function ChildrenQuestionListComponent({
             >
               Enquetes
             </Link>
-
             <Typography>Questões</Typography>
           </Breadcrumbs>
-
           <Box
             style={{
               marginTop: 28,
@@ -118,7 +113,6 @@ export default function ChildrenQuestionListComponent({
             }}
           >
             <FormIcon size={23} />
-
             <Typography
               display='flex'
               alignItems='center'
@@ -131,25 +125,26 @@ export default function ChildrenQuestionListComponent({
             </Typography>
           </Box>
         </Box>
-
         <Link
           className={classes.btnNew}
-          href={`/forms/${form.id}/questions/new`}
+          href={`/forms/${form.id}/questions/${question.id}/new`}
         >
           Cadastrar questão
         </Link>
       </BarAction>
-
       <Box
         display={'flex'}
         flexDirection={'column'}
         alignItems={'center'}
         justifyContent={'center'}
       >
-        <Alert severity='info' color='info' style={{ width: '100%' }}>
+        <Alert
+          severity='info'
+          color='info'
+          style={{ width: '100%', justifyContent: 'center' }}
+        >
           <AlertTitle style={{ fontSize: 18 }}>{question.content}</AlertTitle>
         </Alert>
-
         <Box
           style={{
             display: 'flex',
@@ -179,7 +174,6 @@ export default function ChildrenQuestionListComponent({
             placeholder='Pesquisar pelo conteúdo da questão'
           />
         </Box>
-
         <AlertDialog
           title='Confirmar delete?'
           state={state}
@@ -188,7 +182,6 @@ export default function ChildrenQuestionListComponent({
           Esse registro poderá ser recuperado futuramente caso queira. Deseja
           remove-lo mesmo assim?
         </AlertDialog>
-
         <Box
           style={{
             display: 'flex',
@@ -235,7 +228,6 @@ export default function ChildrenQuestionListComponent({
                     </Box>
                   </Box>
                 </Box>
-
                 <Box display='flex'>
                   <Box display='flex' justifyContent='center'>
                     <Link
@@ -245,7 +237,6 @@ export default function ChildrenQuestionListComponent({
                       <EditIcon fill='#C8C8C8' size={32} />
                     </Link>
                   </Box>
-
                   <Box display='flex' justifyContent='center'>
                     <button
                       className={classes.delete}
