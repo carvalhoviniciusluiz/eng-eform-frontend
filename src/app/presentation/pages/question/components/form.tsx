@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   FormControl,
   FormControlLabel,
@@ -10,7 +9,7 @@ import {
   Typography
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useFieldArray, useForm, UseFormProps } from 'react-hook-form';
+import { UseFormProps, useFieldArray, useForm } from 'react-hook-form';
 import { BiCopy as DupIcon } from 'react-icons/bi';
 import { FaRegSave as SaveIcon } from 'react-icons/fa';
 import { FiInfo as InfoIcon } from 'react-icons/fi';
@@ -37,9 +36,7 @@ export default function QuestionFormComponent({
   answers
 }: QuestionFormComponentProps) {
   const classes = makeStyles();
-
   const isMounted = useIsMounted();
-
   const [state, setState] = useState({
     answerType: question?.type ?? AnswerTypeEnum.OBJECTIVE,
     open: false,
@@ -47,7 +44,6 @@ export default function QuestionFormComponent({
     answerIndex: -1,
     answerId: ''
   });
-
   const { control, handleSubmit, formState, setValue } = useForm({
     ...validation,
     defaultValues: {
@@ -78,7 +74,6 @@ export default function QuestionFormComponent({
         answerIndex: -1,
         answerId: ''
       }));
-
       const hasAnswerDelete = !!onAnswerDelete;
       if (hasAnswerDelete) {
         onAnswerDelete(state.answerId);
@@ -117,7 +112,6 @@ export default function QuestionFormComponent({
         Esse registro poderá ser recuperado futuramente caso queira. Deseja
         remove-lo mesmo assim?
       </AlertDialog>
-
       <form
         style={{
           width: 571,
@@ -125,10 +119,6 @@ export default function QuestionFormComponent({
         }}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Alert severity='warning' style={{ marginTop: 72 }}>
-          Você não pode informar menos de duas respostas
-        </Alert>
-
         <Box
           style={{
             margin: '72px 0 73px',
@@ -143,10 +133,8 @@ export default function QuestionFormComponent({
           >
             {title}
           </Typography>
-
           <button className={classes.btnSave} disabled={isSubmitting}>
             <SaveIcon size={20} fill='white' />
-
             <span
               style={{
                 marginLeft: 13,
@@ -157,7 +145,6 @@ export default function QuestionFormComponent({
             </span>
           </button>
         </Box>
-
         <Box
           style={{
             marginTop: 57,
@@ -167,7 +154,6 @@ export default function QuestionFormComponent({
           }}
         >
           <InfoIcon width={23.16} />
-
           <Typography
             style={{
               fontSize: 14,
@@ -177,7 +163,6 @@ export default function QuestionFormComponent({
             Informações da questão
           </Typography>
         </Box>
-
         <FormControl style={{ margin: '22px 60px 60px' }}>
           <FormLabel id='label-radio-buttons'>Tipo de resposta</FormLabel>
           <RadioGroup
@@ -198,7 +183,6 @@ export default function QuestionFormComponent({
             />
           </RadioGroup>
         </FormControl>
-
         <Box
           style={{
             height: 200
@@ -219,7 +203,6 @@ export default function QuestionFormComponent({
             rows={4}
           />
         </Box>
-
         {fields.map((item, i) => (
           <Box
             key={item.id}
@@ -269,7 +252,6 @@ export default function QuestionFormComponent({
             }}
           >
             <DupIcon size={20} fill='white' />
-
             <span
               style={{
                 marginLeft: 13,
