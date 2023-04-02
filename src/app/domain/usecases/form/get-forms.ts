@@ -1,7 +1,7 @@
 import type { FormModel, QuestionModel } from '~/app/domain/models';
 
 export interface GetForm {
-  get: (id: string) => Promise<GetForm.Response>;
+  get: (id: string, questionsShow?: boolean) => Promise<GetForm.Response>;
 }
 
 export namespace GetForm {

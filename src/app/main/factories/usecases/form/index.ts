@@ -3,6 +3,7 @@ export * from './remote-add-public-form-factory';
 export * from './remote-delete-form-factory';
 export * from './remote-edit-form-factory';
 export * from './remote-get-form-factory';
+export * from './remote-get-form-stats-factory';
 export * from './remote-get-public-form-factory';
 export * from './remote-load-forms-factory';
 export * from './remote-load-public-forms-factory';
