@@ -10,13 +10,22 @@ export class RemoteGetForm implements GetForm {
     private readonly url: string,
     private readonly httpGetClient: HttpGetClient<RemoteGetForm.Response>
   ) {}
-
+  private qsParser(questionsShow?: boolean) {
+    const filter: Record<string, any> = {};
+    if (questionsShow) {
+      filter.questionsShow = questionsShow;
+    }
+    const searchParams = new URLSearchParams(filter);
+    return searchParams;
+  }
   async get(
     id: string,
     questionsShow?: boolean
   ): Promise<RemoteGetForm.Response> {
+    const searchParams = this.qsParser(questionsShow);
+    const queryString = searchParams.toString();
     const httpResponse = await this.httpGetClient.get({
-      url: `${this.url}${id}?questionsShow=${questionsShow}`
+      url: `${this.url}${id}?${queryString}`
     });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
