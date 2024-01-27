@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, DialogContentText, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai';
@@ -9,11 +9,13 @@ import {
   MdSegment as FormIcon,
   MdSearch as SearchIcon
 } from 'react-icons/md';
+import { QuestionModel } from '~/app/domain/models';
 import { DeleteQuestion, LoadQuestions } from '~/app/domain/usecases';
 import {
   AlertDialog,
   BarAction,
   Breadcrumbs,
+  Dialog,
   Link
 } from '~/app/presentation/components';
 import useStyles from './list-styles';
@@ -35,6 +37,8 @@ export default function QuestionListComponent({
     destroy: false,
     questionId: ''
   });
+  const [question, setQuestion] = React.useState<QuestionModel | null>(null);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
   const classes = useStyles();
 
   function handleRehydrateQuestions(content?: string) {
@@ -55,6 +59,11 @@ export default function QuestionListComponent({
       open: true,
       questionId
     }));
+  }
+
+  function handleDialogOpen(question: QuestionModel) {
+    setQuestion(question);
+    setDialogOpen(true);
   }
 
   async function handleSearchByName(
@@ -82,6 +91,19 @@ export default function QuestionListComponent({
 
   return (
     <>
+      <Dialog
+        title='Remover'
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        onContinue={() => {
+          handleDestroy(question!.id);
+          setQuestion(null);
+        }}
+      >
+        <DialogContentText>
+          Você está prestes a remover essa questão, continuar?
+        </DialogContentText>
+      </Dialog>
       <BarAction>
         <Box>
           <Breadcrumbs>
@@ -239,7 +261,7 @@ export default function QuestionListComponent({
                   <Box display='flex' justifyContent='center'>
                     <button
                       className={classes.delete}
-                      onClick={() => handleDestroy(question.id)}
+                      onClick={() => handleDialogOpen(question)}
                     >
                       <CloseIcon fill='#C8C8C8' size={32} />
                     </button>
