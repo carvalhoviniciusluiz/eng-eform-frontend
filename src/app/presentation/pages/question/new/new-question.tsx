@@ -54,7 +54,6 @@ export default function NewQuestionComponent({
             >
               Gerenciador
             </Link>
-
             <Link
               style={{
                 color: '#B5B5B5',
@@ -64,7 +63,6 @@ export default function NewQuestionComponent({
             >
               Enquetes
             </Link>
-
             <Link
               style={{
                 color: '#B5B5B5',
@@ -74,10 +72,8 @@ export default function NewQuestionComponent({
             >
               Questões
             </Link>
-
             <Typography>Cadastro</Typography>
           </Breadcrumbs>
-
           <Box
             style={{
               marginTop: 28,
@@ -86,7 +82,6 @@ export default function NewQuestionComponent({
             }}
           >
             <SaveIcon size={24} />
-
             <Typography
               display='flex'
               alignItems='center'
@@ -95,11 +90,11 @@ export default function NewQuestionComponent({
                 marginLeft: 12
               }}
             >
-              {form.name} <ArrowRightIcon /> Cadastrar Questão
+              {form.name}
+              <ArrowRightIcon /> Cadastrar Questão
             </Typography>
           </Box>
         </Box>
-
         <Collapse in={state.showAlert}>
           <Alert severity='error'>
             <AlertTitle>Error</AlertTitle>
@@ -107,7 +102,6 @@ export default function NewQuestionComponent({
           </Alert>
         </Collapse>
       </BarAction>
-
       <QuestionFormTag
         title='Cadastrar questão'
         onSubmit={onSubmit}

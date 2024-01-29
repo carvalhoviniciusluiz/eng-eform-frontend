@@ -20,19 +20,17 @@ export class RemoteAddQuestion implements AddQuestion {
     const options: any = {
       url: this.url,
       body: {
+        answerType: params.answerType,
         content: params.content
       }
     };
-
     const haAnswers = !!params.answers.length;
-
     if (haAnswers) {
       options.body.answers = {
         type: params.answerType,
         data: params.answers
       };
     }
-
     const httpResponse = await this.httpPostClient.post(options);
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
