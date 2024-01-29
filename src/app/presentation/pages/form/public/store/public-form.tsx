@@ -21,7 +21,7 @@ import {
 import { BiUserCircle as UserIcon } from 'react-icons/bi';
 import { AnswerModel, QuestionModel, QuestionType } from '~/app/domain/models';
 import { AddPublicForm, GetForm } from '~/app/domain/usecases';
-import { Link } from '~/app/presentation/components';
+import { Link, TextArea } from '~/app/presentation/components';
 import useStyles from './public-form-styles';
 
 type PublicFormComponentProps = GetForm.Props & {
@@ -102,9 +102,27 @@ export default function PublicFormComponent({
     }));
   }
 
-  function handleInputToggle(question: QuestionModel, answer: AnswerModel) {
+  function handleQuestionTypePlainTextStore(
+    event: any,
+    question: QuestionModel
+  ) {
+    setState(prevState => ({
+      ...prevState,
+      selectedQuestions: {
+        ...prevState.selectedQuestions,
+        [question.id]: {
+          response: event.target.value
+        }
+      }
+    }));
+  }
+
+  function handleInputToggle(question: QuestionModel, answer?: AnswerModel) {
     switch (question.type) {
-      case QuestionType.OBJECTIVE:
+      case QuestionType.OBJECTIVE: {
+        if (!answer) {
+          return <></>;
+        }
         return (
           <Radio
             key={answer.id}
@@ -116,7 +134,11 @@ export default function PublicFormComponent({
             onClick={event => handleQuestionTypeObjectiveStore(event, question)}
           />
         );
-      case QuestionType.MULTIPLE:
+      }
+      case QuestionType.MULTIPLE: {
+        if (!answer) {
+          return <></>;
+        }
         return (
           <Checkbox
             key={answer.id}
@@ -129,7 +151,71 @@ export default function PublicFormComponent({
             onClick={event => handleQuestionTypeMultipleStore(event, question)}
           />
         );
+      }
+      case QuestionType.PLAIN_TEXT:
+        return (
+          <TextArea
+            placeholder={question.content}
+            onChange={event =>
+              handleQuestionTypePlainTextStore(event, question)
+            }
+          />
+        );
     }
+  }
+  function handleQuestionWithAnswers(question: QuestionModel) {
+    if (question.type === QuestionType.PLAIN_TEXT) {
+      return handleInputToggle(question);
+    }
+    if (!question.answers) {
+      return;
+    }
+    return (
+      <RadioGroup
+        aria-labelledby={`${question.id}-buttons-group-label`}
+        defaultValue='female'
+        name={`${question.id}-radio-buttons-group`}
+        style={{ marginBottom: 22 }}
+      >
+        {question.answers.map(answer => (
+          <FormControlLabel
+            key={answer.id}
+            value={answer.id}
+            control={handleInputToggle(question, answer)}
+            label={answer.content}
+          />
+        ))}
+      </RadioGroup>
+    );
+  }
+  function handleQuestionWithAnswerChilds(question: QuestionModel) {
+    if (!question.children) {
+      return;
+    }
+    return (
+      <>
+        {question.children.map(child => (
+          <Box key={child.id}>
+            <FormControl
+              style={{
+                marginLeft: '1.5rem',
+                marginBottom: '1.5rem'
+              }}
+            >
+              <FormLabel
+                id={`${child.id}-buttons-group-label`}
+                style={{
+                  fontSize: '1.5rem'
+                }}
+              >
+                {child.content}
+              </FormLabel>
+              {handleQuestionWithAnswers(child)}
+            </FormControl>
+          </Box>
+        ))}
+      </>
+    );
   }
   return (
     <Box
@@ -234,60 +320,8 @@ export default function PublicFormComponent({
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {question.answers && (
-                  <RadioGroup
-                    aria-labelledby={`${question.id}-buttons-group-label`}
-                    defaultValue='female'
-                    name={`${question.id}-radio-buttons-group`}
-                    style={{ marginBottom: 22 }}
-                  >
-                    {question.answers.map(answer => (
-                      <FormControlLabel
-                        key={answer.id}
-                        value={answer.id}
-                        control={handleInputToggle(question, answer)}
-                        label={answer.content}
-                      />
-                    ))}
-                  </RadioGroup>
-                )}
-                {question.children && (
-                  <>
-                    {question.children.map((child, i) => (
-                      <Box key={child.id}>
-                        <FormControl
-                          style={{
-                            marginLeft: '1.5rem',
-                            marginBottom: '1.5rem'
-                          }}
-                        >
-                          <FormLabel
-                            id={`${child.id}-buttons-group-label`}
-                            style={{
-                              fontSize: '1.5rem'
-                            }}
-                          >
-                            {child.content}
-                          </FormLabel>
-                          <RadioGroup
-                            aria-labelledby={`${child.id}-buttons-group-label`}
-                            defaultValue='female'
-                            name={`${child.id}-radio-buttons-group`}
-                          >
-                            {child.answers?.map(answer => (
-                              <FormControlLabel
-                                key={answer.id}
-                                value={answer.id}
-                                control={handleInputToggle(child, answer)}
-                                label={answer.content}
-                              />
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                      </Box>
-                    ))}
-                  </>
-                )}
+                {handleQuestionWithAnswers(question)}
+                {handleQuestionWithAnswerChilds(question)}
               </AccordionDetails>
             </Accordion>
           ))}

@@ -174,12 +174,17 @@ export default function QuestionFormComponent({
             <FormControlLabel
               value={AnswerTypeEnum.MULTIPLE}
               control={<Radio />}
-              label='Questão de multiplas escolhas'
+              label='Questão de multipla escolha'
             />
             <FormControlLabel
               value={AnswerTypeEnum.OBJECTIVE}
               control={<Radio />}
               label='Resposta objetiva'
+            />
+            <FormControlLabel
+              value={AnswerTypeEnum.PLAIN_TEXT}
+              control={<Radio />}
+              label='Resposta escrita'
             />
           </RadioGroup>
         </FormControl>
