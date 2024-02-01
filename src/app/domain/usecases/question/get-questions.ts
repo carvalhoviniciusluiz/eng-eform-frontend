@@ -8,6 +8,8 @@ export namespace GetQuestion {
   export type AnswerApiResponseData = {
     id: string;
     content: string;
+    hasContent: boolean;
+    isDefault: boolean;
     updatedAt: string;
   };
 

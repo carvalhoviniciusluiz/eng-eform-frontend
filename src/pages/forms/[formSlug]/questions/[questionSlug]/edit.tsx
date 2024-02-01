@@ -14,7 +14,6 @@ export const getServerSideProps = handleSSRAuth<EditQuestion.Props>(
     const httpFormResponse = await getForm.get(formSlug);
     const getQuestion = makeRemoteGetQuestion(formSlug, context);
     const httpQuestionResponse = await getQuestion.get(questionSlug);
-
     return {
       props: {
         question: httpQuestionResponse.question,

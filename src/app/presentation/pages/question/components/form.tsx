@@ -1,5 +1,6 @@
 import {
   Box,
+  Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -9,7 +10,12 @@ import {
   Typography
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { UseFormProps, useFieldArray, useForm } from 'react-hook-form';
+import {
+  Controller,
+  UseFormProps,
+  useFieldArray,
+  useForm
+} from 'react-hook-form';
 import { BiCopy as DupIcon } from 'react-icons/bi';
 import { FaRegSave as SaveIcon } from 'react-icons/fa';
 import { FiInfo as InfoIcon } from 'react-icons/fi';
@@ -59,7 +65,12 @@ export default function QuestionFormComponent({
   useEffect(() => {
     if (isMounted) {
       answers?.forEach(answer =>
-        append({ answerId: answer.id, content: answer.content })
+        append({
+          answerId: answer.id,
+          content: answer.content,
+          isDefault: answer.isDefault,
+          hasContent: answer.hasContent
+        })
       );
     }
   }, [isMounted]); // eslint-disable-line
@@ -99,6 +110,144 @@ export default function QuestionFormComponent({
       answerIndex,
       answerId
     }));
+  }
+
+  function handleAnswerTypeFields() {
+    return (
+      <FormControl style={{ margin: '22px 60px 60px' }}>
+        <FormLabel id='label-radio-buttons'>Tipo de resposta</FormLabel>
+        <RadioGroup
+          aria-labelledby='label-radio-buttons'
+          name='controlled-radio-buttons-group'
+          value={state.answerType}
+          onChange={handleChange}
+        >
+          <FormControlLabel
+            value={AnswerTypeEnum.MULTIPLE}
+            control={<Radio />}
+            label='Questão de multipla escolha'
+          />
+          <FormControlLabel
+            value={AnswerTypeEnum.OBJECTIVE}
+            control={<Radio />}
+            label='Resposta objetiva'
+          />
+          <FormControlLabel
+            value={AnswerTypeEnum.PLAIN_TEXT}
+            control={<Radio />}
+            label='Resposta escrita'
+          />
+        </RadioGroup>
+      </FormControl>
+    );
+  }
+
+  function handleCheckboxCustom(params: {
+    name: string;
+    label: string;
+    defaultValue?: boolean;
+  }) {
+    const { label, name, defaultValue = false } = params;
+    return (
+      <FormControlLabel
+        control={
+          <Controller
+            name={name}
+            control={control}
+            defaultValue={defaultValue}
+            render={({ field: { onChange, value } }) => (
+              <Checkbox
+                sx={{
+                  '& .MuiSvgIcon-root': {
+                    fontSize: 22
+                  }
+                }}
+                checked={value}
+                onChange={e => onChange(e.target.checked)}
+              />
+            )}
+          />
+        }
+        label={label}
+      />
+    );
+  }
+
+  function handleQuestionAndAnswerFields() {
+    return (
+      <>
+        <Box
+          style={{
+            height: 200
+          }}
+        >
+          <label htmlFor='content'>
+            Pergunta
+            <span>*</span>
+          </label>
+          <TextField
+            style={{
+              marginTop: 7
+            }}
+            control={control}
+            name='content'
+            variant='outlined'
+            multiline
+            rows={4}
+          />
+        </Box>
+        {fields.map((item, i) => (
+          <Box
+            key={item.id}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              height: 40 + 78,
+              marginBottom: 44
+            }}
+          >
+            <label htmlFor='content'>
+              Resposta
+              <span>*</span>
+            </label>
+            <TextField
+              style={{
+                marginTop: 7
+              }}
+              control={control}
+              name={`answers.${i}.content`}
+              variant='outlined'
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    style={{
+                      cursor: 'pointer'
+                    }}
+                    position='end'
+                    onClick={() => handleDestroy(i, (item as any).answerId)}
+                  >
+                    <TrashIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <Box>
+              {handleCheckboxCustom({
+                name: `answers.${i}.hasContent`,
+                label: 'Possui texto na resposta?',
+                defaultValue: (item as any).hasContent
+              })}
+              {handleCheckboxCustom({
+                name: `answers.${i}.isDefault`,
+                label: 'É a resposta padrão?',
+                defaultValue: (item as any).isDefault
+              })}
+            </Box>
+          </Box>
+        ))}
+      </>
+    );
   }
 
   return (
@@ -163,88 +312,8 @@ export default function QuestionFormComponent({
             Informações da questão
           </Typography>
         </Box>
-        <FormControl style={{ margin: '22px 60px 60px' }}>
-          <FormLabel id='label-radio-buttons'>Tipo de resposta</FormLabel>
-          <RadioGroup
-            aria-labelledby='label-radio-buttons'
-            name='controlled-radio-buttons-group'
-            value={state.answerType}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value={AnswerTypeEnum.MULTIPLE}
-              control={<Radio />}
-              label='Questão de multipla escolha'
-            />
-            <FormControlLabel
-              value={AnswerTypeEnum.OBJECTIVE}
-              control={<Radio />}
-              label='Resposta objetiva'
-            />
-            <FormControlLabel
-              value={AnswerTypeEnum.PLAIN_TEXT}
-              control={<Radio />}
-              label='Resposta escrita'
-            />
-          </RadioGroup>
-        </FormControl>
-        <Box
-          style={{
-            height: 200
-          }}
-        >
-          <label htmlFor='content'>
-            Pergunta
-            <span>*</span>
-          </label>
-          <TextField
-            style={{
-              marginTop: 7
-            }}
-            control={control}
-            name='content'
-            variant='outlined'
-            multiline
-            rows={4}
-          />
-        </Box>
-        {fields.map((item, i) => (
-          <Box
-            key={item.id}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: 1,
-              height: 40 + 78
-            }}
-          >
-            <label htmlFor='content'>
-              Resposta
-              <span>*</span>
-            </label>
-            <TextField
-              style={{
-                marginTop: 7
-              }}
-              control={control}
-              name={`answers.${i}.content`}
-              variant='outlined'
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment
-                    style={{
-                      cursor: 'pointer'
-                    }}
-                    position='end'
-                    onClick={() => handleDestroy(i, (item as any).answerId)}
-                  >
-                    <TrashIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Box>
-        ))}
+        {handleAnswerTypeFields()}
+        {handleQuestionAndAnswerFields()}
         <section>
           <button
             type='button'

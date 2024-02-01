@@ -24,7 +24,7 @@ export default function EditQuestionComponent({
 }: EditQuestionComponentProps) {
   const router = useRouter();
 
-  function onSubmit(params: EditQuestion.FormParams) {
+  function onSubmit(params: any) {
     editQuestion
       .edit(question.id, params)
       .then(() => {

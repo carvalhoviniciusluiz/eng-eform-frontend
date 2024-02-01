@@ -24,21 +24,19 @@ export class RemoteEditQuestion implements EditQuestion {
         content: params.content
       }
     };
-
     const haAnswers = !!params.answers.length;
-
     if (haAnswers) {
       options.body.answers = {
         type: params.answerType,
         data: params.answers.map(answer => ({
           id: answer.answerId,
-          content: answer.content
+          content: answer.content,
+          hasContent: answer.hasContent,
+          isDefault: answer.isDefault
         }))
       };
     }
-
     const httpResponse = await this.httpPatchClient.patch(options);
-
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:

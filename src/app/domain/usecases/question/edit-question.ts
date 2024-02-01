@@ -21,6 +21,8 @@ export namespace EditQuestion {
 
   export type AnswerResponseWithAnswerId = Omit<AnswerApiResponseData, 'id'> & {
     answerId: string;
+    hasContent: boolean;
+    isDefault: boolean;
   };
 
   export type RequestParams = {
@@ -34,6 +36,8 @@ export namespace EditQuestion {
   export type AnswerApiResponseData = {
     id?: string;
     content: string;
+    hasContent: boolean;
+    isDefault: boolean;
     updatedAt?: string;
   };
 

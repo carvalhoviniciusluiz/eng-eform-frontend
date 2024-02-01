@@ -6,7 +6,9 @@ export const makeEditQuestionValidation = () => {
     content: Yup.string().max(191).required('Content is required'),
     answers: Yup.array().of(
       Yup.object().shape({
-        content: Yup.string().max(191).required('Content is required')
+        content: Yup.string().max(191).required('Content is required'),
+        hasContent: Yup.boolean(),
+        isDefault: Yup.boolean()
       })
     )
     // .min(2)
