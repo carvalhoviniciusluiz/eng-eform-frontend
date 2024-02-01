@@ -104,15 +104,17 @@ export default function PublicFormComponent({
 
   function handleQuestionTypePlainTextStore(
     event: any,
-    question: QuestionModel
+    question: QuestionModel,
+    answer?: AnswerModel
   ) {
+    const answerSelected = answer
+      ? { [answer.id]: event.target.value }
+      : { response: event.target.value };
     setState(prevState => ({
       ...prevState,
       selectedQuestions: {
         ...prevState.selectedQuestions,
-        [question.id]: {
-          response: event.target.value
-        }
+        [question.id]: answerSelected
       }
     }));
   }
@@ -157,7 +159,7 @@ export default function PublicFormComponent({
           <TextArea
             placeholder={question.content}
             onChange={event =>
-              handleQuestionTypePlainTextStore(event, question)
+              handleQuestionTypePlainTextStore(event, question, answer)
             }
           />
         );
@@ -177,14 +179,33 @@ export default function PublicFormComponent({
         name={`${question.id}-radio-buttons-group`}
         style={{ marginBottom: 22 }}
       >
-        {question.answers.map(answer => (
-          <FormControlLabel
-            key={answer.id}
-            value={answer.id}
-            control={handleInputToggle(question, answer)}
-            label={answer.content}
-          />
-        ))}
+        {question.answers.map(answer => {
+          if (answer.hasContent) {
+            return (
+              <Box key={answer.id}>
+                <FormControlLabel
+                  value={answer.id}
+                  control={handleInputToggle(question, answer)}
+                  label={answer.content}
+                />
+                <TextArea
+                  placeholder={answer.content}
+                  onChange={event =>
+                    handleQuestionTypePlainTextStore(event, question, answer)
+                  }
+                />
+              </Box>
+            );
+          }
+          return (
+            <FormControlLabel
+              key={answer.id}
+              value={answer.id}
+              control={handleInputToggle(question, answer)}
+              label={answer.content}
+            />
+          );
+        })}
       </RadioGroup>
     );
   }

@@ -11,7 +11,6 @@ export const getServerSideProps = handleSSRNeutral(async context => {
   const cookieKey = 'eform:account';
   const cookies = parseCookies(context);
   const { [cookieKey]: cookie } = cookies;
-
   return {
     props: {
       data: httpResponse,

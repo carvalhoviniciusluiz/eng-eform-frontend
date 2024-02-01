@@ -226,7 +226,7 @@ export default function FormListComponent({
           Esse registro poderá ser recuperado futuramente caso queira. Deseja
           remove-lo mesmo assim?
         </AlertDialog>
-        <div className={classes.line}>
+        {/* <div className={classes.line}>
           {handleCreateLink(
             {
               id: '',
@@ -244,7 +244,7 @@ export default function FormListComponent({
             width: 600,
             border: '1px solid #e9e9e9'
           }}
-        />
+        /> */}
         <ul
           style={{
             margin: 0,
