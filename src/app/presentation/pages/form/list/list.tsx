@@ -40,7 +40,7 @@ export default function FormListComponent({
 
   function handleRehydrateForms(name?: string) {
     loadForms
-      .loadAll({ name, orderBy: 'updatedAt.desc' })
+      .loadAll({ name })
       .then(({ data }: LoadForms.Response) =>
         setState(prevState => ({
           ...prevState,
@@ -226,25 +226,6 @@ export default function FormListComponent({
           Esse registro poderá ser recuperado futuramente caso queira. Deseja
           remove-lo mesmo assim?
         </AlertDialog>
-        {/* <div className={classes.line}>
-          {handleCreateLink(
-            {
-              id: '',
-              name: 'INFORMAÇÕES GERAIS'
-            } as any,
-            {
-              addUserOption: false,
-              addDeleteOption: false
-            }
-          )}
-        </div>
-        <hr
-          style={{
-            marginTop: 22,
-            width: 600,
-            border: '1px solid #e9e9e9'
-          }}
-        /> */}
         <ul
           style={{
             margin: 0,
