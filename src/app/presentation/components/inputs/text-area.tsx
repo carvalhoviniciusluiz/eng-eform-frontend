@@ -1,5 +1,7 @@
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
+import { useEffect, useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 interface Props {
   placeholder: string;
@@ -7,6 +9,13 @@ interface Props {
 }
 
 export const TextArea = ({ placeholder, onChange }: Props) => {
+  const [inputEvent, setInputEvent] = useState<any>();
+  const [value] = useDebounce(inputEvent, 1000);
+  useEffect(() => {
+    if (inputEvent) {
+      onChange && onChange(inputEvent);
+    }
+  }, [onChange, value]);
   return (
     <Paper
       component='div'
@@ -24,7 +33,7 @@ export const TextArea = ({ placeholder, onChange }: Props) => {
         maxRows={4}
         placeholder={placeholder}
         inputProps={{ 'aria-label': placeholder }}
-        onChange={onChange}
+        onChange={setInputEvent}
       />
     </Paper>
   );

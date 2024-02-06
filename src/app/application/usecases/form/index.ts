@@ -5,3 +5,4 @@ export * from './remote-edit-form';
 export * from './remote-get-form';
 export * from './remote-get-form-stats';
 export * from './remote-load-forms';
+export * from './remote-load-full-forms';

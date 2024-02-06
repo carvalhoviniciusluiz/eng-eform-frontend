@@ -6,4 +6,5 @@ export * from './remote-get-form-factory';
 export * from './remote-get-form-stats-factory';
 export * from './remote-get-public-form-factory';
 export * from './remote-load-forms-factory';
+export * from './remote-load-full-forms-factory';
 export * from './remote-load-public-forms-factory';

@@ -31,7 +31,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
             }}
             href='/'
           >
-            Formulários
+            Inicial
           </Link>
           <Link
             style={{
@@ -41,11 +41,20 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
             }}
             href='/forms'
           >
-            Gerenciador
+            Formulários
+          </Link>
+          <Link
+            style={{
+              color: styleActiveTo(['/vdf']),
+              textDecoration: 'none',
+              marginLeft: 18
+            }}
+            href='/vdf'
+          >
+            Violência Domestica
           </Link>
         </Box>
       </Toolbar>
-
       {children}
     </>
   );
