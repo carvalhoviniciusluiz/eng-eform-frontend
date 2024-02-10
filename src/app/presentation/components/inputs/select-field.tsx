@@ -9,9 +9,10 @@ type Props = {
   id: string;
   label: string;
   name: string;
+  options: { key: string; value: string }[];
 };
 
-export function SelectField({ id, label, name }: Props) {
+export function SelectField({ id, label, name, options }: Props) {
   const [value, setValue] = React.useState('');
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value as string);
@@ -30,9 +31,9 @@ export function SelectField({ id, label, name }: Props) {
           label={label}
           onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {options.map(option => (
+            <MenuItem value={option.key}>{option.value}</MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>

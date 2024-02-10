@@ -36,6 +36,13 @@ function PersonDocument({
           id={`${document.id}-document`}
           name='documentType'
           label='Tipo de documento'
+          options={[
+            { key: 'CPF', value: 'CPF' },
+            { key: 'RG', value: 'RG' },
+            { key: 'SUS', value: 'SUS' },
+            { key: 'NIS', value: 'NIS' },
+            { key: 'WORK_CARD', value: 'Carteira de trabalho' }
+          ]}
         />
         <TextInput
           id={`${document.id}-document`}

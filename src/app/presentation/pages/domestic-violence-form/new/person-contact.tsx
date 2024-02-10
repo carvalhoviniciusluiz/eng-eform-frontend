@@ -35,6 +35,11 @@ function PersonContact({
           id={`${contact.id}-contact`}
           name='contactType'
           label='Tipo de contato'
+          options={[
+            { key: 'EMAIL', value: 'E-mail' },
+            { key: 'CELL_PHONE', value: 'Celular' },
+            { key: 'HOME_PHONE', value: 'Telefone residencial' }
+          ]}
         />
         <TextInput
           id={`${contact.id}-contact`}
