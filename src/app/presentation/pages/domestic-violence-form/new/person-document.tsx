@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { MdAdd as AddIcon, MdRemove as RemoveIcon } from 'react-icons/md';
-import { DateField, TextInput } from '~/app/presentation/components/custom';
+import { MaskField, TextInput } from '~/app/presentation/components/custom';
 import { SelectField } from '~/app/presentation/components/inputs/select-field';
 import makeStyles from './form-styles';
 
@@ -49,10 +49,11 @@ function PersonDocument({
           name='documentNumber'
           label='Número'
         />
-        <DateField
+        <MaskField
           id={`${document.id}-document`}
           name='shippingDate'
           label='Data de expedição'
+          mask='99/99/9999'
         />
       </Box>
       <Box

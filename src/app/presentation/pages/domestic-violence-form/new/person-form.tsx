@@ -3,7 +3,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import { GetCep, LoadFullForms } from '~/app/domain/usecases';
-import { DateField, TextInput } from '~/app/presentation/components/custom';
+import { MaskField, TextInput } from '~/app/presentation/components/custom';
 import BuildForm from './build-form';
 import PersonAddress from './person-address';
 import PersonContact from './person-contact';
@@ -134,14 +134,19 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
             {caption}
           </Typography>
         </Box>
-        <TextInput id={id} name='name' label='Nome completo' />
+        <TextInput id={id} name='name' label='Nome completo' required />
         <TextInput id={id} name='socialName' label='Nome social' />
-        <DateField id={id} name='birthdate' label='Data de nascimento' />
+        <MaskField
+          id={id}
+          name='birthdate'
+          label='Data de nascimento'
+          mask='99/99/9999'
+        />
       </Box>
       <Tabs value={value} onChange={handleChange} variant='fullWidth'>
         <Tab label={generalInformationsForm.name} />
         <Tab label='Endereço' />
-        <Tab label='Documentos pessoais' />
+        <Tab label='Documentos' />
         <Tab label='Contatos' />
       </Tabs>
       <TabPanel value={value} index={0}>
