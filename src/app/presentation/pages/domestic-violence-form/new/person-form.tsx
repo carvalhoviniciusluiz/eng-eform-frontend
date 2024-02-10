@@ -1,6 +1,6 @@
 import { Box, Paper, Typography } from '@mui/material';
-import { FaRegSave as SaveIcon } from 'react-icons/fa';
 import { DateField, TextInput } from '~/app/presentation/components/custom';
+import BuildForm from './build-form';
 import makeStyles from './form-styles';
 import PersonAddress from './person-address';
 import PersonContact from './person-contact';
@@ -9,6 +9,7 @@ import PersonDocument from './person-document';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
+import { LoadFullForms } from '~/app/domain/usecases';
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -35,9 +36,10 @@ function TabPanel(props: TabPanelProps) {
 type Props = {
   id: string;
   caption: string;
+  generalInformationsForm: LoadFullForms.Form;
 };
 
-function PersonForm({ id, caption }: Props) {
+function PersonForm({ id, caption, generalInformationsForm }: Props) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -63,32 +65,39 @@ function PersonForm({ id, caption }: Props) {
           >
             {caption}
           </Typography>
-
-          <button className={classes.btnSave}>
-            <SaveIcon size={20} fill='white' />
-            <span
-              style={{
-                marginLeft: 13,
-                color: 'white'
-              }}
-            >
-              Salvar formulário
-            </span>
-          </button>
         </Box>
-
         <TextInput id={id} name='name' label='Nome completo' />
         <TextInput id={id} name='socialName' label='Nome social' />
         <DateField id={id} name='birthdate' label='Data de nascimento' />
       </Box>
-
       <Tabs value={value} onChange={handleChange} variant='fullWidth'>
+        <Tab label={generalInformationsForm.name} />
         <Tab label='Endereço' />
         <Tab label='Documentos pessoais' />
         <Tab label='Contatos' />
       </Tabs>
-
       <TabPanel value={value} index={0}>
+        <Paper
+          key={`${id}-${generalInformationsForm.id}-general-infomations`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 8,
+            background: '#f8fafb',
+            borderRadius: 4,
+            margin: '3rem 0'
+          }}
+        >
+          {generalInformationsForm.questions.map((question, index) => (
+            <BuildForm
+              key={index}
+              form={generalInformationsForm}
+              question={question}
+            />
+          ))}
+        </Paper>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
         {[{ id: 1 }].map(document => (
           <Paper
             key={`${id}-${document.id}-address`}
@@ -105,7 +114,7 @@ function PersonForm({ id, caption }: Props) {
           </Paper>
         ))}
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={value} index={2}>
         {[{ id: 1 }].map(document => (
           <Paper
             key={`${id}-${document.id}-document`}
@@ -122,7 +131,7 @@ function PersonForm({ id, caption }: Props) {
           </Paper>
         ))}
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={3}>
         {[{ id: 1 }].map(document => (
           <Paper
             key={`${id}-${document.id}-contact`}
