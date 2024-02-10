@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
-import { LoadFullForms } from '~/app/domain/usecases';
+import { GetCep, LoadFullForms } from '~/app/domain/usecases';
 import { DateField, TextInput } from '~/app/presentation/components/custom';
 import BuildForm from './build-form';
 import PersonAddress from './person-address';
@@ -58,9 +58,10 @@ type Props = {
   id: string;
   caption: string;
   generalInformationsForm: LoadFullForms.Form;
+  onGetCep: (cep: string) => Promise<GetCep.Address | undefined>;
 };
 
-function PersonForm({ id, caption, generalInformationsForm }: Props) {
+function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
   const [value, setValue] = useState(0);
   const [documents, seDocuments] = useState<Document[]>([
     { id: crypto.randomUUID() }
@@ -179,6 +180,7 @@ function PersonForm({ id, caption, generalInformationsForm }: Props) {
           >
             <PersonAddress
               address={address}
+              onGetCep={onGetCep}
               onAdd={handleOnAddNewAddress}
               onRemove={handleOnRemoveAddress}
               removeDisabled={adresses.length < 2}

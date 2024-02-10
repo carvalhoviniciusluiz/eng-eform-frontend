@@ -1,6 +1,8 @@
 import { Box } from '@mui/material';
+import { useState } from 'react';
 import { MdAdd as AddIcon, MdRemove as RemoveIcon } from 'react-icons/md';
-import { DateField, TextInput } from '~/app/presentation/components/custom';
+import { GetCep } from '~/app/domain/usecases';
+import { TextInput } from '~/app/presentation/components/custom';
 import makeStyles from './form-styles';
 
 type PersonAddress = {
@@ -16,6 +18,7 @@ type PersonAddress = {
 
 type Props = {
   address: PersonAddress;
+  onGetCep: (cep: string) => Promise<GetCep.Address | undefined>;
   onAdd: () => void;
   onRemove: (id: string) => void;
   removeDisabled: boolean;
@@ -23,11 +26,21 @@ type Props = {
 
 function PersonAddress({
   address,
+  onGetCep,
   onAdd,
   onRemove,
   removeDisabled = true
 }: Props) {
+  const [cep, setCep] = useState('');
+  const [data, setData] = useState<GetCep.Address>();
   const classes = makeStyles();
+  function handleOnKeyUp(event: any) {
+    if (event.key === 'Enter') {
+      onGetCep(cep)
+        .then(setData)
+        .catch(error => console.error(error));
+    }
+  }
   return (
     <Box
       style={{
@@ -40,25 +53,45 @@ function PersonAddress({
           marginTop: 33
         }}
       >
-        <TextInput id={`${address.id}-address`} name='zipCode' label='CEP' />
-        <DateField
+        <TextInput
+          id={`${address.id}-address`}
+          name='zipCode'
+          label='CEP'
+          value={cep}
+          onChange={event => setCep(event.target.value)}
+          onKeyUp={handleOnKeyUp}
+        />
+        <TextInput
           id={`${address.id}-address`}
           name='neighborhood'
           label='Bairro'
+          value={data?.neighborhood}
         />
-        <DateField
+        <TextInput
           id={`${address.id}-address`}
           name='publicPlace'
           label='Logradouro'
+          value={data?.publicPlace}
         />
         <TextInput id={`${address.id}-address`} name='number' label='Número' />
-        <DateField
+        <TextInput
           id={`${address.id}-address`}
           name='neighborhoodComplement'
           label='Complemento'
+          value={data?.neighborhoodComplement}
         />
-        <DateField id={`${address.id}-address`} name='city' label='Cidade' />
-        <DateField id={`${address.id}-address`} name='country' label='Estado' />
+        <TextInput
+          id={`${address.id}-address`}
+          name='city'
+          label='Cidade'
+          value={data?.city}
+        />
+        <TextInput
+          id={`${address.id}-address`}
+          name='country'
+          label='Estado'
+          value={data?.county}
+        />
       </Box>
       <Box
         style={{

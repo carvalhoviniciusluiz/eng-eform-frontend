@@ -1,5 +1,5 @@
 import { AiFillSave as SaveIcon } from 'react-icons/ai';
-import { LoadFullForms } from '~/app/domain/usecases';
+import { GetCep, LoadFullForms } from '~/app/domain/usecases';
 import Header from './header';
 import PersonForm from './person-form';
 import ShowForms from './show-forms';
@@ -12,6 +12,7 @@ import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 
 type Props = {
+  getCep: GetCep;
   data: LoadFullForms.Response;
 };
 
@@ -39,7 +40,7 @@ function TabPanel(props: TabPanelProps) {
 
 const GENERAL_INFORMATION_FORM_ID = 'f594187f-504c-4266-b313-6d1fb19bb197';
 
-export default function NewDomesticViolenceComponent({ data }: Props) {
+export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
   const [state] = useState(() => {
     const forms = data.filter(form => form.id !== GENERAL_INFORMATION_FORM_ID);
     const generalInformationsForm = data.filter(
@@ -51,9 +52,20 @@ export default function NewDomesticViolenceComponent({ data }: Props) {
     };
   });
   const [value, setValue] = useState(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+
+  function handleChange(event: React.SyntheticEvent, newValue: number) {
     setValue(newValue);
-  };
+  }
+
+  async function handleGetCep(cep: string) {
+    try {
+      const output = await getCep.get(cep);
+      return output;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <Box>
       <AppBar position='static' color='transparent'>
@@ -72,6 +84,7 @@ export default function NewDomesticViolenceComponent({ data }: Props) {
             id='victim'
             caption='Cadastro de vítima'
             generalInformationsForm={state.generalInformationsForm}
+            onGetCep={handleGetCep}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -79,6 +92,7 @@ export default function NewDomesticViolenceComponent({ data }: Props) {
             id='aggressor'
             caption='Cadastro de agressor'
             generalInformationsForm={state.generalInformationsForm}
+            onGetCep={handleGetCep}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
