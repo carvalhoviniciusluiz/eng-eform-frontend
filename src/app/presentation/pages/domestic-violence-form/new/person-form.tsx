@@ -1,19 +1,40 @@
 import { Box, Paper, Typography } from '@mui/material';
-import { DateField, TextInput } from '~/app/presentation/components/custom';
-import BuildForm from './build-form';
-import makeStyles from './form-styles';
-import PersonAddress from './person-address';
-import PersonContact from './person-contact';
-import PersonDocument from './person-document';
-
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import { LoadFullForms } from '~/app/domain/usecases';
+import { DateField, TextInput } from '~/app/presentation/components/custom';
+import BuildForm from './build-form';
+import PersonAddress from './person-address';
+import PersonContact from './person-contact';
+import PersonDocument from './person-document';
+
+type Address = {
+  id: string;
+  number?: string;
+  zipCode?: string;
+  publicPlace?: string;
+  neighborhood?: string;
+  neighborhoodComplement?: string;
+  city?: string;
+  county?: string;
+};
+
+type Document = {
+  id: string;
+  documentType?: string;
+  documentNumber?: string;
+  shippingDate?: string;
+};
+
+type Contact = {
+  id: string;
+  contactType?: string;
+  contact?: string;
+};
 
 type TabPanelProps = {
   children?: React.ReactNode;
-  dir?: string;
   index: number;
   value: number;
 };
@@ -41,12 +62,58 @@ type Props = {
 
 function PersonForm({ id, caption, generalInformationsForm }: Props) {
   const [value, setValue] = useState(0);
+  const [documents, seDocuments] = useState<Document[]>([
+    { id: crypto.randomUUID() }
+  ]);
+  const [adresses, seAdresses] = useState<Address[]>([
+    { id: crypto.randomUUID() }
+  ]);
+  const [contacts, seContacts] = useState<Contact[]>([
+    { id: crypto.randomUUID() }
+  ]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  function handleChange(event: React.SyntheticEvent, newValue: number) {
     setValue(newValue);
-  };
+  }
 
-  const classes = makeStyles();
+  function handleOnAddNewAddress() {
+    seAdresses(prevState => [...prevState, { id: crypto.randomUUID() }]);
+  }
+
+  function handleOnRemoveAddress(addressId: string) {
+    seAdresses(prevState => {
+      const adressesFiltered = prevState.filter(
+        address => address.id !== addressId
+      );
+      return [...adressesFiltered];
+    });
+  }
+
+  function handleOnAddNewDocument() {
+    seDocuments(prevState => [...prevState, { id: crypto.randomUUID() }]);
+  }
+
+  function handleOnRemoveDocument(documentId: string) {
+    seDocuments(prevState => {
+      const documentsFiltered = prevState.filter(
+        document => document.id !== documentId
+      );
+      return [...documentsFiltered];
+    });
+  }
+
+  function handleOnAddNewContact() {
+    seContacts(prevState => [...prevState, { id: crypto.randomUUID() }]);
+  }
+
+  function handleOnRemoveContact(contactId: string) {
+    seContacts(prevState => {
+      const contactsFiltered = prevState.filter(
+        contact => contact.id !== contactId
+      );
+      return [...contactsFiltered];
+    });
+  }
 
   return (
     <Box style={{ margin: 80 }}>
@@ -98,9 +165,9 @@ function PersonForm({ id, caption, generalInformationsForm }: Props) {
         </Paper>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {[{ id: 1 }].map(document => (
+        {adresses.map(address => (
           <Paper
-            key={`${id}-${document.id}-address`}
+            key={`${id}-${address.id}-address`}
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -110,12 +177,17 @@ function PersonForm({ id, caption, generalInformationsForm }: Props) {
               margin: '3rem 0'
             }}
           >
-            <PersonAddress id={`${id}-address`} />
+            <PersonAddress
+              address={address}
+              onAdd={handleOnAddNewAddress}
+              onRemove={handleOnRemoveAddress}
+              removeDisabled={adresses.length < 2}
+            />
           </Paper>
         ))}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {[{ id: 1 }].map(document => (
+        {documents.map(document => (
           <Paper
             key={`${id}-${document.id}-document`}
             sx={{
@@ -127,14 +199,19 @@ function PersonForm({ id, caption, generalInformationsForm }: Props) {
               margin: '3rem 0'
             }}
           >
-            <PersonDocument id={`${id}-document`} />
+            <PersonDocument
+              document={document}
+              onAdd={handleOnAddNewDocument}
+              onRemove={handleOnRemoveDocument}
+              removeDisabled={documents.length < 2}
+            />
           </Paper>
         ))}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {[{ id: 1 }].map(document => (
+        {contacts.map(contact => (
           <Paper
-            key={`${id}-${document.id}-contact`}
+            key={`${id}-${contact.id}-contact`}
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -144,7 +221,12 @@ function PersonForm({ id, caption, generalInformationsForm }: Props) {
               margin: '3rem 0'
             }}
           >
-            <PersonContact id={`${id}-contact`} />
+            <PersonContact
+              contact={contact}
+              onAdd={handleOnAddNewContact}
+              onRemove={handleOnRemoveContact}
+              removeDisabled={contacts.length < 2}
+            />
           </Paper>
         ))}
       </TabPanel>
