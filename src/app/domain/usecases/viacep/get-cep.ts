@@ -16,6 +16,7 @@ export namespace GetCep {
     siafi: string;
   };
   export type Address = {
+    id?: string;
     neighborhood: string;
     neighborhoodComplement: string;
     zipCode: string;

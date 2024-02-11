@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { MdAdd as AddIcon, MdRemove as RemoveIcon } from 'react-icons/md';
 import { TextInput } from '~/app/presentation/components/custom';
 import { SelectField } from '~/app/presentation/components/inputs/select-field';
@@ -11,19 +12,33 @@ type PersonContact = {
 };
 
 type Props = {
-  contact: PersonContact;
+  data: PersonContact;
   onAdd: () => void;
   onRemove: (id: string) => void;
+  submit: (value: PersonContact) => void;
   removeDisabled: boolean;
 };
 
 function PersonContact({
-  contact,
+  data,
   onAdd,
   onRemove,
+  submit,
   removeDisabled = true
 }: Props) {
   const classes = makeStyles();
+  const [contact, setContact] = useState<Omit<PersonContact, 'id'>>(() => {
+    return {
+      contactType: data?.contactType ?? '',
+      contact: data?.contact ?? ''
+    };
+  });
+  function handleOnChange(key: string, value: string) {
+    setContact(prevState => ({ ...prevState, [key]: value }));
+  }
+  useEffect(() => {
+    submit({ ...contact, id: data.id });
+  }, [contact]);
   return (
     <Box>
       <Box
@@ -32,7 +47,7 @@ function PersonContact({
         }}
       >
         <SelectField
-          id={`${contact.id}-contact`}
+          id={`${data.id}-contact`}
           name='contactType'
           label='Tipo de contato'
           options={[
@@ -40,11 +55,13 @@ function PersonContact({
             { key: 'CELL_PHONE', value: 'Celular' },
             { key: 'HOME_PHONE', value: 'Telefone residencial' }
           ]}
+          onChange={value => handleOnChange('contactType', value)}
         />
         <TextInput
-          id={`${contact.id}-contact`}
+          id={`${data.id}-contact`}
           name='contact'
           label='Contato'
+          onChange={event => handleOnChange('contact', event.target.value)}
         />
       </Box>
       <Box
@@ -60,7 +77,7 @@ function PersonContact({
         <button
           disabled={removeDisabled}
           className={classes.btnSave}
-          onClick={() => onRemove(contact.id)}
+          onClick={() => onRemove(data.id)}
         >
           <RemoveIcon fill='#fff' size={32} />
         </button>

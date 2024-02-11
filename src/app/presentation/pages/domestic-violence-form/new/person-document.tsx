@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { MdAdd as AddIcon, MdRemove as RemoveIcon } from 'react-icons/md';
 import { MaskField, TextInput } from '~/app/presentation/components/custom';
 import { SelectField } from '~/app/presentation/components/inputs/select-field';
@@ -12,19 +13,33 @@ type PersonDocument = {
 };
 
 type Props = {
-  document: PersonDocument;
+  data: PersonDocument;
   onAdd: () => void;
   onRemove: (id: string) => void;
+  submit: (value: PersonDocument) => void;
   removeDisabled: boolean;
 };
 
 function PersonDocument({
-  document,
+  data,
   onAdd,
   onRemove,
+  submit,
   removeDisabled = true
 }: Props) {
   const classes = makeStyles();
+  const [document, setDocument] = useState<Omit<PersonDocument, 'id'>>(() => {
+    return {
+      documentType: data?.documentType ?? '',
+      documentNumber: data?.documentNumber ?? ''
+    };
+  });
+  function handleOnChange(key: string, value: string) {
+    setDocument(prevState => ({ ...prevState, [key]: value }));
+  }
+  useEffect(() => {
+    submit({ ...document, id: data.id });
+  }, [document]);
   return (
     <Box>
       <Box
@@ -33,7 +48,7 @@ function PersonDocument({
         }}
       >
         <SelectField
-          id={`${document.id}-document`}
+          id={`${data.id}-document`}
           name='documentType'
           label='Tipo de documento'
           options={[
@@ -43,17 +58,22 @@ function PersonDocument({
             { key: 'NIS', value: 'NIS' },
             { key: 'WORK_CARD', value: 'Carteira de trabalho' }
           ]}
+          onChange={value => handleOnChange('documentType', value)}
         />
         <TextInput
-          id={`${document.id}-document`}
+          id={`${data.id}-document`}
           name='documentNumber'
           label='Número'
+          onChange={event =>
+            handleOnChange('documentNumber', event.target.value)
+          }
         />
         <MaskField
-          id={`${document.id}-document`}
+          id={`${data.id}-document`}
           name='shippingDate'
           label='Data de expedição'
-          mask='99/99/9999'
+          mask='date'
+          onChange={event => handleOnChange('shippingDate', event.target.value)}
         />
       </Box>
       <Box
@@ -69,7 +89,7 @@ function PersonDocument({
         <button
           disabled={removeDisabled}
           className={classes.btnSave}
-          onClick={() => onRemove(document.id)}
+          onClick={() => onRemove(data.id)}
         >
           <RemoveIcon fill='#fff' size={32} />
         </button>

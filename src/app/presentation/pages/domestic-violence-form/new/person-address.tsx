@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MdAdd as AddIcon, MdRemove as RemoveIcon } from 'react-icons/md';
 import { GetCep } from '~/app/domain/usecases';
-import { TextInput } from '~/app/presentation/components/custom';
+import { MaskField, TextInput } from '~/app/presentation/components/custom';
 import makeStyles from './form-styles';
 
 type PersonAddress = {
@@ -17,30 +17,62 @@ type PersonAddress = {
 };
 
 type Props = {
-  address: PersonAddress;
+  data: PersonAddress;
   onGetCep: (cep: string) => Promise<GetCep.Address | undefined>;
   onAdd: () => void;
   onRemove: (id: string) => void;
+  submit: (value: GetCep.Address) => void;
   removeDisabled: boolean;
 };
 
 function PersonAddress({
-  address,
+  data,
   onGetCep,
   onAdd,
   onRemove,
+  submit,
   removeDisabled = true
 }: Props) {
-  const [cep, setCep] = useState('');
-  const [data, setData] = useState<GetCep.Address>();
   const classes = makeStyles();
+  const [zipcode, setZipcode] = useState('');
+  const [address, setAddress] = useState<GetCep.Address>(() => {
+    return {
+      neighborhood: data?.neighborhood ?? '',
+      neighborhoodComplement: data?.neighborhoodComplement ?? '',
+      zipCode: data?.zipCode ?? '',
+      ddd: '96',
+      city: data?.city ?? '',
+      county: data?.county ?? '',
+      publicPlace: data?.publicPlace ?? ''
+    };
+  });
   function handleOnKeyUp(event: any) {
     if (event.key === 'Enter') {
-      onGetCep(cep)
-        .then(setData)
+      onGetCep(zipcode)
+        .then(response => {
+          if (!response) {
+            return;
+          }
+          setAddress({
+            id: response.id,
+            neighborhood: response.neighborhood,
+            neighborhoodComplement: response.neighborhoodComplement,
+            zipCode: response.zipCode,
+            ddd: '96',
+            city: response.city,
+            county: response.county,
+            publicPlace: response.publicPlace
+          });
+        })
         .catch(error => console.error(error));
     }
   }
+  function handleOnChange(key: string, value: string) {
+    setAddress(prevState => ({ ...prevState, [key]: value }));
+  }
+  useEffect(() => {
+    submit({ ...address, id: data.id });
+  }, [address]);
   return (
     <Box
       style={{
@@ -53,44 +85,51 @@ function PersonAddress({
           marginTop: 33
         }}
       >
-        <TextInput
-          id={`${address.id}-address`}
+        <MaskField
+          id={`${data.id}-address`}
           name='zipCode'
           label='CEP'
-          value={cep}
-          onChange={event => setCep(event.target.value)}
+          mask='zipcode'
+          onChange={event => setZipcode(event.target.value)}
           onKeyUp={handleOnKeyUp}
         />
         <TextInput
-          id={`${address.id}-address`}
+          id={`${data.id}-address`}
           name='neighborhood'
           label='Bairro'
-          value={data?.neighborhood}
+          value={address?.neighborhood}
+          onChange={event => handleOnChange('neighborhood', event.target.value)}
         />
         <TextInput
-          id={`${address.id}-address`}
+          id={`${data.id}-address`}
           name='publicPlace'
           label='Logradouro'
-          value={data?.publicPlace}
+          value={address?.publicPlace}
+          onChange={event => handleOnChange('publicPlace', event.target.value)}
         />
-        <TextInput id={`${address.id}-address`} name='number' label='Número' />
+        <TextInput id={`${data.id}-address`} name='number' label='Número' />
         <TextInput
-          id={`${address.id}-address`}
+          id={`${data.id}-address`}
           name='neighborhoodComplement'
           label='Complemento'
-          value={data?.neighborhoodComplement}
+          value={address?.neighborhoodComplement}
+          onChange={event =>
+            handleOnChange('neighborhoodComplement', event.target.value)
+          }
         />
         <TextInput
-          id={`${address.id}-address`}
+          id={`${data.id}-address`}
           name='city'
           label='Cidade'
-          value={data?.city}
+          value={address?.city}
+          onChange={event => handleOnChange('city', event.target.value)}
         />
         <TextInput
-          id={`${address.id}-address`}
+          id={`${data.id}-address`}
           name='country'
           label='Estado'
-          value={data?.county}
+          value={address?.county}
+          onChange={event => handleOnChange('county', event.target.value)}
         />
       </Box>
       <Box
@@ -100,13 +139,13 @@ function PersonAddress({
           gap: 15
         }}
       >
-        <button className={classes.btnSave} onClick={() => onAdd()}>
+        <button className={classes.btnSave} onClick={onAdd}>
           <AddIcon fill='#fff' size={32} />
         </button>
         <button
           disabled={removeDisabled}
           className={classes.btnSave}
-          onClick={() => onRemove(address.id)}
+          onClick={() => onRemove(data.id)}
         >
           <RemoveIcon fill='#fff' size={32} />
         </button>

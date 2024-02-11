@@ -140,7 +140,7 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
           id={id}
           name='birthdate'
           label='Data de nascimento'
-          mask='99/99/9999'
+          mask='date'
         />
       </Box>
       <Tabs value={value} onChange={handleChange} variant='fullWidth'>
@@ -184,11 +184,12 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
             }}
           >
             <PersonAddress
-              address={address}
+              data={address}
               onGetCep={onGetCep}
               onAdd={handleOnAddNewAddress}
               onRemove={handleOnRemoveAddress}
               removeDisabled={adresses.length < 2}
+              submit={console.log}
             />
           </Paper>
         ))}
@@ -207,10 +208,11 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
             }}
           >
             <PersonDocument
-              document={document}
+              data={document}
               onAdd={handleOnAddNewDocument}
               onRemove={handleOnRemoveDocument}
               removeDisabled={documents.length < 2}
+              submit={console.log}
             />
           </Paper>
         ))}
@@ -229,10 +231,11 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
             }}
           >
             <PersonContact
-              contact={contact}
+              data={contact}
               onAdd={handleOnAddNewContact}
               onRemove={handleOnRemoveContact}
               removeDisabled={contacts.length < 2}
+              submit={console.log}
             />
           </Paper>
         ))}

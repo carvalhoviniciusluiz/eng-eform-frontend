@@ -10,12 +10,15 @@ type Props = {
   label: string;
   name: string;
   options: { key: string; value: string }[];
+  onChange?: (value: string) => void;
 };
 
-export function SelectField({ id, label, name, options }: Props) {
+export function SelectField({ id, label, name, options, onChange }: Props) {
   const [value, setValue] = React.useState('');
   const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as string);
+    const value = event.target.value;
+    setValue(value);
+    onChange && onChange(value);
   };
   return (
     <Box sx={{ marginbo: 120, height: 90 }}>
@@ -31,8 +34,10 @@ export function SelectField({ id, label, name, options }: Props) {
           label={label}
           onChange={handleChange}
         >
-          {options.map(option => (
-            <MenuItem value={option.key}>{option.value}</MenuItem>
+          {options.map((option, index) => (
+            <MenuItem key={index} value={option.key}>
+              {option.value}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
