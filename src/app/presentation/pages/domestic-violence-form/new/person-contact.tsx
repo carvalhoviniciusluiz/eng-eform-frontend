@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { MdAdd as AddIcon, MdRemove as RemoveIcon } from 'react-icons/md';
-import { TextInput } from '~/app/presentation/components/custom';
+import { MaskField, TextInput } from '~/app/presentation/components/custom';
 import { SelectField } from '~/app/presentation/components/inputs/select-field';
 import makeStyles from './form-styles';
 
@@ -29,12 +29,44 @@ function PersonContact({
   const classes = makeStyles();
   const [contact, setContact] = useState<Omit<PersonContact, 'id'>>(() => {
     return {
-      contactType: data?.contactType ?? '',
+      contactType: data?.contactType ?? 'CELL_PHONE',
       contact: data?.contact ?? ''
     };
   });
   function handleOnChange(key: string, value: string) {
     setContact(prevState => ({ ...prevState, [key]: value }));
+  }
+  function handleContactToggle() {
+    if (contact.contactType === 'CELL_PHONE') {
+      return (
+        <MaskField
+          id={`${data.id}-contact`}
+          name='contact'
+          label='Contato'
+          mask='cellphone'
+          onChange={event => handleOnChange('', event.target.value)}
+        />
+      );
+    }
+    if (contact.contactType === 'HOME_PHONE') {
+      return (
+        <MaskField
+          id={`${data.id}-contact`}
+          name='contact'
+          label='Contato'
+          mask='homephone'
+          onChange={event => handleOnChange('', event.target.value)}
+        />
+      );
+    }
+    return (
+      <TextInput
+        id={`${data.id}-contact`}
+        name='contact'
+        label='Contato'
+        onChange={event => handleOnChange('contact', event.target.value)}
+      />
+    );
   }
   useEffect(() => {
     submit({ ...contact, id: data.id });
@@ -50,6 +82,7 @@ function PersonContact({
           id={`${data.id}-contact`}
           name='contactType'
           label='Tipo de contato'
+          defaultValue={contact.contactType}
           options={[
             { key: 'EMAIL', value: 'E-mail' },
             { key: 'CELL_PHONE', value: 'Celular' },
@@ -57,12 +90,7 @@ function PersonContact({
           ]}
           onChange={value => handleOnChange('contactType', value)}
         />
-        <TextInput
-          id={`${data.id}-contact`}
-          name='contact'
-          label='Contato'
-          onChange={event => handleOnChange('contact', event.target.value)}
-        />
+        {handleContactToggle()}
       </Box>
       <Box
         style={{

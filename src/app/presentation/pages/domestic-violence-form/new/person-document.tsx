@@ -30,12 +30,33 @@ function PersonDocument({
   const classes = makeStyles();
   const [document, setDocument] = useState<Omit<PersonDocument, 'id'>>(() => {
     return {
-      documentType: data?.documentType ?? '',
+      documentType: data?.documentType ?? 'CPF',
       documentNumber: data?.documentNumber ?? ''
     };
   });
   function handleOnChange(key: string, value: string) {
     setDocument(prevState => ({ ...prevState, [key]: value }));
+  }
+  function handleDocumentNumberToggle() {
+    if (document.documentType === 'CPF') {
+      return (
+        <MaskField
+          id={`${data.id}-document`}
+          name='documentNumber'
+          label='Número'
+          mask='cpf'
+          onChange={event => handleOnChange('', event.target.value)}
+        />
+      );
+    }
+    return (
+      <TextInput
+        id={`${data.id}-document`}
+        name='documentNumber'
+        label='Número'
+        onChange={event => handleOnChange('documentNumber', event.target.value)}
+      />
+    );
   }
   useEffect(() => {
     submit({ ...document, id: data.id });
@@ -51,6 +72,7 @@ function PersonDocument({
           id={`${data.id}-document`}
           name='documentType'
           label='Tipo de documento'
+          defaultValue={document.documentType}
           options={[
             { key: 'CPF', value: 'CPF' },
             { key: 'RG', value: 'RG' },
@@ -60,14 +82,7 @@ function PersonDocument({
           ]}
           onChange={value => handleOnChange('documentType', value)}
         />
-        <TextInput
-          id={`${data.id}-document`}
-          name='documentNumber'
-          label='Número'
-          onChange={event =>
-            handleOnChange('documentNumber', event.target.value)
-          }
-        />
+        {handleDocumentNumberToggle()}
         <MaskField
           id={`${data.id}-document`}
           name='shippingDate'

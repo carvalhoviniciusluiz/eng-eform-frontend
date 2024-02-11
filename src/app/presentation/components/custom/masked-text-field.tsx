@@ -80,29 +80,29 @@ function CpfMask(props: BaseMaskedInputProps) {
 }
 
 // RG mask (##.###.###-#)
-function RgMask(props: BaseMaskedInputProps) {
-  const { inputRef, ...other } = props;
-  return (
-    <DefaultMask
-      ref={inputRef}
-      {...other}
-      mask={[
-        /\d/,
-        /\d/,
-        '.',
-        /\d/,
-        /\d/,
-        /\d/,
-        '.',
-        /\d/,
-        /\d/,
-        /\d/,
-        '-',
-        /\d/
-      ]}
-    />
-  );
-}
+// function RgMask(props: BaseMaskedInputProps) {
+//   const { inputRef, ...other } = props;
+//   return (
+//     <DefaultMask
+//       ref={inputRef}
+//       {...other}
+//       mask={[
+//         /\d/,
+//         /\d/,
+//         '.',
+//         /\d/,
+//         /\d/,
+//         /\d/,
+//         '.',
+//         /\d/,
+//         /\d/,
+//         /\d/,
+//         '-',
+//         /\d/
+//       ]}
+//     />
+//   );
+// }
 
 // Only number mask
 function NumberMask(props: BaseMaskedInputProps) {
@@ -130,8 +130,36 @@ function NumberMask(props: BaseMaskedInputProps) {
   );
 }
 
-// Cell mask (DD) XXXX-XXXX
-function CellNumberMask(props: BaseMaskedInputProps) {
+// Cellphone mask (DD) XXXX-XXXX
+function CellPhoneMask(props: BaseMaskedInputProps) {
+  const { inputRef, ...other } = props;
+  return (
+    <DefaultMask
+      ref={inputRef}
+      {...other}
+      mask={[
+        '(',
+        /\d/,
+        /\d/,
+        ')',
+        ' ',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/,
+        '-',
+        /\d/,
+        /\d/,
+        /\d/,
+        /\d/
+      ]}
+    />
+  );
+}
+
+// Cellhome mask (DD) XXXX-XXXX
+function HomePhoneMask(props: BaseMaskedInputProps) {
   const { inputRef, ...other } = props;
   return (
     <DefaultMask
@@ -161,8 +189,9 @@ export type MaskType =
   | 'date'
   | 'zipcode'
   | 'cpf'
-  | 'rg'
-  | 'cellnumber'
+  // | 'rg'
+  | 'cellphone'
+  | 'homephone'
   | 'number';
 
 interface MaskedTextFieldProps extends Omit<TextFieldProps, 'inputComponent'> {
@@ -181,14 +210,17 @@ export function MaskedTextField({ maskType, ...props }: MaskedTextFieldProps) {
     case 'cpf':
       MaskComponent = CpfMask;
       break;
-    case 'rg':
-      MaskComponent = RgMask;
-      break;
+    // case 'rg':
+    //   MaskComponent = RgMask;
+    //   break;
     case 'number':
       MaskComponent = NumberMask;
       break;
-    case 'cellnumber':
-      MaskComponent = CellNumberMask;
+    case 'homephone':
+      MaskComponent = HomePhoneMask;
+      break;
+    case 'cellphone':
+      MaskComponent = CellPhoneMask;
       break;
     default:
       MaskComponent = DateMask;

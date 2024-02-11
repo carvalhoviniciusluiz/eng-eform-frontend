@@ -3,18 +3,26 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import * as React from 'react';
+import { useState } from 'react';
 
 type Props = {
   id: string;
   label: string;
   name: string;
+  defaultValue?: string;
   options: { key: string; value: string }[];
   onChange?: (value: string) => void;
 };
 
-export function SelectField({ id, label, name, options, onChange }: Props) {
-  const [value, setValue] = React.useState('');
+export function SelectField({
+  id,
+  label,
+  name,
+  defaultValue = '',
+  options,
+  onChange
+}: Props) {
+  const [value, setValue] = useState(defaultValue);
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value;
     setValue(value);
