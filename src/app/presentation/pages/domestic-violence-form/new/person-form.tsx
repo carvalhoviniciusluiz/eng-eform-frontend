@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { GetCep, LoadFullForms } from '~/app/domain/usecases';
 import { MaskField, TextInput } from '~/app/presentation/components/custom';
 import BuildForm from './build-form';
-import PersonAddress from './person-address';
-import PersonContact from './person-contact';
-import PersonDocument from './person-document';
+import PersonAddressForm from './person-address-form';
+import PersonContactForm from './person-contact-form';
+import PersonDocumentForm from './person-document-form';
 
-type Address = {
+type PersonAddress = {
   id: string;
   number?: string;
   zipCode?: string;
@@ -20,14 +20,14 @@ type Address = {
   county?: string;
 };
 
-type Document = {
+type PersonDocument = {
   id: string;
   documentType?: string;
   documentNumber?: string;
   shippingDate?: string;
 };
 
-type Contact = {
+type PersonContact = {
   id: string;
   contactType?: string;
   contact?: string;
@@ -63,13 +63,13 @@ type Props = {
 
 function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
   const [value, setValue] = useState(0);
-  const [documents, seDocuments] = useState<Document[]>([
+  const [documents, seDocuments] = useState<PersonDocument[]>([
     { id: crypto.randomUUID() }
   ]);
-  const [adresses, seAdresses] = useState<Address[]>([
+  const [adresses, seAdresses] = useState<PersonAddress[]>([
     { id: crypto.randomUUID() }
   ]);
-  const [contacts, seContacts] = useState<Contact[]>([
+  const [contacts, seContacts] = useState<PersonContact[]>([
     { id: crypto.randomUUID() }
   ]);
 
@@ -183,7 +183,7 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
               margin: '3rem 0'
             }}
           >
-            <PersonAddress
+            <PersonAddressForm
               data={address}
               onGetCep={onGetCep}
               onAdd={handleOnAddNewAddress}
@@ -207,7 +207,7 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
               margin: '3rem 0'
             }}
           >
-            <PersonDocument
+            <PersonDocumentForm
               data={document}
               onAdd={handleOnAddNewDocument}
               onRemove={handleOnRemoveDocument}
@@ -230,7 +230,7 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
               margin: '3rem 0'
             }}
           >
-            <PersonContact
+            <PersonContactForm
               data={contact}
               onAdd={handleOnAddNewContact}
               onRemove={handleOnRemoveContact}

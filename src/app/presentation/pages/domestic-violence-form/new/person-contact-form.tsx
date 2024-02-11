@@ -19,7 +19,7 @@ type Props = {
   removeDisabled: boolean;
 };
 
-function PersonContact({
+function PersonContactForm({
   data,
   onAdd,
   onRemove,
@@ -114,4 +114,4 @@ function PersonContact({
   );
 }
 
-export default PersonContact;
+export default PersonContactForm;

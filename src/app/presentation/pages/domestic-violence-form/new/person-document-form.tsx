@@ -20,7 +20,7 @@ type Props = {
   removeDisabled: boolean;
 };
 
-function PersonDocument({
+function PersonDocumentForm({
   data,
   onAdd,
   onRemove,
@@ -113,4 +113,4 @@ function PersonDocument({
   );
 }
 
-export default PersonDocument;
+export default PersonDocumentForm;

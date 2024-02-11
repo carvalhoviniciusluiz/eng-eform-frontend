@@ -25,7 +25,7 @@ type Props = {
   removeDisabled: boolean;
 };
 
-function PersonAddress({
+function PersonAddressForm({
   data,
   onGetCep,
   onAdd,
@@ -154,4 +154,4 @@ function PersonAddress({
   );
 }
 
-export default PersonAddress;
+export default PersonAddressForm;
