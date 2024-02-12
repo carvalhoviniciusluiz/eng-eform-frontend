@@ -11,7 +11,7 @@ import {
   RadioGroup,
   Typography
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineDoubleRight as ExpandIcon } from 'react-icons/ai';
 import { QuestionType } from '~/app/domain/models';
 import { LoadFullForms } from '~/app/domain/usecases';
@@ -20,27 +20,23 @@ import { TextArea } from '~/app/presentation/components';
 type Props = {
   form: LoadFullForms.Form;
   question: LoadFullForms.Question;
+  submit?: (value: any) => void;
 };
 
-function BuildForm({ form, question }: Props) {
-  const [state, setState] = useState(() => {
-    const listDefault = {
-      [form.id]: {}
-    };
-    return {
-      forms: [form],
-      formQuestions: { ...listDefault },
-      selectedFormQuestions: { ...listDefault }
-    };
-  });
+function BuildForm({ form, question, submit }: Props) {
+  const [state, setState] = useState({ selectedQuestions: {} as any });
+
+  useEffect(() => {
+    submit && submit(state.selectedQuestions);
+  }, [state]);
 
   function handleQuestionTypeMultipleStore(
     event: any,
-    form: LoadFullForms.Form,
     question: LoadFullForms.Question
   ) {
     setState(prevState => {
-      let questions = [] as any;
+      const questionsState = prevState.selectedQuestions;
+      const questions = questionsState[question.id] || [];
       const { checked, value } = event.target;
       if (checked) {
         questions.push(value);
@@ -52,37 +48,27 @@ function BuildForm({ form, question }: Props) {
       }
       return {
         ...prevState,
-        selectedFormQuestions: {
-          ...prevState.selectedFormQuestions,
-          [form.id]: {
-            ...prevState.selectedFormQuestions[form.id as any],
-            [question.id]: questions
-          }
+        selectedQuestions: {
+          ...prevState.selectedQuestions,
+          [question.id]: questions
         }
       };
     });
   }
-
   function handleQuestionTypeObjectiveStore(
     event: any,
-    form: LoadFullForms.Form,
     question: LoadFullForms.Question
   ) {
     setState(prevState => ({
       ...prevState,
-      selectedFormQuestions: {
-        ...prevState.selectedFormQuestions,
-        [form.id]: {
-          ...prevState.selectedFormQuestions[form.id as any],
-          [question.id]: event.target.value
-        }
+      selectedQuestions: {
+        ...prevState.selectedQuestions,
+        [question.id]: event.target.value
       }
     }));
   }
-
   function handleQuestionTypePlainTextStore(
     event: any,
-    form: LoadFullForms.Form,
     question: LoadFullForms.Question,
     answer?: LoadFullForms.Answer
   ) {
@@ -91,18 +77,13 @@ function BuildForm({ form, question }: Props) {
       : { response: event.target.value };
     setState(prevState => ({
       ...prevState,
-      selectedFormQuestions: {
-        ...prevState.selectedFormQuestions,
-        [form.id]: {
-          ...prevState.selectedFormQuestions[form.id as any],
-          [question.id]: answerSelected
-        }
+      selectedQuestions: {
+        ...prevState.selectedQuestions,
+        [question.id]: answerSelected
       }
     }));
   }
-
   function handleInputToggle(
-    form: LoadFullForms.Form,
     question: LoadFullForms.Question,
     answer?: LoadFullForms.Answer
   ) {
@@ -119,9 +100,7 @@ function BuildForm({ form, question }: Props) {
                 fontSize: 22
               }
             }}
-            onClick={event =>
-              handleQuestionTypeObjectiveStore(event, form, question)
-            }
+            onClick={event => handleQuestionTypeObjectiveStore(event, question)}
           />
         );
       }
@@ -138,9 +117,7 @@ function BuildForm({ form, question }: Props) {
                 fontSize: 22
               }
             }}
-            onClick={event =>
-              handleQuestionTypeMultipleStore(event, form, question)
-            }
+            onClick={event => handleQuestionTypeMultipleStore(event, question)}
           />
         );
       }
@@ -149,7 +126,7 @@ function BuildForm({ form, question }: Props) {
           <TextArea
             placeholder={question.content}
             onChange={event =>
-              handleQuestionTypePlainTextStore(event, form, question, answer)
+              handleQuestionTypePlainTextStore(event, question, answer)
             }
           />
         );
@@ -157,13 +134,9 @@ function BuildForm({ form, question }: Props) {
         return <></>;
     }
   }
-
-  function handleQuestionWithAnswers(
-    form: LoadFullForms.Form,
-    question: LoadFullForms.Question
-  ) {
+  function handleQuestionWithAnswers(question: LoadFullForms.Question) {
     if (question.type === QuestionType.PLAIN_TEXT) {
-      return handleInputToggle(form, question);
+      return handleInputToggle(question);
     }
     if (!question.answers) {
       return;
@@ -181,18 +154,13 @@ function BuildForm({ form, question }: Props) {
               <Box key={answer.id}>
                 <FormControlLabel
                   value={answer.id}
-                  control={handleInputToggle(form, question, answer)}
+                  control={handleInputToggle(question, answer)}
                   label={answer.content}
                 />
                 <TextArea
                   placeholder={answer.content}
                   onChange={event =>
-                    handleQuestionTypePlainTextStore(
-                      event,
-                      form,
-                      question,
-                      answer
-                    )
+                    handleQuestionTypePlainTextStore(event, question, answer)
                   }
                 />
               </Box>
@@ -202,7 +170,7 @@ function BuildForm({ form, question }: Props) {
             <FormControlLabel
               key={answer.id}
               value={answer.id}
-              control={handleInputToggle(form, question, answer)}
+              control={handleInputToggle(question, answer)}
               label={answer.content}
             />
           );
@@ -210,11 +178,7 @@ function BuildForm({ form, question }: Props) {
       </RadioGroup>
     );
   }
-
-  function handleQuestionWithAnswerChilds(
-    form: LoadFullForms.Form,
-    question: LoadFullForms.Question
-  ) {
+  function handleQuestionWithAnswerChilds(question: LoadFullForms.Question) {
     if (!question.children) {
       return;
     }
@@ -236,7 +200,7 @@ function BuildForm({ form, question }: Props) {
               >
                 {child.content}
               </FormLabel>
-              {handleQuestionWithAnswers(form, child)}
+              {handleQuestionWithAnswers(child)}
             </FormControl>
           </Box>
         ))}
@@ -253,8 +217,8 @@ function BuildForm({ form, question }: Props) {
         <Typography>{question.content}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        {handleQuestionWithAnswers(form, question)}
-        {handleQuestionWithAnswerChilds(form, question)}
+        {handleQuestionWithAnswers(question)}
+        {handleQuestionWithAnswerChilds(question)}
       </AccordionDetails>
     </Accordion>
   );

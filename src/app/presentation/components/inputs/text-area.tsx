@@ -1,7 +1,6 @@
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
-import { useDebounce } from 'use-debounce';
 
 interface Props {
   placeholder: string;
@@ -9,13 +8,13 @@ interface Props {
 }
 
 export const TextArea = ({ placeholder, onChange }: Props) => {
-  const [inputEvent, setInputEvent] = useState<any>();
-  const [value] = useDebounce(inputEvent, 1000);
+  const [inputEvent, setInputEvent] =
+    useState<React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>>();
   useEffect(() => {
     if (inputEvent) {
       onChange && onChange(inputEvent);
     }
-  }, [onChange, value]);
+  }, [inputEvent]);
   return (
     <Paper
       component='div'
@@ -23,7 +22,6 @@ export const TextArea = ({ placeholder, onChange }: Props) => {
         p: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: 650,
         height: 100
       }}
     >

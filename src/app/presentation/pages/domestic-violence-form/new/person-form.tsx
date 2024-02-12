@@ -72,6 +72,9 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
   const [contacts, seContacts] = useState<PersonContact[]>([
     { id: crypto.randomUUID() }
   ]);
+  const [questions, setQuestions] = useState({});
+
+  console.log({ questions });
 
   function handleChange(event: React.SyntheticEvent, newValue: number) {
     setValue(newValue);
@@ -166,6 +169,14 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
               key={index}
               form={generalInformationsForm}
               question={question}
+              submit={(selectedQuestions: any) => {
+                setQuestions(prevState => {
+                  return {
+                    ...prevState,
+                    ...selectedQuestions
+                  };
+                });
+              }}
             />
           ))}
         </Paper>
