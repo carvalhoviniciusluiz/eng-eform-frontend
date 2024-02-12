@@ -51,11 +51,18 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
     };
   });
   const [value, setValue] = useState(0);
-
+  const [victimQuestions, setVictimQuestions] = useState({});
+  const [victimAdresses, setVictimAdresses] = useState({});
+  const [victimContacts, setVictimContacts] = useState({});
+  const [victimDocuments, setVictimDocuments] = useState({});
+  const [aggressorQuestions, setAggressorQuestions] = useState({});
+  const [aggressorAdresses, setAggressorAdresses] = useState({});
+  const [aggressorContacts, setAggressorContacts] = useState({});
+  const [aggressorDocuments, setAggressorDocuments] = useState({});
+  const [questionsMainForm, setQuestionsMainForm] = useState({});
   function handleChange(event: React.SyntheticEvent, newValue: number) {
     setValue(newValue);
   }
-
   async function handleGetCep(cep: string) {
     try {
       const output = await getCep.get(cep);
@@ -64,7 +71,21 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
       console.error(error);
     }
   }
-
+  function handleSubmit() {
+    console.log('Victim>>', {
+      Questions: victimQuestions,
+      Adresses: victimAdresses,
+      Contacts: victimContacts,
+      Documents: victimDocuments
+    });
+    console.log('Aggressor>>', {
+      Questions: aggressorQuestions,
+      Adresses: aggressorAdresses,
+      Contacts: aggressorContacts,
+      Documents: aggressorDocuments
+    });
+    console.log('Main Form>>', questionsMainForm);
+  }
   return (
     <Box>
       <AppBar position='static' color='transparent'>
@@ -74,9 +95,7 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
           <Tab label='Fixa de atendimento' />
         </Tabs>
       </AppBar>
-
       <Header />
-
       <Box style={{ marginBottom: '12rem' }}>
         <TabPanel value={value} index={0}>
           <PersonForm
@@ -84,10 +103,10 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
             caption='Cadastro de vítima'
             generalInformationsForm={state.generalInformationsForm}
             onGetCep={handleGetCep}
-            adressesSubmit={console.log}
-            contactsSubmit={console.log}
-            documentsSubmit={console.log}
-            questionsSubmit={console.log}
+            adressesSubmit={setVictimAdresses}
+            contactsSubmit={setVictimContacts}
+            documentsSubmit={setVictimDocuments}
+            questionsSubmit={setVictimQuestions}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -96,14 +115,17 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
             caption='Cadastro de agressor'
             generalInformationsForm={state.generalInformationsForm}
             onGetCep={handleGetCep}
-            adressesSubmit={console.log}
-            contactsSubmit={console.log}
-            documentsSubmit={console.log}
-            questionsSubmit={console.log}
+            adressesSubmit={setAggressorAdresses}
+            contactsSubmit={setAggressorContacts}
+            documentsSubmit={setAggressorDocuments}
+            questionsSubmit={setAggressorQuestions}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <DisplayQuestionsForm data={state.forms} submit={console.log} />
+          <DisplayQuestionsForm
+            data={state.forms}
+            submit={setQuestionsMainForm}
+          />
         </TabPanel>
       </Box>
       <Paper
@@ -114,7 +136,7 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
           <BottomNavigationAction
             label='Salvar'
             icon={<SaveIcon fontSize={44} />}
-            onClick={() => console.log('saved')}
+            onClick={handleSubmit}
             disabled={false}
           />
         </BottomNavigation>

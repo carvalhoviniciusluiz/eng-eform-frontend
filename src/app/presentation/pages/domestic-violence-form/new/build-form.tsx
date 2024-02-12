@@ -23,46 +23,40 @@ type Props = {
 };
 
 function BuildForm({ question, submit }: Props) {
-  const [state, setState] = useState({ selectedQuestions: {} as any });
+  const [selectedQuestions, setSelectedQuestions] = useState({});
   useEffect(() => {
-    submit && submit(state.selectedQuestions);
-  }, [state]);
+    submit && submit(selectedQuestions);
+  }, [selectedQuestions]);
   function handleQuestionTypeMultipleStore(
     event: any,
     question: LoadFullForms.Question
   ) {
-    setState(prevState => {
-      const questionsState = prevState.selectedQuestions;
-      const questions = questionsState[question.id] || [];
+    setSelectedQuestions((prevState: any) => {
+      const updateSelectedQuestions = { ...prevState };
+      if (!updateSelectedQuestions[question.id]) {
+        updateSelectedQuestions[question.id] = [];
+      }
       const { checked, value } = event.target;
       if (checked) {
-        questions.push(value);
+        updateSelectedQuestions[question.id].push(value);
       } else {
-        const index = questions.indexOf(value);
+        const index = updateSelectedQuestions[question.id].indexOf(value);
         if (index > -1) {
-          questions.splice(index, 1);
+          updateSelectedQuestions[question.id].splice(index, 1);
         }
       }
-      return {
-        ...prevState,
-        selectedQuestions: {
-          ...prevState.selectedQuestions,
-          [question.id]: questions
-        }
-      };
+      return updateSelectedQuestions;
     });
   }
   function handleQuestionTypeObjectiveStore(
     event: any,
     question: LoadFullForms.Question
   ) {
-    setState(prevState => ({
-      ...prevState,
-      selectedQuestions: {
-        ...prevState.selectedQuestions,
-        [question.id]: event.target.value
-      }
-    }));
+    setSelectedQuestions((prevState: any) => {
+      const updateSelectedQuestions = { ...prevState };
+      updateSelectedQuestions[question.id] = event.target.value;
+      return updateSelectedQuestions;
+    });
   }
   function handleQuestionTypePlainTextStore(
     event: any,
@@ -72,13 +66,11 @@ function BuildForm({ question, submit }: Props) {
     const answerSelected = answer
       ? { [answer.id]: event.target.value }
       : { response: event.target.value };
-    setState(prevState => ({
-      ...prevState,
-      selectedQuestions: {
-        ...prevState.selectedQuestions,
-        [question.id]: answerSelected
-      }
-    }));
+    setSelectedQuestions((prevState: any) => {
+      const updateSelectedQuestions = { ...prevState };
+      updateSelectedQuestions[question.id] = answerSelected;
+      return updateSelectedQuestions;
+    });
   }
   function handleInputToggle(
     question: LoadFullForms.Question,

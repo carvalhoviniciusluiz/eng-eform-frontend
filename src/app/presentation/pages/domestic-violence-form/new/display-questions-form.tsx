@@ -9,23 +9,10 @@ type Props = {
 };
 
 function ShowForms({ data, submit }: Props) {
-  const [response, setResponse] = useState({});
-  function handleResponse(form: any, questionsResponse: any) {
-    setResponse(prevState => {
-      const updatedResponse: any = { ...prevState };
-      if (!updatedResponse[form.id]) {
-        updatedResponse[form.id] = {};
-      }
-      updatedResponse[form.id] = {
-        ...updatedResponse[form.id],
-        ...questionsResponse
-      };
-      return updatedResponse;
-    });
-  }
+  const [questions, setQuestions] = useState({});
   useEffect(() => {
-    submit(response);
-  }, [response]);
+    submit(questions);
+  }, [questions]);
   return (
     <Box style={{ margin: 80 }}>
       {data.map(form => (
@@ -47,9 +34,22 @@ function ShowForms({ data, submit }: Props) {
             <BuildForm
               key={index}
               question={question}
-              submit={questionsResponse =>
-                handleResponse(form, questionsResponse)
-              }
+              submit={selectedQuestions => {
+                setQuestions(prevState => {
+                  const updatedQuestions: any = { ...prevState };
+                  for (const questionId in selectedQuestions) {
+                    if (prevState.hasOwnProperty(form.id)) {
+                      updatedQuestions[form.id][questionId] =
+                        selectedQuestions[questionId];
+                    } else {
+                      updatedQuestions[form.id] = {
+                        [questionId]: selectedQuestions[questionId]
+                      };
+                    }
+                  }
+                  return updatedQuestions;
+                });
+              }}
             />
           ))}
         </Paper>
