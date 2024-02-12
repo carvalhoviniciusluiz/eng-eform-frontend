@@ -1,7 +1,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GetCep, LoadFullForms } from '~/app/domain/usecases';
 import { MaskField, TextInput } from '~/app/presentation/components/custom';
 import BuildForm from './build-form';
@@ -59,9 +59,22 @@ type Props = {
   caption: string;
   generalInformationsForm: LoadFullForms.Form;
   onGetCep: (cep: string) => Promise<GetCep.Address | undefined>;
+  documentsSubmit: (value: PersonDocument[]) => void;
+  adressesSubmit: (value: PersonAddress[]) => void;
+  contactsSubmit: (value: PersonContact[]) => void;
+  questionsSubmit: (value: any) => void;
 };
 
-function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
+function PersonForm({
+  id,
+  caption,
+  generalInformationsForm,
+  onGetCep,
+  documentsSubmit,
+  adressesSubmit,
+  contactsSubmit,
+  questionsSubmit
+}: Props) {
   const [value, setValue] = useState(0);
   const [documents, seDocuments] = useState<PersonDocument[]>([
     { id: crypto.randomUUID() }
@@ -73,17 +86,24 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
     { id: crypto.randomUUID() }
   ]);
   const [questions, setQuestions] = useState({});
-
-  console.log({ questions });
-
+  useEffect(() => {
+    documentsSubmit(documents);
+  }, [documents]);
+  useEffect(() => {
+    adressesSubmit(adresses);
+  }, [adresses]);
+  useEffect(() => {
+    contactsSubmit(contacts);
+  }, [contacts]);
+  useEffect(() => {
+    questionsSubmit(questions);
+  }, [questions]);
   function handleChange(event: React.SyntheticEvent, newValue: number) {
     setValue(newValue);
   }
-
   function handleOnAddNewAddress() {
     seAdresses(prevState => [...prevState, { id: crypto.randomUUID() }]);
   }
-
   function handleOnRemoveAddress(addressId: string) {
     seAdresses(prevState => {
       const adressesFiltered = prevState.filter(
@@ -92,11 +112,9 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
       return [...adressesFiltered];
     });
   }
-
   function handleOnAddNewDocument() {
     seDocuments(prevState => [...prevState, { id: crypto.randomUUID() }]);
   }
-
   function handleOnRemoveDocument(documentId: string) {
     seDocuments(prevState => {
       const documentsFiltered = prevState.filter(
@@ -105,11 +123,9 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
       return [...documentsFiltered];
     });
   }
-
   function handleOnAddNewContact() {
     seContacts(prevState => [...prevState, { id: crypto.randomUUID() }]);
   }
-
   function handleOnRemoveContact(contactId: string) {
     seContacts(prevState => {
       const contactsFiltered = prevState.filter(
@@ -118,40 +134,8 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
       return [...contactsFiltered];
     });
   }
-
-  return (
-    <Box style={{ margin: 80 }}>
-      <Box>
-        <Box
-          style={{
-            margin: '72px 0 73px',
-            display: 'flex',
-            justifyContent: 'space-between'
-          }}
-        >
-          <Typography
-            style={{
-              fontSize: 24
-            }}
-          >
-            {caption}
-          </Typography>
-        </Box>
-        <TextInput id={id} name='name' label='Nome completo' required />
-        <TextInput id={id} name='socialName' label='Nome social' />
-        <MaskField
-          id={id}
-          name='birthdate'
-          label='Data de nascimento'
-          mask='date'
-        />
-      </Box>
-      <Tabs value={value} onChange={handleChange} variant='fullWidth'>
-        <Tab label={generalInformationsForm.name} />
-        <Tab label='Endereço' />
-        <Tab label='Documentos' />
-        <Tab label='Contatos' />
-      </Tabs>
+  function handleGeneralInformationForm() {
+    return (
       <TabPanel value={value} index={0}>
         <Paper
           key={`${id}-${generalInformationsForm.id}-general-infomations`}
@@ -167,9 +151,8 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
           {generalInformationsForm.questions.map((question, index) => (
             <BuildForm
               key={index}
-              form={generalInformationsForm}
               question={question}
-              submit={(selectedQuestions: any) => {
+              submit={selectedQuestions => {
                 setQuestions(prevState => {
                   return {
                     ...prevState,
@@ -181,6 +164,19 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
           ))}
         </Paper>
       </TabPanel>
+    );
+  }
+  function handleAddressUpdate(value: GetCep.Address) {
+    seAdresses(prevState => {
+      const addressIndex = prevState.findIndex(item => item.id === value.id!);
+      if (addressIndex !== -1) {
+        prevState[addressIndex] = { ...value, id: value.id! };
+      }
+      return [...prevState];
+    });
+  }
+  function handleAdressesForm() {
+    return (
       <TabPanel value={value} index={1}>
         {adresses.map(address => (
           <Paper
@@ -200,11 +196,24 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
               onAdd={handleOnAddNewAddress}
               onRemove={handleOnRemoveAddress}
               removeDisabled={adresses.length < 2}
-              submit={console.log}
+              submit={handleAddressUpdate}
             />
           </Paper>
         ))}
       </TabPanel>
+    );
+  }
+  function handleDocumentsUpdate(value: PersonDocument) {
+    seDocuments(prevState => {
+      const documentIndex = prevState.findIndex(item => item.id === value.id);
+      if (documentIndex !== -1) {
+        prevState[documentIndex] = { ...value };
+      }
+      return [...prevState];
+    });
+  }
+  function handleDocumentsForm() {
+    return (
       <TabPanel value={value} index={2}>
         {documents.map(document => (
           <Paper
@@ -223,11 +232,24 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
               onAdd={handleOnAddNewDocument}
               onRemove={handleOnRemoveDocument}
               removeDisabled={documents.length < 2}
-              submit={console.log}
+              submit={handleDocumentsUpdate}
             />
           </Paper>
         ))}
       </TabPanel>
+    );
+  }
+  function handleContactsUpdate(value: PersonContact) {
+    seContacts(prevState => {
+      const contactIndex = prevState.findIndex(item => item.id === value.id);
+      if (contactIndex !== -1) {
+        prevState[contactIndex] = { ...value };
+      }
+      return [...prevState];
+    });
+  }
+  function handleContactsForm() {
+    return (
       <TabPanel value={value} index={3}>
         {contacts.map(contact => (
           <Paper
@@ -246,11 +268,56 @@ function PersonForm({ id, caption, generalInformationsForm, onGetCep }: Props) {
               onAdd={handleOnAddNewContact}
               onRemove={handleOnRemoveContact}
               removeDisabled={contacts.length < 2}
-              submit={console.log}
+              submit={handleContactsUpdate}
             />
           </Paper>
         ))}
       </TabPanel>
+    );
+  }
+  function displayPanelPlaces() {
+    return (
+      <>
+        <Tabs value={value} onChange={handleChange} variant='fullWidth'>
+          <Tab label={generalInformationsForm.name} />
+          <Tab label='Endereço' />
+          <Tab label='Documentos' />
+          <Tab label='Contatos' />
+        </Tabs>
+        {handleGeneralInformationForm()}
+        {handleAdressesForm()}
+        {handleDocumentsForm()}
+        {handleContactsForm()}
+      </>
+    );
+  }
+  function displayPersonForm() {
+    return (
+      <Box>
+        <Box
+          style={{
+            margin: '72px 0 73px',
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Typography style={{ fontSize: 24 }}>{caption}</Typography>
+        </Box>
+        <TextInput id={id} name='name' label='Nome completo' required />
+        <TextInput id={id} name='socialName' label='Nome social' />
+        <MaskField
+          id={id}
+          name='birthdate'
+          label='Data de nascimento'
+          mask='date'
+        />
+      </Box>
+    );
+  }
+  return (
+    <Box style={{ margin: 80 }}>
+      {displayPersonForm()}
+      {displayPanelPlaces()}
     </Box>
   );
 }

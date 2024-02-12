@@ -18,18 +18,15 @@ import { LoadFullForms } from '~/app/domain/usecases';
 import { TextArea } from '~/app/presentation/components';
 
 type Props = {
-  form: LoadFullForms.Form;
   question: LoadFullForms.Question;
   submit?: (value: any) => void;
 };
 
-function BuildForm({ form, question, submit }: Props) {
+function BuildForm({ question, submit }: Props) {
   const [state, setState] = useState({ selectedQuestions: {} as any });
-
   useEffect(() => {
     submit && submit(state.selectedQuestions);
   }, [state]);
-
   function handleQuestionTypeMultipleStore(
     event: any,
     question: LoadFullForms.Question

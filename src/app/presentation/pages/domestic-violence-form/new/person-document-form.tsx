@@ -45,7 +45,9 @@ function PersonDocumentForm({
           name='documentNumber'
           label='Número'
           mask='cpf'
-          onChange={event => handleOnChange('', event.target.value)}
+          onChange={event =>
+            handleOnChange('documentNumber', event.target.value)
+          }
         />
       );
     }

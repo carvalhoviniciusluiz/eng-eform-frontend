@@ -1,15 +1,14 @@
-import { AiFillSave as SaveIcon } from 'react-icons/ai';
-import { GetCep, LoadFullForms } from '~/app/domain/usecases';
-import Header from './header';
-import PersonForm from './person-form';
-import ShowForms from './show-forms';
-
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
+import { AiFillSave as SaveIcon } from 'react-icons/ai';
+import { GetCep, LoadFullForms } from '~/app/domain/usecases';
+import DisplayQuestionsForm from './display-questions-form';
+import Header from './header';
+import PersonForm from './person-form';
 
 type Props = {
   getCep: GetCep;
@@ -85,6 +84,10 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
             caption='Cadastro de vítima'
             generalInformationsForm={state.generalInformationsForm}
             onGetCep={handleGetCep}
+            adressesSubmit={console.log}
+            contactsSubmit={console.log}
+            documentsSubmit={console.log}
+            questionsSubmit={console.log}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -93,10 +96,14 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
             caption='Cadastro de agressor'
             generalInformationsForm={state.generalInformationsForm}
             onGetCep={handleGetCep}
+            adressesSubmit={console.log}
+            contactsSubmit={console.log}
+            documentsSubmit={console.log}
+            questionsSubmit={console.log}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <ShowForms data={state.forms} />
+          <DisplayQuestionsForm data={state.forms} submit={console.log} />
         </TabPanel>
       </Box>
       <Paper
