@@ -10,15 +10,7 @@ type Props = {
   onKeyUp?: (event: any) => void;
 };
 
-export function TextInput({
-  id,
-  label,
-  name,
-  value,
-  required,
-  onChange,
-  onKeyUp
-}: Props) {
+export function TextInput({ id, label, name, required, ...props }: Props) {
   return (
     <Box
       style={{
@@ -35,12 +27,10 @@ export function TextInput({
           width: '100%',
           marginTop: 7
         }}
+        {...props}
         id={`${name}-${id}-text-field`}
-        name={name}
         variant='outlined'
-        value={value}
-        onChange={onChange}
-        onKeyUp={onKeyUp}
+        name={name}
       />
     </Box>
   );

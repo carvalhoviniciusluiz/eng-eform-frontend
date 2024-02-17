@@ -20,8 +20,7 @@ export function MaskField({
   name,
   mask,
   required,
-  onChange,
-  onKeyUp
+  ...props
 }: Props) {
   return (
     <Box
@@ -34,17 +33,16 @@ export function MaskField({
         {required && <span>*</span>}
       </label>
       <MaskedTextField
-        maskType={mask}
         style={{
           background: '#fff',
           width: '100%',
           marginTop: 7
         }}
+        {...props}
+        maskType={mask}
         id={`${name}-${id}-mask-field`}
         name={name}
         variant='outlined'
-        onChange={onChange}
-        onKeyUp={onKeyUp}
       />
     </Box>
   );

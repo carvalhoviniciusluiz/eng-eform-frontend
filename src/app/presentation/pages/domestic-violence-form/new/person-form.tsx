@@ -63,6 +63,7 @@ type Props = {
   adressesSubmit: (value: PersonAddress[]) => void;
   contactsSubmit: (value: PersonContact[]) => void;
   questionsSubmit: (value: any) => void;
+  personSubmit: (value: any) => void;
 };
 
 function PersonForm({
@@ -73,9 +74,16 @@ function PersonForm({
   documentsSubmit,
   adressesSubmit,
   contactsSubmit,
-  questionsSubmit
+  questionsSubmit,
+  personSubmit
 }: Props) {
-  const [value, setValue] = useState(0);
+  const [tabValue, setTabValue] = useState(0);
+  const [person, setPerson] = useState(() => ({
+    id: crypto.randomUUID(),
+    name: '',
+    socialName: '',
+    birthDate: ''
+  }));
   const [documents, seDocuments] = useState<PersonDocument[]>([
     { id: crypto.randomUUID() }
   ]);
@@ -86,6 +94,9 @@ function PersonForm({
     { id: crypto.randomUUID() }
   ]);
   const [questions, setQuestions] = useState({});
+  useEffect(() => {
+    personSubmit(person);
+  }, [person]);
   useEffect(() => {
     documentsSubmit(documents);
   }, [documents]);
@@ -98,8 +109,8 @@ function PersonForm({
   useEffect(() => {
     questionsSubmit(questions);
   }, [questions]);
-  function handleChange(event: React.SyntheticEvent, newValue: number) {
-    setValue(newValue);
+  function handleChange(event: React.SyntheticEvent, newTabValue: number) {
+    setTabValue(newTabValue);
   }
   function handleOnAddNewAddress() {
     seAdresses(prevState => [...prevState, { id: crypto.randomUUID() }]);
@@ -136,7 +147,7 @@ function PersonForm({
   }
   function handleGeneralInformationForm() {
     return (
-      <TabPanel value={value} index={0}>
+      <TabPanel value={tabValue} index={0}>
         <Paper
           key={`${id}-${generalInformationsForm.id}-general-infomations`}
           sx={{
@@ -177,7 +188,7 @@ function PersonForm({
   }
   function handleAdressesForm() {
     return (
-      <TabPanel value={value} index={1}>
+      <TabPanel value={tabValue} index={1}>
         {adresses.map(address => (
           <Paper
             key={`${id}-${address.id}-address`}
@@ -214,7 +225,7 @@ function PersonForm({
   }
   function handleDocumentsForm() {
     return (
-      <TabPanel value={value} index={2}>
+      <TabPanel value={tabValue} index={2}>
         {documents.map(document => (
           <Paper
             key={`${id}-${document.id}-document`}
@@ -250,7 +261,7 @@ function PersonForm({
   }
   function handleContactsForm() {
     return (
-      <TabPanel value={value} index={3}>
+      <TabPanel value={tabValue} index={3}>
         {contacts.map(contact => (
           <Paper
             key={`${id}-${contact.id}-contact`}
@@ -278,7 +289,7 @@ function PersonForm({
   function displayPanelPlaces() {
     return (
       <>
-        <Tabs value={value} onChange={handleChange} variant='fullWidth'>
+        <Tabs value={tabValue} onChange={handleChange} variant='fullWidth'>
           <Tab label={generalInformationsForm.name} />
           <Tab label='Endereço' />
           <Tab label='Documentos' />
@@ -303,13 +314,40 @@ function PersonForm({
         >
           <Typography style={{ fontSize: 24 }}>{caption}</Typography>
         </Box>
-        <TextInput id={id} name='name' label='Nome completo' required />
-        <TextInput id={id} name='socialName' label='Nome social' />
+        <TextInput
+          id={id}
+          name='name'
+          label='Nome completo'
+          required
+          onChange={event =>
+            setPerson(prevState => ({
+              ...prevState,
+              name: event.target.value
+            }))
+          }
+        />
+        <TextInput
+          id={id}
+          name='socialName'
+          label='Nome social'
+          onChange={event =>
+            setPerson(prevState => ({
+              ...prevState,
+              socialName: event.target.value
+            }))
+          }
+        />
         <MaskField
           id={id}
-          name='birthdate'
+          name='birthDate'
           label='Data de nascimento'
           mask='date'
+          onChange={event =>
+            setPerson(prevState => ({
+              ...prevState,
+              birthDate: event.target.value
+            }))
+          }
         />
       </Box>
     );

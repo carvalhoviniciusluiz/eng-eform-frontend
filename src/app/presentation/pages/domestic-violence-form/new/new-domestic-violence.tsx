@@ -51,10 +51,12 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
     };
   });
   const [value, setValue] = useState(0);
+  const [victimPerson, setVictimPerson] = useState<any>({});
   const [victimQuestions, setVictimQuestions] = useState({});
   const [victimAdresses, setVictimAdresses] = useState({});
   const [victimContacts, setVictimContacts] = useState({});
   const [victimDocuments, setVictimDocuments] = useState({});
+  const [aggressorPerson, setAggressorPerson] = useState<any>({});
   const [aggressorQuestions, setAggressorQuestions] = useState({});
   const [aggressorAdresses, setAggressorAdresses] = useState({});
   const [aggressorContacts, setAggressorContacts] = useState({});
@@ -72,13 +74,24 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
     }
   }
   function handleSubmit() {
+    if (victimPerson.name === '') {
+      alert('Você não informou o nome da vítima');
+      return;
+    }
+    if (aggressorPerson.name === '') {
+      alert('Você não informou o nome da agressor');
+      return;
+    }
+
     console.log('Victim>>', {
+      person: victimPerson,
       Questions: victimQuestions,
       Adresses: victimAdresses,
       Contacts: victimContacts,
       Documents: victimDocuments
     });
     console.log('Aggressor>>', {
+      person: aggressorPerson,
       Questions: aggressorQuestions,
       Adresses: aggressorAdresses,
       Contacts: aggressorContacts,
@@ -107,6 +120,7 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
             contactsSubmit={setVictimContacts}
             documentsSubmit={setVictimDocuments}
             questionsSubmit={setVictimQuestions}
+            personSubmit={setVictimPerson}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -119,6 +133,7 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
             contactsSubmit={setAggressorContacts}
             documentsSubmit={setAggressorDocuments}
             questionsSubmit={setAggressorQuestions}
+            personSubmit={setAggressorPerson}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>
