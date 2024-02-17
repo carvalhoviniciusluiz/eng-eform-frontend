@@ -5,15 +5,10 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import { AiFillSave as SaveIcon } from 'react-icons/ai';
-import { GetCep, LoadFullForms } from '~/app/domain/usecases';
+import { AddFormInput, GetCep, LoadFullForms } from '~/app/domain/usecases';
 import DisplayQuestionsForm from './display-questions-form';
 import Header from './header';
 import PersonForm from './person-form';
-
-type Props = {
-  getCep: GetCep;
-  data: LoadFullForms.Response;
-};
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -37,9 +32,26 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
+type Props = {
+  getCep: GetCep;
+  data: LoadFullForms.Response;
+  addFormInput: AddFormInput;
+};
+
+/**
+ * TODO:
+ *
+ * add consumer for data container
+ *
+ */
+
 const GENERAL_INFORMATION_FORM_ID = 'f594187f-504c-4266-b313-6d1fb19bb197';
 
-export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
+export default function NewDomesticViolenceComponent({
+  getCep,
+  data,
+  addFormInput
+}: Props) {
   const [state] = useState(() => {
     const forms = data.filter(form => form.id !== GENERAL_INFORMATION_FORM_ID);
     const generalInformationsForm = data.filter(
@@ -82,22 +94,26 @@ export default function NewDomesticViolenceComponent({ getCep, data }: Props) {
       alert('Você não informou o nome da agressor');
       return;
     }
-
-    console.log('Victim>>', {
-      person: victimPerson,
-      Questions: victimQuestions,
-      Adresses: victimAdresses,
-      Contacts: victimContacts,
-      Documents: victimDocuments
-    });
-    console.log('Aggressor>>', {
-      person: aggressorPerson,
-      Questions: aggressorQuestions,
-      Adresses: aggressorAdresses,
-      Contacts: aggressorContacts,
-      Documents: aggressorDocuments
-    });
-    console.log('Main Form>>', questionsMainForm);
+    addFormInput
+      .execute({
+        victim: {
+          person: victimPerson,
+          questions: victimQuestions,
+          adresses: victimAdresses,
+          contacts: victimContacts,
+          documents: victimDocuments
+        },
+        aggressor: {
+          person: aggressorPerson,
+          questions: aggressorQuestions,
+          adresses: aggressorAdresses,
+          contacts: aggressorContacts,
+          documents: aggressorDocuments
+        },
+        mainForms: questionsMainForm
+      } as any)
+      .then(console.log)
+      .catch(console.error);
   }
   return (
     <Box>

@@ -66,6 +66,13 @@ type Props = {
   personSubmit: (value: any) => void;
 };
 
+/**
+ * TODO:
+ *
+ * add global data container for remove submit events and useEffects
+ *
+ */
+
 function PersonForm({
   id,
   caption,

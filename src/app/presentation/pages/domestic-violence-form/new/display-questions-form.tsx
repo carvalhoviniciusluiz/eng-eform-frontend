@@ -8,6 +8,13 @@ type Props = {
   submit: (value: any) => void;
 };
 
+/**
+ * TODO:
+ *
+ * add global data container for remove submit events and useEffects
+ *
+ */
+
 function ShowForms({ data, submit }: Props) {
   const [questions, setQuestions] = useState({});
   useEffect(() => {
