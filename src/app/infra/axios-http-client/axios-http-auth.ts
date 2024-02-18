@@ -23,7 +23,7 @@ export class AxiosHttpAuth {
         const credentials = this.serviceStorage.get('eform:account');
         if (error.response?.status === 401 && credentials?.refreshToken) {
           const originalConfig = error.config;
-          const originalData = JSON.parse(originalConfig.data);
+          const originalData = JSON.parse(originalConfig.data ?? '{}');
           if (!this.retry) {
             this.retry = true;
             this.axiosInstance
