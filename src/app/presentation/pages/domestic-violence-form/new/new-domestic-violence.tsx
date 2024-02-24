@@ -6,6 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import { AiFillSave as SaveIcon } from 'react-icons/ai';
 import { AddFormInput, GetCep, LoadFullForms } from '~/app/domain/usecases';
+import { Toast } from '~/app/presentation/components';
 import DisplayQuestionsForm from './display-questions-form';
 import Header from './header';
 import PersonForm from './person-form';
@@ -139,6 +140,13 @@ export default function NewDomesticViolenceComponent({
             personSubmit={setVictimPerson}
           />
         </TabPanel>
+
+        <Toast
+          open
+          type='success'
+          message='This is an error alert with a custom background color'
+        />
+
         <TabPanel value={value} index={1}>
           <PersonForm
             id='aggressor'

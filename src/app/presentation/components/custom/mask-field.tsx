@@ -7,6 +7,7 @@ import {
 type Props = {
   id: string;
   label: string;
+  tooltip?: string;
   name: string;
   mask: MaskType;
   required?: boolean;
@@ -17,6 +18,7 @@ type Props = {
 export function MaskField({
   id,
   label,
+  tooltip,
   name,
   mask,
   required,
@@ -44,6 +46,15 @@ export function MaskField({
         name={name}
         variant='outlined'
       />
+      {tooltip && (
+        <Box
+          style={{
+            textAlign: 'end'
+          }}
+        >
+          <span>{tooltip}</span>
+        </Box>
+      )}
     </Box>
   );
 }

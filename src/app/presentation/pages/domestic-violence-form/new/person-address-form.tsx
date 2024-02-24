@@ -90,6 +90,7 @@ function PersonAddressForm({
           name='zipCode'
           label='CEP'
           mask='zipcode'
+          tooltip='precione ENTER para procurar'
           onChange={event => setZipcode(event.target.value)}
           onKeyUp={handleOnKeyUp}
         />
