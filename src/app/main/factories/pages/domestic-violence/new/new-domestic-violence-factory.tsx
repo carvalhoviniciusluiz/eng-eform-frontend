@@ -1,7 +1,8 @@
 import { LoadFullForms } from '~/app/domain/usecases';
 import {
   makeRemoteAddFormInput,
-  makeRemoteGetCep
+  makeRemoteGetCep,
+  makeRemoteGetPerson
 } from '~/app/main/factories/usecases';
 import { BaseLayout } from '~/app/presentation/layouts';
 import { NewDomesticViolenceTag } from '~/app/presentation/pages';
@@ -15,6 +16,7 @@ export const makeNewDomesticViolence = (props: {
         {...props}
         getCep={makeRemoteGetCep()}
         addFormInput={makeRemoteAddFormInput()}
+        getPerson={makeRemoteGetPerson()}
       />
     </BaseLayout>
   );

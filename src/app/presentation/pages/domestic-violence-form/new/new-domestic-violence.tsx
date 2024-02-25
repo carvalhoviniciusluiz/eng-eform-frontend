@@ -10,7 +10,12 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import { AiFillSave as SaveIcon } from 'react-icons/ai';
-import { AddFormInput, GetCep, LoadFullForms } from '~/app/domain/usecases';
+import {
+  AddFormInput,
+  GetCep,
+  GetPerson,
+  LoadFullForms
+} from '~/app/domain/usecases';
 import { errorHandler } from '~/app/infra/error';
 import { Toast } from '~/app/presentation/components';
 import DisplayQuestionsForm from './display-questions-form';
@@ -43,6 +48,7 @@ type Props = {
   getCep: GetCep;
   data: LoadFullForms.Response;
   addFormInput: AddFormInput;
+  getPerson: GetPerson;
 };
 
 /**
@@ -57,7 +63,8 @@ const GENERAL_INFORMATION_FORM_ID = 'f594187f-504c-4266-b313-6d1fb19bb197';
 export default function NewDomesticViolenceComponent({
   getCep,
   data,
-  addFormInput
+  addFormInput,
+  getPerson
 }: Props) {
   const [state] = useState(() => {
     const forms = data.filter(form => form.id !== GENERAL_INFORMATION_FORM_ID);
@@ -71,11 +78,13 @@ export default function NewDomesticViolenceComponent({
   });
   const [value, setValue] = useState(0);
   const [victimPerson, setVictimPerson] = useState<any>({});
+  const [victimSearch, setVictimSearch] = useState<any>(null);
   const [victimQuestions, setVictimQuestions] = useState({});
   const [victimAdresses, setVictimAdresses] = useState({});
   const [victimContacts, setVictimContacts] = useState({});
   const [victimDocuments, setVictimDocuments] = useState({});
   const [aggressorPerson, setAggressorPerson] = useState<any>({});
+  const [aggressorSearch, setAggressorSearch] = useState<any>(null);
   const [aggressorQuestions, setAggressorQuestions] = useState({});
   const [aggressorAdresses, setAggressorAdresses] = useState({});
   const [aggressorContacts, setAggressorContacts] = useState({});
@@ -136,7 +145,46 @@ export default function NewDomesticViolenceComponent({
         mainForms: questionsMainForm
       } as any)
       .then(console.log)
-      .catch(error => {
+      .catch(async error => {
+        setWarn(() => ({
+          ...errorHandler(error),
+          type: 'error',
+          open: true
+        }));
+        const [, , personId] = error.message.split('::');
+        if (personId) {
+          console.log(personId);
+        }
+      });
+  }
+  function handleOnSearchClick(value: string) {
+    const hasValue = !!value;
+    if (!hasValue) {
+      setWarn(() => ({
+        title: 'Aviso',
+        message: 'Você deve digitar um nome e então clicar no botão',
+        type: 'info',
+        open: true
+      }));
+      return;
+    }
+    setWarn(() => ({
+      title: '',
+      message: '',
+      type: '',
+      open: false
+    }));
+    getPerson
+      .execute({ name: value })
+      .then(data => {
+        setVictimSearch(() => ({
+          id: data.id,
+          name: data.name,
+          socialName: data.socialName,
+          birthDate: data.birthDate
+        }));
+      })
+      .catch(async error => {
         setWarn(() => ({
           ...errorHandler(error),
           type: 'error',
@@ -163,6 +211,7 @@ export default function NewDomesticViolenceComponent({
       <Box style={{ marginBottom: '12rem' }}>
         <TabPanel value={value} index={0}>
           <PersonForm
+            input={victimSearch}
             id='victim'
             caption='Cadastro de vítima'
             generalInformationsForm={state.generalInformationsForm}
@@ -172,10 +221,12 @@ export default function NewDomesticViolenceComponent({
             documentsSubmit={setVictimDocuments}
             questionsSubmit={setVictimQuestions}
             personSubmit={setVictimPerson}
+            onSearchClick={handleOnSearchClick}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PersonForm
+            input={aggressorSearch}
             id='aggressor'
             caption='Cadastro de agressor'
             generalInformationsForm={state.generalInformationsForm}
@@ -185,6 +236,7 @@ export default function NewDomesticViolenceComponent({
             documentsSubmit={setAggressorDocuments}
             questionsSubmit={setAggressorQuestions}
             personSubmit={setAggressorPerson}
+            onSearchClick={handleOnSearchClick}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>

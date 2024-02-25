@@ -108,7 +108,13 @@ function PersonAddressForm({
           value={address?.publicPlace}
           onChange={event => handleOnChange('publicPlace', event.target.value)}
         />
-        <TextInput id={`${data.id}-address`} name='number' label='Número' />
+        <TextInput
+          id={`${data.id}-address`}
+          name='number'
+          label='Número'
+          value={address?.number}
+          onChange={event => handleOnChange('number', event.target.value)}
+        />
         <TextInput
           id={`${data.id}-address`}
           name='neighborhoodComplement'

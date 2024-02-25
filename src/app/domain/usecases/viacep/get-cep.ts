@@ -22,6 +22,7 @@ export namespace GetCep {
     zipCode: string;
     ddd: string;
     city: string;
+    number?: string;
     county: string;
     publicPlace: string;
   };

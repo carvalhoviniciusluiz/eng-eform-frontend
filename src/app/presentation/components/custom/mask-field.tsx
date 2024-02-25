@@ -11,6 +11,7 @@ type Props = {
   name: string;
   mask: MaskType;
   required?: boolean;
+  value?: string;
   onChange?: (event: any) => void;
   onKeyUp?: (event: any) => void;
 };

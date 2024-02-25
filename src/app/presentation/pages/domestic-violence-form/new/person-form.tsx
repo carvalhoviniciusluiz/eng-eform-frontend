@@ -2,8 +2,13 @@ import { Box, Paper, Typography } from '@mui/material';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useEffect, useState } from 'react';
+import { MdSearch as SearchIcon } from 'react-icons/md';
 import { GetCep, LoadFullForms } from '~/app/domain/usecases';
-import { MaskField, TextInput } from '~/app/presentation/components/custom';
+import {
+  MaskField,
+  TextInput,
+  TextInputIcon
+} from '~/app/presentation/components/custom';
 import BuildForm from './build-form';
 import PersonAddressForm from './person-address-form';
 import PersonContactForm from './person-contact-form';
@@ -55,6 +60,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 type Props = {
+  input?: any;
   id: string;
   caption: string;
   generalInformationsForm: LoadFullForms.Form;
@@ -64,6 +70,7 @@ type Props = {
   contactsSubmit: (value: PersonContact[]) => void;
   questionsSubmit: (value: any) => void;
   personSubmit: (value: any) => void;
+  onSearchClick: (value: string) => void;
 };
 
 /**
@@ -74,6 +81,7 @@ type Props = {
  */
 
 function PersonForm({
+  input,
   id,
   caption,
   generalInformationsForm,
@@ -82,7 +90,8 @@ function PersonForm({
   adressesSubmit,
   contactsSubmit,
   questionsSubmit,
-  personSubmit
+  personSubmit,
+  onSearchClick
 }: Props) {
   const [tabValue, setTabValue] = useState(0);
   const [person, setPerson] = useState(() => ({
@@ -102,6 +111,17 @@ function PersonForm({
   ]);
   const [questions, setQuestions] = useState({});
   useEffect(() => {
+    if (input) {
+      setPerson(() => ({
+        id: input.id,
+        name: input.name,
+        socialName: input.socialName,
+        birthDate: input.birthDate
+      }));
+    }
+  }, [input]);
+  // TODO: vvv
+  useEffect(() => {
     personSubmit(person);
   }, [person]);
   useEffect(() => {
@@ -116,6 +136,7 @@ function PersonForm({
   useEffect(() => {
     questionsSubmit(questions);
   }, [questions]);
+  ///////^^^
   function handleChange(event: React.SyntheticEvent, newTabValue: number) {
     setTabValue(newTabValue);
   }
@@ -321,10 +342,12 @@ function PersonForm({
         >
           <Typography style={{ fontSize: 24 }}>{caption}</Typography>
         </Box>
-        <TextInput
+        <TextInputIcon
           id={id}
           name='name'
           label='Nome completo'
+          tooltip='clique no botão para procurar'
+          icon={<SearchIcon />}
           required
           onChange={event =>
             setPerson(prevState => ({
@@ -332,6 +355,8 @@ function PersonForm({
               name: event.target.value
             }))
           }
+          onIconClick={onSearchClick}
+          value={person.name}
         />
         <TextInput
           id={id}
@@ -343,6 +368,7 @@ function PersonForm({
               socialName: event.target.value
             }))
           }
+          value={person.socialName}
         />
         <MaskField
           id={id}
@@ -355,6 +381,7 @@ function PersonForm({
               birthDate: event.target.value
             }))
           }
+          value={person.birthDate}
         />
       </Box>
     );
