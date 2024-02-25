@@ -44,6 +44,7 @@ function PersonContactForm({
           name='contact'
           label='Contato'
           mask='cellphone'
+          value={contact?.contact}
           onChange={event => handleOnChange('contact', event.target.value)}
         />
       );
@@ -55,6 +56,7 @@ function PersonContactForm({
           name='contact'
           label='Contato'
           mask='homephone'
+          value={contact?.contact}
           onChange={event => handleOnChange('contact', event.target.value)}
         />
       );
@@ -64,6 +66,7 @@ function PersonContactForm({
         id={`${data.id}-contact`}
         name='contact'
         label='Contato'
+        value={contact?.contact}
         onChange={event => handleOnChange('contact', event.target.value)}
       />
     );

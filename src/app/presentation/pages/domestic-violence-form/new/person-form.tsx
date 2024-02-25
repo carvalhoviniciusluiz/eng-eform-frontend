@@ -112,12 +112,11 @@ function PersonForm({
   const [questions, setQuestions] = useState({});
   useEffect(() => {
     if (input) {
-      setPerson(() => ({
-        id: input.id,
-        name: input.name,
-        socialName: input.socialName,
-        birthDate: input.birthDate
-      }));
+      setPerson(() => input.person);
+      seDocuments(() => input.documents);
+      seAdresses(() => input.adresses);
+      seContacts(() => input.contacts);
+      setQuestions(() => input.adresses);
     }
   }, [input]);
   // TODO: vvv

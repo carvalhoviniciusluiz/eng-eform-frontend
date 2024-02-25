@@ -1,4 +1,8 @@
-import { UnexpectedError, ValueError } from '~/app/domain/errors';
+import {
+  BadRequestError,
+  UnexpectedError,
+  ValueError
+} from '~/app/domain/errors';
 
 function errorHandler(error: Error) {
   switch (true) {
@@ -6,6 +10,12 @@ function errorHandler(error: Error) {
       return {
         title: 'Desculpe, aldo deu errado',
         message: 'Um erro inesperado aconteceu.'
+      };
+    case error instanceof BadRequestError:
+      return {
+        title: 'Aviso',
+        message:
+          'Algo de errado aconteceu, verifique seus dados e tente novamente.'
       };
     case error instanceof ValueError: {
       const [, type] = error.message.split('::');

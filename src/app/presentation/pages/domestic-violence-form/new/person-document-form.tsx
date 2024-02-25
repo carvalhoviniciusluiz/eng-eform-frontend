@@ -31,7 +31,8 @@ function PersonDocumentForm({
   const [document, setDocument] = useState<Omit<PersonDocument, 'id'>>(() => {
     return {
       documentType: data?.documentType ?? 'CPF',
-      documentNumber: data?.documentNumber ?? ''
+      documentNumber: data?.documentNumber ?? '',
+      shippingDate: data?.shippingDate ?? ''
     };
   });
   function handleOnChange(key: string, value: string) {
@@ -45,6 +46,7 @@ function PersonDocumentForm({
           name='documentNumber'
           label='Número'
           mask='cpf'
+          value={document?.documentNumber}
           onChange={event =>
             handleOnChange('documentNumber', event.target.value)
           }
@@ -56,6 +58,7 @@ function PersonDocumentForm({
         id={`${data.id}-document`}
         name='documentNumber'
         label='Número'
+        value={document?.documentNumber}
         onChange={event => handleOnChange('documentNumber', event.target.value)}
       />
     );
@@ -90,6 +93,7 @@ function PersonDocumentForm({
           name='shippingDate'
           label='Data de expedição'
           mask='date'
+          value={document?.shippingDate}
           onChange={event => handleOnChange('shippingDate', event.target.value)}
         />
       </Box>

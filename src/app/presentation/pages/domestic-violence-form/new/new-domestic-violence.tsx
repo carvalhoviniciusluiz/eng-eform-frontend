@@ -176,14 +176,7 @@ export default function NewDomesticViolenceComponent({
     }));
     getPerson
       .execute({ name: value })
-      .then(data => {
-        setVictimSearch(() => ({
-          id: data.id,
-          name: data.name,
-          socialName: data.socialName,
-          birthDate: data.birthDate
-        }));
-      })
+      .then(setVictimSearch)
       .catch(async error => {
         setWarn(() => ({
           ...errorHandler(error),

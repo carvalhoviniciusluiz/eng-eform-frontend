@@ -3,16 +3,48 @@ export interface GetPerson {
 }
 export namespace GetPerson {
   export type Response = {
-    id: string;
-    name: string;
-    socialName: String;
-    birthDate: string;
+    person: {
+      id: string;
+      name: string;
+      socialName: String;
+      birthDate?: string;
+    };
+    adresses: {
+      id: string;
+      number: string;
+      zipCode: string;
+      publicPlace: string;
+      neighborhood: string;
+      neighborhoodComplement: string;
+      county: string;
+      city: string;
+    }[];
+    documents: {
+      id: string;
+      documentType: string;
+      documentNumber: string;
+      shippingDate?: string;
+    }[];
+    contacts: {
+      id: string;
+      contactType: string;
+      contact: string;
+    }[];
+    personalData: {
+      questionAnswer: {
+        id: string;
+        response: string;
+        question: {
+          id: string;
+          content: string;
+        };
+        answer: {
+          id?: string;
+          content?: string;
+        };
+      };
+    }[];
   };
   export type Input = { name: string };
-  export type Output = {
-    id: string;
-    name: string;
-    socialName: String;
-    birthDate: string;
-  };
+  export type Output = Response;
 }

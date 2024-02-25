@@ -18,7 +18,24 @@ export class RemoteGetPerson implements GetPerson {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
-        return httpResponse.body as GetPerson.Output;
+        const response = httpResponse.body as GetPerson.Output;
+        const parseDate = (value?: string) => {
+          const data = value?.split('T')[0];
+          if (data) {
+            return data.split('-').reverse().join('/');
+          }
+        };
+        return {
+          ...response,
+          person: {
+            ...response.person,
+            birthDate: parseDate(response.person.birthDate)
+          },
+          documents: response.documents.map(document => ({
+            ...document,
+            shippingDate: parseDate(document.shippingDate)
+          }))
+        };
       case HttpStatusCode.badRequest:
         throw new BadRequestError();
       default:

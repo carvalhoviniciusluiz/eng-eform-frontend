@@ -40,6 +40,7 @@ function PersonAddressForm({
       neighborhood: data?.neighborhood ?? '',
       neighborhoodComplement: data?.neighborhoodComplement ?? '',
       zipCode: data?.zipCode ?? '',
+      number: data?.number ?? '',
       ddd: '96',
       city: data?.city ?? '',
       county: data?.county ?? '',
@@ -58,6 +59,7 @@ function PersonAddressForm({
             neighborhood: response.neighborhood,
             neighborhoodComplement: response.neighborhoodComplement,
             zipCode: response.zipCode,
+            number: response.number,
             ddd: '96',
             city: response.city,
             county: response.county,
@@ -91,7 +93,11 @@ function PersonAddressForm({
           label='CEP'
           mask='zipcode'
           tooltip='precione ENTER para procurar'
-          onChange={event => setZipcode(event.target.value)}
+          value={address?.zipCode}
+          onChange={event => {
+            handleOnChange('zipCode', event.target.value);
+            setZipcode(event.target.value);
+          }}
           onKeyUp={handleOnKeyUp}
         />
         <TextInput
