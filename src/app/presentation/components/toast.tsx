@@ -12,12 +12,14 @@ const useStyles = makeStyles({
 
 type Props = {
   type: AlertColor;
+  title: string;
   message: string;
   open: boolean;
   anchorOrigin?: SnackbarOrigin;
 };
 
 export function Toast({
+  title,
   message,
   type,
   open,
@@ -28,27 +30,15 @@ export function Toast({
 }: Props) {
   const { horizontal, vertical } = anchorOrigin;
   const classes = useStyles();
-  function handleTitle() {
-    if (type === 'error') {
-      return <AlertTitle>Erro</AlertTitle>;
-    }
-    if (type === 'info') {
-      return <AlertTitle>Informação</AlertTitle>;
-    }
-    if (type === 'success') {
-      return <AlertTitle>Sucesso</AlertTitle>;
-    }
-    return <AlertTitle>Aviso</AlertTitle>;
-  }
   return (
     <Box sx={{ width: 500 }}>
       <Snackbar
-        open={open}
         anchorOrigin={{ vertical, horizontal }}
         key={vertical + horizontal}
+        open={open}
       >
         <Alert severity={type} sx={{ width: '100%' }} className={classes.alert}>
-          {handleTitle()}
+          <AlertTitle>{title}</AlertTitle>
           {message}
         </Alert>
       </Snackbar>

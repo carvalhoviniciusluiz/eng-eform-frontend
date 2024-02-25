@@ -2,7 +2,7 @@ import {
   HttpPostClient,
   HttpStatusCode
 } from '~/app/application/protocols/http';
-import { UnexpectedError } from '~/app/domain/errors';
+import { UnexpectedError, ValueError } from '~/app/domain/errors';
 import { AddFormInput } from '~/app/domain/usecases';
 
 export class RemoteAddFormInput implements AddFormInput {
@@ -23,6 +23,10 @@ export class RemoteAddFormInput implements AddFormInput {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
         return httpResponse.body as AddFormInput.Response;
+      case HttpStatusCode.badRequest: {
+        const { body } = httpResponse.body as any;
+        throw new ValueError(body.errors);
+      }
       default:
         throw new UnexpectedError();
     }

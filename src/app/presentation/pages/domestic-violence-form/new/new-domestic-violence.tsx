@@ -1,4 +1,9 @@
-import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
+import {
+  AlertColor,
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper
+} from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -6,6 +11,7 @@ import Tabs from '@mui/material/Tabs';
 import { useState } from 'react';
 import { AiFillSave as SaveIcon } from 'react-icons/ai';
 import { AddFormInput, GetCep, LoadFullForms } from '~/app/domain/usecases';
+import { errorHandler } from '~/app/infra/error';
 import { Toast } from '~/app/presentation/components';
 import DisplayQuestionsForm from './display-questions-form';
 import Header from './header';
@@ -75,6 +81,12 @@ export default function NewDomesticViolenceComponent({
   const [aggressorContacts, setAggressorContacts] = useState({});
   const [aggressorDocuments, setAggressorDocuments] = useState({});
   const [questionsMainForm, setQuestionsMainForm] = useState({});
+  const [warn, setWarn] = useState({
+    type: '',
+    title: '',
+    message: '',
+    open: false
+  });
   function handleChange(event: React.SyntheticEvent, newValue: number) {
     setValue(newValue);
   }
@@ -88,11 +100,21 @@ export default function NewDomesticViolenceComponent({
   }
   function handleSubmit() {
     if (victimPerson.name === '') {
-      alert('Você não informou o nome da vítima');
+      setWarn(() => ({
+        title: 'Aviso',
+        message: 'Você não informou o nome da vítima',
+        type: 'warning',
+        open: true
+      }));
       return;
     }
     if (aggressorPerson.name === '') {
-      alert('Você não informou o nome da agressor');
+      setWarn(() => ({
+        title: 'Aviso',
+        message: 'Você não informou o nome da agressor',
+        type: 'warning',
+        open: true
+      }));
       return;
     }
     addFormInput
@@ -114,10 +136,22 @@ export default function NewDomesticViolenceComponent({
         mainForms: questionsMainForm
       } as any)
       .then(console.log)
-      .catch(console.error);
+      .catch(error => {
+        setWarn(() => ({
+          ...errorHandler(error),
+          type: 'error',
+          open: true
+        }));
+      });
   }
   return (
     <Box>
+      <Toast
+        type={warn.type as AlertColor}
+        title={warn.title}
+        message={warn.message}
+        open={warn.open}
+      />
       <AppBar position='static' color='transparent'>
         <Tabs value={value} onChange={handleChange} variant='fullWidth'>
           <Tab label='Vítima' />
@@ -140,13 +174,6 @@ export default function NewDomesticViolenceComponent({
             personSubmit={setVictimPerson}
           />
         </TabPanel>
-
-        <Toast
-          open
-          type='success'
-          message='This is an error alert with a custom background color'
-        />
-
         <TabPanel value={value} index={1}>
           <PersonForm
             id='aggressor'
