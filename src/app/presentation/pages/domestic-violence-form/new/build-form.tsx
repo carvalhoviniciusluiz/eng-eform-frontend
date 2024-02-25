@@ -14,19 +14,30 @@ import {
 import { useEffect, useState } from 'react';
 import { AiOutlineDoubleRight as ExpandIcon } from 'react-icons/ai';
 import { QuestionType } from '~/app/domain/models';
-import { LoadFullForms } from '~/app/domain/usecases';
+import { GetPerson, LoadFullForms } from '~/app/domain/usecases';
 import { TextArea } from '~/app/presentation/components';
 
 type Props = {
   question: LoadFullForms.Question;
+  questionsResponse?: GetPerson.Question[];
   submit?: (value: any) => void;
 };
 
-function BuildForm({ question, submit }: Props) {
+function BuildForm({ question, questionsResponse, submit }: Props) {
   const [selectedQuestions, setSelectedQuestions] = useState({});
   useEffect(() => {
     submit && submit(selectedQuestions);
   }, [selectedQuestions]);
+  useEffect(() => {
+    const hasResponse = !!questionsResponse?.length;
+    if (hasResponse) {
+      //
+
+      console.log({ questionsResponse });
+
+      //
+    }
+  }, [questionsResponse]);
   function handleQuestionTypeMultipleStore(
     event: any,
     question: LoadFullForms.Question
@@ -72,18 +83,41 @@ function BuildForm({ question, submit }: Props) {
       return updateSelectedQuestions;
     });
   }
+  function getId(obj: any): any {
+    if (!obj) return;
+    const [id] = Object.keys(obj);
+    return id;
+  }
+  function getFirstValue(obj: any): any {
+    if (!obj) return;
+    const [value] = Object.values(obj);
+    return value;
+  }
   function handleInputToggle(
     question: LoadFullForms.Question,
     answer?: LoadFullForms.Answer
   ) {
+    const questionFound = questionsResponse?.find(
+      qtr => getId(qtr) === question.id
+    );
+    const answerId = getFirstValue(questionFound);
     switch (question.type) {
       case QuestionType.OBJECTIVE: {
         if (!answer) {
           return <></>;
         }
+        const checked = (answerId: string, targetId: any) => {
+          if (typeof targetId === 'object') {
+            return answerId === getId(targetId);
+          }
+          if (targetId) {
+            return answerId === targetId;
+          }
+        };
         return (
           <Radio
             key={answer.id}
+            checked={checked(answer.id, answerId)}
             sx={{
               '& .MuiSvgIcon-root': {
                 fontSize: 22
@@ -93,6 +127,7 @@ function BuildForm({ question, submit }: Props) {
           />
         );
       }
+      // TODO:
       case QuestionType.MULTIPLE: {
         if (!answer) {
           return <></>;
@@ -111,8 +146,10 @@ function BuildForm({ question, submit }: Props) {
         );
       }
       case QuestionType.PLAIN_TEXT:
+        const defaultValue = getFirstValue(questionFound)?.response;
         return (
           <TextArea
+            defaultValue={defaultValue}
             placeholder={question.content}
             onChange={event =>
               handleQuestionTypePlainTextStore(event, question, answer)
@@ -129,6 +166,16 @@ function BuildForm({ question, submit }: Props) {
     }
     if (!question.answers) {
       return;
+    }
+    const questionFound = questionsResponse?.find(
+      qtr => getId(qtr) === question.id
+    );
+    let defaultValue = '';
+    if (questionFound) {
+      const [value] = Object.values(questionFound);
+      if (typeof value === 'object') {
+        [defaultValue] = Object.values(value);
+      }
     }
     return (
       <RadioGroup
@@ -147,6 +194,7 @@ function BuildForm({ question, submit }: Props) {
                   label={answer.content}
                 />
                 <TextArea
+                  defaultValue={defaultValue}
                   placeholder={answer.content}
                   onChange={event =>
                     handleQuestionTypePlainTextStore(event, question, answer)

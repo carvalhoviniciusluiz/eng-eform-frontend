@@ -3,7 +3,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useEffect, useState } from 'react';
 import { MdSearch as SearchIcon } from 'react-icons/md';
-import { GetCep, LoadFullForms } from '~/app/domain/usecases';
+import { GetCep, GetPerson, LoadFullForms } from '~/app/domain/usecases';
 import {
   MaskField,
   TextInput,
@@ -24,20 +24,23 @@ type PersonAddress = {
   city?: string;
   county?: string;
 };
-
 type PersonDocument = {
   id: string;
   documentType?: string;
   documentNumber?: string;
   shippingDate?: string;
 };
-
 type PersonContact = {
   id: string;
   contactType?: string;
   contact?: string;
 };
-
+type Person = {
+  id: string;
+  name: string;
+  socialName: string;
+  birthDate?: string;
+};
 type TabPanelProps = {
   children?: React.ReactNode;
   index: number;
@@ -60,7 +63,6 @@ function TabPanel(props: TabPanelProps) {
 }
 
 type Props = {
-  input?: any;
   id: string;
   caption: string;
   generalInformationsForm: LoadFullForms.Form;
@@ -70,7 +72,7 @@ type Props = {
   contactsSubmit: (value: PersonContact[]) => void;
   questionsSubmit: (value: any) => void;
   personSubmit: (value: any) => void;
-  onSearchClick: (value: string) => void;
+  personSearch: (value: string) => Promise<GetPerson.Output | undefined>;
 };
 
 /**
@@ -81,7 +83,6 @@ type Props = {
  */
 
 function PersonForm({
-  input,
   id,
   caption,
   generalInformationsForm,
@@ -91,10 +92,10 @@ function PersonForm({
   contactsSubmit,
   questionsSubmit,
   personSubmit,
-  onSearchClick
+  personSearch
 }: Props) {
   const [tabValue, setTabValue] = useState(0);
-  const [person, setPerson] = useState(() => ({
+  const [person, setPerson] = useState<Person>(() => ({
     id: crypto.randomUUID(),
     name: '',
     socialName: '',
@@ -110,15 +111,9 @@ function PersonForm({
     { id: crypto.randomUUID() }
   ]);
   const [questions, setQuestions] = useState({});
-  useEffect(() => {
-    if (input) {
-      setPerson(() => input.person);
-      seDocuments(() => input.documents);
-      seAdresses(() => input.adresses);
-      seContacts(() => input.contacts);
-      setQuestions(() => input.adresses);
-    }
-  }, [input]);
+  const [questionsResponse, setQuestionsResponse] = useState<
+    GetPerson.Question[]
+  >([]);
   // TODO: vvv
   useEffect(() => {
     personSubmit(person);
@@ -187,9 +182,19 @@ function PersonForm({
           }}
         >
           {generalInformationsForm.questions.map((question, index) => (
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //
             <BuildForm
               key={index}
               question={question}
+              questionsResponse={questionsResponse}
               submit={selectedQuestions => {
                 setQuestions(prevState => {
                   return {
@@ -329,6 +334,31 @@ function PersonForm({
       </>
     );
   }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
+  async function handleOnSearchClick(value: string) {
+    const response = await personSearch(value);
+    if (response?.length === 1) {
+      const [personData] = response;
+      setPerson(personData.person);
+      seDocuments(personData.documents);
+      seAdresses(personData.adresses);
+      seContacts(personData.contacts);
+      setQuestionsResponse(personData.questions);
+    } else {
+      console.log('Many respnose:', response);
+    }
+  }
+
   function displayPersonForm() {
     return (
       <Box>
@@ -354,7 +384,7 @@ function PersonForm({
               name: event.target.value
             }))
           }
-          onIconClick={onSearchClick}
+          onIconClick={handleOnSearchClick}
           value={person.name}
         />
         <TextInput

@@ -2,13 +2,25 @@ export interface GetPerson {
   execute: (params: GetPerson.Input) => Promise<GetPerson.Output>;
 }
 export namespace GetPerson {
-  export type Response = {
-    person: {
-      id: string;
-      name: string;
-      socialName: String;
-      birthDate?: string;
+  export type Person = {
+    id: string;
+    name: string;
+    socialName: string;
+    birthDate?: string;
+  };
+  export type Question = {
+    [key: string]:
+      | string
+      | {
+          [key: string]: string;
+        };
+    metadata: {
+      personQuestionAnswerId: string;
+      questionAnswerId: string;
     };
+  };
+  export type Response = {
+    person: Person;
     adresses: {
       id: string;
       number: string;
@@ -30,21 +42,8 @@ export namespace GetPerson {
       contactType: string;
       contact: string;
     }[];
-    personalData: {
-      questionAnswer: {
-        id: string;
-        response: string;
-        question: {
-          id: string;
-          content: string;
-        };
-        answer: {
-          id?: string;
-          content?: string;
-        };
-      };
-    }[];
+    questions: Question[];
   };
   export type Input = { name: string };
-  export type Output = Response;
+  export type Output = Response[];
 }

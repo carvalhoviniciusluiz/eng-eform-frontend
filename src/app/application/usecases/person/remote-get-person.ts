@@ -8,12 +8,12 @@ import { GetPerson } from '~/app/domain/usecases';
 export class RemoteGetPerson implements GetPerson {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpGetClient<GetPerson.Response>
+    private readonly httpGetClient: HttpGetClient<GetPerson.Response[]>
   ) {}
 
   async execute(input: GetPerson.Input): Promise<GetPerson.Output> {
     const httpResponse = await this.httpGetClient.get({
-      url: `${this.url}?${input.name}`
+      url: `${this.url}?name=${input.name}`
     });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
@@ -25,17 +25,17 @@ export class RemoteGetPerson implements GetPerson {
             return data.split('-').reverse().join('/');
           }
         };
-        return {
-          ...response,
+        return response.map(res => ({
+          ...res,
           person: {
-            ...response.person,
-            birthDate: parseDate(response.person.birthDate)
+            ...res.person,
+            birthDate: parseDate(res.person.birthDate)
           },
-          documents: response.documents.map(document => ({
+          documents: res.documents.map(document => ({
             ...document,
             shippingDate: parseDate(document.shippingDate)
           }))
-        };
+        }));
       case HttpStatusCode.badRequest:
         throw new BadRequestError();
       default:

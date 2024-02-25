@@ -78,13 +78,11 @@ export default function NewDomesticViolenceComponent({
   });
   const [value, setValue] = useState(0);
   const [victimPerson, setVictimPerson] = useState<any>({});
-  const [victimSearch, setVictimSearch] = useState<any>(null);
   const [victimQuestions, setVictimQuestions] = useState({});
   const [victimAdresses, setVictimAdresses] = useState({});
   const [victimContacts, setVictimContacts] = useState({});
   const [victimDocuments, setVictimDocuments] = useState({});
   const [aggressorPerson, setAggressorPerson] = useState<any>({});
-  const [aggressorSearch, setAggressorSearch] = useState<any>(null);
   const [aggressorQuestions, setAggressorQuestions] = useState({});
   const [aggressorAdresses, setAggressorAdresses] = useState({});
   const [aggressorContacts, setAggressorContacts] = useState({});
@@ -157,7 +155,7 @@ export default function NewDomesticViolenceComponent({
         }
       });
   }
-  function handleOnSearchClick(value: string) {
+  async function handlePersonSearch(value: string) {
     const hasValue = !!value;
     if (!hasValue) {
       setWarn(() => ({
@@ -174,16 +172,16 @@ export default function NewDomesticViolenceComponent({
       type: '',
       open: false
     }));
-    getPerson
-      .execute({ name: value })
-      .then(setVictimSearch)
-      .catch(async error => {
-        setWarn(() => ({
-          ...errorHandler(error),
-          type: 'error',
-          open: true
-        }));
-      });
+    try {
+      const output = await getPerson.execute({ name: value });
+      return output;
+    } catch (error: any) {
+      setWarn(() => ({
+        ...errorHandler(error),
+        type: 'error',
+        open: true
+      }));
+    }
   }
   return (
     <Box>
@@ -204,7 +202,6 @@ export default function NewDomesticViolenceComponent({
       <Box style={{ marginBottom: '12rem' }}>
         <TabPanel value={value} index={0}>
           <PersonForm
-            input={victimSearch}
             id='victim'
             caption='Cadastro de vítima'
             generalInformationsForm={state.generalInformationsForm}
@@ -214,12 +211,11 @@ export default function NewDomesticViolenceComponent({
             documentsSubmit={setVictimDocuments}
             questionsSubmit={setVictimQuestions}
             personSubmit={setVictimPerson}
-            onSearchClick={handleOnSearchClick}
+            personSearch={handlePersonSearch}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PersonForm
-            input={aggressorSearch}
             id='aggressor'
             caption='Cadastro de agressor'
             generalInformationsForm={state.generalInformationsForm}
@@ -229,7 +225,7 @@ export default function NewDomesticViolenceComponent({
             documentsSubmit={setAggressorDocuments}
             questionsSubmit={setAggressorQuestions}
             personSubmit={setAggressorPerson}
-            onSearchClick={handleOnSearchClick}
+            personSearch={handlePersonSearch}
           />
         </TabPanel>
         <TabPanel value={value} index={2}>

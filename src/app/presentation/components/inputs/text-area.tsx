@@ -3,11 +3,13 @@ import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
 
 interface Props {
+  defaultValue?: string;
   placeholder: string;
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
 }
 
-export const TextArea = ({ placeholder, onChange }: Props) => {
+export const TextArea = ({ defaultValue, placeholder, onChange }: Props) => {
+  const [value, setValue] = useState('');
   const [inputEvent, setInputEvent] =
     useState<React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>>();
   useEffect(() => {
@@ -15,6 +17,11 @@ export const TextArea = ({ placeholder, onChange }: Props) => {
       onChange && onChange(inputEvent);
     }
   }, [inputEvent]);
+  useEffect(() => {
+    if (defaultValue) {
+      setValue(defaultValue);
+    }
+  }, [defaultValue]);
   return (
     <Paper
       component='div'
@@ -29,9 +36,13 @@ export const TextArea = ({ placeholder, onChange }: Props) => {
         sx={{ ml: 1, flex: 1 }}
         multiline
         maxRows={4}
+        value={value}
         placeholder={placeholder}
         inputProps={{ 'aria-label': placeholder }}
-        onChange={setInputEvent}
+        onChange={event => {
+          setValue(event.target.value);
+          setInputEvent(event);
+        }}
       />
     </Paper>
   );
