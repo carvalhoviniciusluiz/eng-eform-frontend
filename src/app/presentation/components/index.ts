@@ -5,4 +5,5 @@ export * from './custom';
 export { default as Dialog } from './dialog';
 export * from './inputs';
 export * from './link';
+export * from './menu';
 export * from './toast';

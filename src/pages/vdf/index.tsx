@@ -1,20 +1,16 @@
-import { LoadFullForms } from '~/app/domain/usecases';
-import { makeNewDomesticViolence } from '~/app/main/factories/pages/domestic-violence/new';
-import { makeRemoteLoadFullForms } from '~/app/main/factories/usecases';
+import { makeListDomesticViolence } from '~/app/main/factories/pages';
 import handleSSRAuth from '~/pages/_handles/handle-ssr-auth';
 
 export const getServerSideProps = handleSSRAuth(async context => {
-  const loadForms = makeRemoteLoadFullForms(context);
-  const httpResponse = await loadForms.execute();
   return {
     props: {
-      data: httpResponse
+      data: {}
     }
   };
 });
 
-function DomesticViolenceForm(props: { data: LoadFullForms.Response }) {
-  return makeNewDomesticViolence({ ...props });
+function DomesticViolenceForm(props: { data: any }) {
+  return makeListDomesticViolence(props);
 }
 
 export default DomesticViolenceForm;
