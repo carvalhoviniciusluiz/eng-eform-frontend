@@ -22,22 +22,19 @@ const columns: TableColumn[] = [
     id: 'aggressorName',
     label: 'Agressor',
     minWidth: 170,
-    align: 'right',
-    format: (value: number) => value
+    align: 'right'
   },
   {
-    id: 'createdAd',
+    id: 'createdAt',
     label: 'Data de registro',
     minWidth: 170,
-    align: 'right',
-    format: (value: number) => value
+    align: 'right'
   },
   {
     id: '-',
     label: 'Profissional capacitado',
     minWidth: 170,
-    align: 'right',
-    format: (value: number) => value
+    align: 'right'
   }
 ];
 
@@ -46,93 +43,56 @@ type RowData = {
   protocol: string;
   victinName: string;
   aggressorName: string;
-  createdAd: string;
+  createdAt: string;
+  format: (value: any) => any;
 };
 
-const data: RowData[] = [
-  {
-    id: '1',
-    protocol: 'AVDF1020230000032',
-    victinName: 'VITIMA DA PAZ',
-    aggressorName: 'AGRESSOR SANTANA',
-    createdAd: '26/10/2023 12:08:48'
-  },
-  {
-    id: '2',
-    protocol: 'AVDF0820230000020',
-    victinName: 'VITIMA DA PAZ',
-    aggressorName: 'AGRESSOR SANTANA',
-    createdAd: '30/08/2023 00:00:00'
-  },
-  {
-    id: '3',
-    protocol: 'AVDF1020230000025',
-    victinName: 'VITIMA TEIXEIRA',
-    aggressorName: 'VITIMA DA PAZ',
-    createdAd: '04/09/2023 00:00:00'
-  },
-  {
-    id: '4',
-    protocol: 'AVDF0920230000024',
-    victinName: 'VITIMA TEIXEIRA',
-    aggressorName: 'VITIMA DA PAZ',
-    createdAd: '04/09/2023 00:00:00'
-  },
-  {
-    id: '5',
-    protocol: 'AVDF0820230000021',
-    victinName: 'VITIMA TEIXEIRA',
-    aggressorName: 'VITIMA DA PAZ',
-    createdAd: '31/08/2023 00:00:00'
-  },
-  {
-    id: '6',
-    protocol: 'AVDF0120240000033',
-    victinName: 'VITIMA GONÇALVES',
-    aggressorName: 'AGGRESSOR NAME',
-    createdAd: '28/01/2024 00:00:00'
-  },
-  {
-    id: '7',
-    protocol: 'AVDF0120240000038',
-    victinName: 'VITIMA GONÇALVES',
-    aggressorName: 'AGGRESSOR NAME',
-    createdAd: '26/10/2023 12:08:48	'
-  },
-  {
-    id: '8',
-    protocol: 'AVDF0120240000044',
-    victinName: 'VITIMA GONÇALVES',
-    aggressorName: 'AGGRESSOR NAME',
-    createdAd: '30/08/2023 00:00:00'
-  },
-  {
-    id: '9',
-    protocol: 'AVDF0120240000053',
-    victinName: 'VITIMA DA PAZ',
-    aggressorName: 'AGRESSOR SANTANA',
-    createdAd: '04/09/2023 00:00:00'
-  },
-  {
-    id: '10',
-    protocol: 'AVDF0120240000059',
-    victinName: 'VITIMA DA PAZ',
-    aggressorName: 'AGRESSOR SANTANA',
-    createdAd: '04/09/2023 00:00:00'
-  }
-];
-
 type Props = {
-  getFormInputProtocols: GetFormInputProtocols;
-  getPeople: GetPeople;
+  data: {
+    protocols: GetFormInputProtocols.Output[];
+    victims: GetPeople.Output[];
+    aggressors: GetPeople.Output[];
+  };
   getFormInputs: GetFormInputs;
 };
 
 export default function ListDomesticViolenceComponent({
-  getFormInputProtocols,
-  getPeople
+  data,
+  getFormInputs
 }: Props) {
-  const [inputs] = useState<RowData[]>([]);
+  const [inputs, setInputs] = useState<RowData[]>([]);
+  function handleFilterApply(param: {
+    protocolNumber: string;
+    aggressorId: string;
+    victimId: string;
+  }) {
+    getFormInputs
+      .execute(param)
+      .then(formInputs => {
+        const inputs = formInputs.map(formInput => ({
+          id: formInput.id,
+          protocol: formInput.number,
+          createdAt: formInput.createdAt,
+          victinName: formInput.details.find(
+            person => person.personType === 'VICTIM'
+          )?.person.name,
+          aggressorName: formInput.details.find(
+            person => person.personType === 'AGGRESSOR'
+          )?.person.name,
+          format: (value: string) => {
+            const formatter = new Intl.DateTimeFormat('pt-BR', {
+              dateStyle: 'long'
+            });
+            return formatter.format(new Date(value));
+          }
+        }));
+        setInputs(inputs as any);
+      })
+      .catch(console.error);
+  }
+  function handleOnClean() {
+    setInputs([]);
+  }
   return (
     <Box>
       <Header />
@@ -142,11 +102,21 @@ export default function ListDomesticViolenceComponent({
         alignItems={'center'}
         justifyContent={'center'}
         style={{
-          margin: 20
+          margin: 50
         }}
       >
-        <TableFilter />
-        <BasicTable hasData={!!inputs.length} columns={columns}>
+        <TableFilter
+          hasData={!!inputs.length}
+          aggressors={data.aggressors}
+          victims={data.victims}
+          protocols={data.protocols}
+          onSubmit={handleFilterApply}
+        />
+        <BasicTable
+          hasData={!!inputs.length}
+          columns={columns}
+          onClean={handleOnClean}
+        >
           {inputs.map(row => (
             <StyledTableRow
               key={row.id}
@@ -159,7 +129,9 @@ export default function ListDomesticViolenceComponent({
               <StyledTableCell align='right'>
                 {row.aggressorName}
               </StyledTableCell>
-              <StyledTableCell align='right'>{row.createdAd}</StyledTableCell>
+              <StyledTableCell align='right'>
+                {row.format(row.createdAt)}
+              </StyledTableCell>
               <StyledTableCell align='right'>
                 <Link
                   style={{

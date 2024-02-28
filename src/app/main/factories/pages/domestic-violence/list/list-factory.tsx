@@ -1,17 +1,21 @@
-import {
-  makeRemoteGetFormInputProtocols,
-  makeRemoteGetFormInputs,
-  makeRemoteGetPeople
-} from '~/app/main/factories/usecases';
+import { GetFormInputProtocols, GetPeople } from '~/app/domain/usecases';
+import { makeRemoteGetFormInputs } from '~/app/main/factories/usecases';
 import { BaseLayout } from '~/app/presentation/layouts';
 import { ListDomesticViolenceTag } from '~/app/presentation/pages';
 
-export const makeListDomesticViolence = (props: { data: any }) => {
+type Props = {
+  data: {
+    protocols: GetFormInputProtocols.Output[];
+    victims: GetPeople.Output[];
+    aggressors: GetPeople.Output[];
+  };
+};
+
+export const makeListDomesticViolence = (props: Props) => {
   return (
     <BaseLayout>
       <ListDomesticViolenceTag
-        getFormInputProtocols={makeRemoteGetFormInputProtocols()}
-        getPeople={makeRemoteGetPeople()}
+        {...props}
         getFormInputs={makeRemoteGetFormInputs()}
       />
     </BaseLayout>

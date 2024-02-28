@@ -17,6 +17,7 @@ export namespace GetFormInputs {
   export type Output = {
     id: string;
     number: string;
+    createdAt: string;
     details: {
       personType: 'VICTIM' | 'AGGRESSOR';
       person: {

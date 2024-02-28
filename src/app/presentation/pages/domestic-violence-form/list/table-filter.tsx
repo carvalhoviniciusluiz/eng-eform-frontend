@@ -1,9 +1,65 @@
 import { Box, Button, Typography } from '@mui/material';
+import { useState } from 'react';
+import { GetFormInputProtocols, GetPeople } from '~/app/domain/usecases';
 import { SelectField } from '~/app/presentation/components/inputs';
 import useStyles from './list-styles';
 
-export default function TableFilter() {
+type Props = {
+  hasData: boolean;
+  protocols: GetFormInputProtocols.Output[];
+  victims: GetPeople.Output[];
+  aggressors: GetPeople.Output[];
+  onSubmit: (param: {
+    protocolNumber: string;
+    aggressorId: string;
+    victimId: string;
+  }) => void;
+};
+
+export default function TableFilter({
+  hasData,
+  protocols,
+  aggressors,
+  victims,
+  onSubmit
+}: Props) {
+  const [state, setState] = useState(() => ({
+    protocolNumber: '',
+    aggressorId: '',
+    victimId: ''
+  }));
+  function handleProtocolOptions() {
+    const isEmpty = !Boolean(protocols.length);
+    if (isEmpty) {
+      return [];
+    }
+    return protocols.map(protocol => ({
+      key: protocol.number,
+      value: protocol.number
+    }));
+  }
+  function handlePersonOptions(values: GetPeople.Output[]) {
+    const isEmpty = !Boolean(values.length);
+    if (isEmpty) {
+      return [];
+    }
+    return values.map(value => ({
+      key: value.id,
+      value: value.name
+    }));
+  }
+  function handleClick() {
+    onSubmit({ ...state });
+    setState({
+      protocolNumber: '',
+      aggressorId: '',
+      victimId: ''
+    });
+  }
   const classes = useStyles();
+  if (hasData) {
+    return <></>;
+  }
   return (
     <Box
       style={{
@@ -50,18 +106,14 @@ export default function TableFilter() {
                 key: '0',
                 value: 'Selecionar uma opção...'
               },
-              { key: 'AVDF1020230000032', value: 'AVDF1020230000032' },
-              { key: 'AVDF0820230000020', value: 'AVDF0820230000020' },
-              { key: 'AVDF1020230000025', value: 'AVDF1020230000025' },
-              { key: 'AVDF0920230000024', value: 'AVDF0920230000024' },
-              { key: 'AVDF0820230000021', value: 'AVDF0820230000021' },
-              { key: 'AVDF0120240000033', value: 'AVDF0120240000033' },
-              { key: 'AVDF0120240000038', value: 'AVDF0120240000038' },
-              { key: 'AVDF0120240000044', value: 'AVDF0120240000044' },
-              { key: 'AVDF0120240000053', value: 'AVDF0120240000053' },
-              { key: 'AVDF0120240000059', value: 'AVDF0120240000059' }
+              ...handleProtocolOptions()
             ]}
-            onChange={console.log}
+            onChange={protocolNumber =>
+              setState(prevState => ({
+                ...prevState,
+                protocolNumber
+              }))
+            }
           />
           <SelectField
             id={`vdf-select`}
@@ -73,12 +125,14 @@ export default function TableFilter() {
                 key: '0',
                 value: 'Selecionar uma opção...'
               },
-              { key: 'VITIMA DA PAZ', value: 'VITIMA DA PAZ' },
-              { key: 'VITIMA TEIXEIRA', value: 'VITIMA TEIXEIRA' },
-              { key: 'VITIMA GONÇALVES', value: 'VITIMA GONÇALVES' },
-              { key: 'AGRESSOR SANTANA', value: 'AGRESSOR SANTANA' }
+              ...handlePersonOptions(victims)
             ]}
-            onChange={console.log}
+            onChange={victimId =>
+              setState(prevState => ({
+                ...prevState,
+                victimId
+              }))
+            }
           />
           <SelectField
             id={`vdf-select`}
@@ -90,17 +144,19 @@ export default function TableFilter() {
                 key: '0',
                 value: 'Selecionar uma opção...'
               },
-              { key: 'VITIMA DA PAZ', value: 'VITIMA DA PAZ' },
-              { key: 'VITIMA TEIXEIRA', value: 'VITIMA TEIXEIRA' },
-              { key: 'VITIMA GONÇALVES', value: 'VITIMA GONÇALVES' },
-              { key: 'AGRESSOR SANTANA', value: 'AGRESSOR SANTANA' }
+              ...handlePersonOptions(aggressors)
             ]}
-            onChange={console.log}
+            onChange={aggressorId =>
+              setState(prevState => ({
+                ...prevState,
+                aggressorId
+              }))
+            }
           />
         </Box>
       </Box>
       <Box textAlign={'right'} padding={2.222}>
-        <Button className={classes.btnSearch} onClick={console.log} autoFocus>
+        <Button className={classes.btnSearch} onClick={handleClick} autoFocus>
           Pesquisar
         </Button>
         <Button onClick={console.log}>Limpar</Button>

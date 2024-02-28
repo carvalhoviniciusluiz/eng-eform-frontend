@@ -1,4 +1,4 @@
-import { tableCellClasses } from '@mui/material';
+import { Box, Button, tableCellClasses } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -37,32 +37,37 @@ export type TableColumn = {
 type Props = {
   hasData: boolean;
   columns: TableColumn[];
+  onClean: () => void;
   children: React.ReactNode;
 };
 
-export function BasicTable({ hasData, columns, children }: Props) {
+export function BasicTable({ hasData, columns, onClean, children }: Props) {
+  if (!hasData) {
+    return <></>;
+  }
   return (
     <>
-      {hasData && (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label='basic table'>
-            <TableHead>
-              <TableRow>
-                {columns.map(column => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>{children}</TableBody>
-          </Table>
-        </TableContainer>
-      )}
+      <Box textAlign={'left'} width={'100%'} marginBottom={2}>
+        <Button onClick={onClean}>Nova consulta</Button>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label='basic table'>
+          <TableHead>
+            <TableRow>
+              {columns.map(column => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>{children}</TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 }

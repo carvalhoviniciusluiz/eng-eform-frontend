@@ -27,6 +27,10 @@ export class RemoteGetFormInputs implements GetFormInputs {
     return searchParams;
   }
   async execute(input: GetFormInputs.Input): Promise<GetFormInputs.Output[]> {
+    const { aggressorId, protocolNumber, victimId } = input;
+    if (!aggressorId && !protocolNumber && !victimId) {
+      throw new Error('Not found params');
+    }
     const searchParams = this.qsParser(input);
     const queryString = searchParams.toString();
     const url = queryString ? `${this.url}?${queryString}` : this.url;
