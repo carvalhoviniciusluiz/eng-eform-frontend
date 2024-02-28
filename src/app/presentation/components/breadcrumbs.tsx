@@ -21,7 +21,6 @@ export default function Breadcrumbs({ children }: BreadcrumbsProps) {
       >
         E-form
       </Link>
-
       {children}
     </BreadcrumbsMui>
   );

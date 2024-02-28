@@ -1,7 +1,7 @@
-import { Box, Divider, MenuItem } from '@mui/material';
+import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Link, Menu } from '~/app/presentation/components';
+import { Link } from '~/app/presentation/components';
 import { Toolbar } from '~/app/presentation/layouts/components';
 
 type BaseLayoutProps = {
@@ -42,7 +42,17 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
           >
             Formulários
           </Link>
-          <Menu
+          <Link
+            style={{
+              color: styleActiveTo(['/vdf', '/vdf/new']),
+              textDecoration: 'none',
+              marginLeft: 18
+            }}
+            href='/vdf'
+          >
+            Violência Domestica
+          </Link>
+          {/* <Menu
             title='Violência Domestica'
             color={styleActiveTo(['/vdf', '/vdf/new'])}
           >
@@ -57,7 +67,7 @@ export default function BaseLayout({ children }: BaseLayoutProps) {
                 Acompanhamento
               </Link>
             </MenuItem>
-          </Menu>
+          </Menu> */}
         </Box>
       </Toolbar>
       {children}

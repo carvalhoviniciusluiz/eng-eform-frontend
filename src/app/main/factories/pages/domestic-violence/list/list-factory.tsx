@@ -1,9 +1,10 @@
 import { BaseLayout } from '~/app/presentation/layouts';
+import { ListDomesticViolenceTag } from '~/app/presentation/pages';
 
 export const makeListDomesticViolence = (props: { data: any }) => {
   return (
     <BaseLayout>
-      <h1>hello</h1>
+      <ListDomesticViolenceTag />
     </BaseLayout>
   );
 };

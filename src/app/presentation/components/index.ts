@@ -1,5 +1,6 @@
 export { default as AlertDialog } from './alert-dialog';
 export { default as BarAction } from './bar-action';
+export * from './basic-table';
 export { default as Breadcrumbs } from './breadcrumbs';
 export * from './custom';
 export { default as Dialog } from './dialog';

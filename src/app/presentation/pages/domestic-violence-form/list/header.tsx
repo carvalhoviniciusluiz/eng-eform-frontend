@@ -1,14 +1,16 @@
 import { Box, Typography } from '@mui/material';
-import { FaRegSave as SaveIcon } from 'react-icons/fa';
-import { BarAction, Breadcrumbs } from '~/app/presentation/components';
+import { MdSegment as FormIcon } from 'react-icons/md';
+import { BarAction, Breadcrumbs, Link } from '~/app/presentation/components';
+import useStyles from './list-styles';
 
 function Header() {
+  const classes = useStyles();
   return (
     <BarAction>
       <Box>
         <Breadcrumbs>
           <Typography>Violência Domestica</Typography>
-          <Typography>Novo questionário</Typography>
+          <Typography>Acompanhamento</Typography>
         </Breadcrumbs>
         <Box
           style={{
@@ -17,17 +19,20 @@ function Header() {
             alignItems: 'center'
           }}
         >
-          <SaveIcon size={24} />
+          <FormIcon size={23} />
           <Typography
             style={{
               fontSize: 24,
               marginLeft: 12
             }}
           >
-            Novo questionário
+            Acompanhamento
           </Typography>
         </Box>
       </Box>
+      <Link className={classes.btnNew} href='/vdf/new'>
+        Novo questionário
+      </Link>
     </BarAction>
   );
 }

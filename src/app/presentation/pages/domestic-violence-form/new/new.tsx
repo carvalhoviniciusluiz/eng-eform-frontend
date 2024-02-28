@@ -199,7 +199,12 @@ export default function NewDomesticViolenceComponent({
         </Tabs>
       </AppBar>
       <Header />
-      <Box style={{ marginBottom: '12rem' }}>
+      <Box
+        style={{
+          margin: '0 20%',
+          marginBottom: '14rem'
+        }}
+      >
         <TabPanel value={value} index={0}>
           <PersonForm
             id='victim'
