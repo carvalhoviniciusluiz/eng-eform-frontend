@@ -1,6 +1,11 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 import {
+  GetFormInputProtocols,
+  GetFormInputs,
+  GetPeople
+} from '~/app/domain/usecases';
+import {
   BasicTable,
   Link,
   StyledTableCell,
@@ -117,9 +122,16 @@ const data: RowData[] = [
   }
 ];
 
-type Props = {};
+type Props = {
+  getFormInputProtocols: GetFormInputProtocols;
+  getPeople: GetPeople;
+  getFormInputs: GetFormInputs;
+};
 
-export default function ListDomesticViolenceComponent({}: Props) {
+export default function ListDomesticViolenceComponent({
+  getFormInputProtocols,
+  getPeople
+}: Props) {
   const [inputs] = useState<RowData[]>([]);
   return (
     <Box>
