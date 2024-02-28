@@ -18,7 +18,6 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14
   }
 }));
-
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover
@@ -28,40 +27,42 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   }
 }));
 
-export interface TableColumn {
+export type TableColumn = {
   id: string;
   label: string;
   minWidth?: number;
   align?: 'right';
   format?: (value: any) => any;
-}
-
+};
 type Props = {
+  hasData: boolean;
   columns: TableColumn[];
   children: React.ReactNode;
 };
 
-export function BasicTable({ columns, children }: Props) {
+export function BasicTable({ hasData, columns, children }: Props) {
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              {columns.map(column => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>{children}</TableBody>
-        </Table>
-      </TableContainer>
+      {hasData && (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label='basic table'>
+            <TableHead>
+              <TableRow>
+                {columns.map(column => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>{children}</TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 }

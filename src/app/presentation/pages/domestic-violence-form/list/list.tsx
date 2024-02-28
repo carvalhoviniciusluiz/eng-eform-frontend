@@ -8,6 +8,7 @@ import {
   TableColumn
 } from '~/app/presentation/components';
 import Header from './header';
+import TableFilter from './table-filter';
 
 const columns: TableColumn[] = [
   { id: 'protocol', label: 'Protocolo', minWidth: 170 },
@@ -35,7 +36,15 @@ const columns: TableColumn[] = [
   }
 ];
 
-const data = [
+type RowData = {
+  id: string;
+  protocol: string;
+  victinName: string;
+  aggressorName: string;
+  createdAd: string;
+};
+
+const data: RowData[] = [
   {
     id: '1',
     protocol: 'AVDF1020230000032',
@@ -111,7 +120,7 @@ const data = [
 type Props = {};
 
 export default function ListDomesticViolenceComponent({}: Props) {
-  const [inputs] = useState(data);
+  const [inputs] = useState<RowData[]>([]);
   return (
     <Box>
       <Header />
@@ -124,7 +133,8 @@ export default function ListDomesticViolenceComponent({}: Props) {
           margin: 20
         }}
       >
-        <BasicTable columns={columns}>
+        <TableFilter />
+        <BasicTable hasData={!!inputs.length} columns={columns}>
           {inputs.map(row => (
             <StyledTableRow
               key={row.id}

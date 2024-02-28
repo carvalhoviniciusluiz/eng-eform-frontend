@@ -8,6 +8,18 @@ export default makeStyles({
     textOverflow: 'ellipsis',
     width: '26rem'
   },
+  btnSearch: {
+    backgroundColor: '#2469ce',
+    color: 'white',
+    fontWeight: 100,
+    textAlign: 'center',
+    borderRadius: 4,
+    letterSpacing: 0.2,
+    fontSize: 12,
+    '&:hover': {
+      backgroundColor: '#1658b8'
+    }
+  },
   btnNew: {
     display: 'flex',
     alignItems: 'center',
