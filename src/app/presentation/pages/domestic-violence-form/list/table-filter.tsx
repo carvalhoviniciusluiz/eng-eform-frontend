@@ -16,6 +16,12 @@ type Props = {
   }) => void;
 };
 
+const defaultValue = {
+  protocolNumber: '',
+  aggressorId: '',
+  victimId: ''
+};
+
 export default function TableFilter({
   hasData,
   protocols,
@@ -23,11 +29,7 @@ export default function TableFilter({
   victims,
   onSubmit
 }: Props) {
-  const [state, setState] = useState(() => ({
-    protocolNumber: '',
-    aggressorId: '',
-    victimId: ''
-  }));
+  const [state, setState] = useState(() => defaultValue);
   function handleProtocolOptions() {
     const isEmpty = !Boolean(protocols.length);
     if (isEmpty) {
@@ -50,11 +52,7 @@ export default function TableFilter({
   }
   function handleClick() {
     onSubmit({ ...state });
-    setState({
-      protocolNumber: '',
-      aggressorId: '',
-      victimId: ''
-    });
+    setState(defaultValue);
   }
   const classes = useStyles();
   if (hasData) {
