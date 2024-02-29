@@ -1,3 +1,4 @@
+import { OutlinedInput } from '@mui/material';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -6,8 +7,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useState } from 'react';
 
 type Props = {
-  id: string;
-  label: string;
+  id?: string;
+  label?: string;
   name: string;
   defaultValue?: string;
   options: { key: string; value: string }[];
@@ -41,6 +42,8 @@ export function SelectField({
           value={value}
           label={label}
           onChange={handleChange}
+          input={<OutlinedInput />}
+          inputProps={{ 'aria-label': 'Without label' }}
         >
           {options.map((option, index) => (
             <MenuItem key={index} value={option.key}>

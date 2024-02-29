@@ -4,6 +4,7 @@ export interface AddForm {
 
 export namespace AddForm {
   export type Params = {
+    segment: string;
     name: string;
   };
 

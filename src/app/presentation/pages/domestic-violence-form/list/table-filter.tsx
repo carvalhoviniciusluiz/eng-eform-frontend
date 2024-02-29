@@ -94,63 +94,66 @@ export default function TableFilter({
             paddingBottom: 0
           }}
         >
-          <SelectField
-            id={`vdf-select`}
-            name='protocol'
-            label='Protocolo'
-            defaultValue={'0'}
-            options={[
-              {
-                key: '0',
-                value: 'Selecionar uma opção...'
-              },
-              ...handleProtocolOptions()
-            ]}
-            onChange={protocolNumber =>
-              setState(prevState => ({
-                ...prevState,
-                protocolNumber
-              }))
-            }
-          />
-          <SelectField
-            id={`vdf-select`}
-            name='victin'
-            label='Vítima'
-            defaultValue={'0'}
-            options={[
-              {
-                key: '0',
-                value: 'Selecionar uma opção...'
-              },
-              ...handlePersonOptions(victims)
-            ]}
-            onChange={victimId =>
-              setState(prevState => ({
-                ...prevState,
-                victimId
-              }))
-            }
-          />
-          <SelectField
-            id={`vdf-select`}
-            name='aggressor'
-            label='Agressor'
-            defaultValue={'0'}
-            options={[
-              {
-                key: '0',
-                value: 'Selecionar uma opção...'
-              },
-              ...handlePersonOptions(aggressors)
-            ]}
-            onChange={aggressorId =>
-              setState(prevState => ({
-                ...prevState,
-                aggressorId
-              }))
-            }
-          />
+          <Box>
+            <label htmlFor='protocol'>Protocolo</label>
+            <SelectField
+              name='protocol'
+              defaultValue={'0'}
+              options={[
+                {
+                  key: '0',
+                  value: 'Selecionar uma opção...'
+                },
+                ...handleProtocolOptions()
+              ]}
+              onChange={protocolNumber =>
+                setState(prevState => ({
+                  ...prevState,
+                  protocolNumber
+                }))
+              }
+            />
+          </Box>
+          <Box>
+            <label htmlFor='victin'>Vítima</label>
+            <SelectField
+              name='victin'
+              defaultValue={'0'}
+              options={[
+                {
+                  key: '0',
+                  value: 'Selecionar uma opção...'
+                },
+                ...handlePersonOptions(victims)
+              ]}
+              onChange={victimId =>
+                setState(prevState => ({
+                  ...prevState,
+                  victimId
+                }))
+              }
+            />
+          </Box>
+          <Box>
+            <label htmlFor='aggressor'>Agressor</label>
+            <SelectField
+              name='aggressor'
+              defaultValue={'0'}
+              options={[
+                {
+                  key: '0',
+                  value: 'Selecionar uma opção...'
+                },
+                ...handlePersonOptions(aggressors)
+              ]}
+              onChange={aggressorId =>
+                setState(prevState => ({
+                  ...prevState,
+                  aggressorId
+                }))
+              }
+            />
+          </Box>
         </Box>
       </Box>
       <Box textAlign={'right'} padding={2.222}>

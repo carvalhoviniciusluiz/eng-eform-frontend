@@ -1,9 +1,14 @@
-import { Box, Typography } from '@mui/material';
+import { Box, MenuItem, Typography } from '@mui/material';
 import { Control } from 'react-hook-form';
 import { FaRegSave as SaveIcon } from 'react-icons/fa';
 import { FiInfo as InfoIcon } from 'react-icons/fi';
 import { TextField } from '~/app/presentation/components';
 import makeStyles from './form-styles';
+
+const options = [
+  { key: 'PUBLIC', value: 'Público' },
+  { key: 'CAD_PERSON', value: 'Violência Domestica' }
+];
 
 type FormComponentProps = {
   isSubmitting: boolean;
@@ -19,7 +24,6 @@ export default function FormComponent({
   title
 }: FormComponentProps) {
   const classes = makeStyles();
-
   return (
     <Box
       style={{
@@ -48,10 +52,8 @@ export default function FormComponent({
           >
             {title}
           </Typography>
-
           <button className={classes.btnSave} disabled={isSubmitting}>
             <SaveIcon size={20} fill='white' />
-
             <span
               style={{
                 marginLeft: 13,
@@ -62,7 +64,6 @@ export default function FormComponent({
             </span>
           </button>
         </Box>
-
         <Box
           style={{
             marginTop: 57,
@@ -72,7 +73,6 @@ export default function FormComponent({
           }}
         >
           <InfoIcon width={23.16} />
-
           <Typography
             style={{
               fontSize: 14,
@@ -82,14 +82,39 @@ export default function FormComponent({
             Informações do formulário
           </Typography>
         </Box>
-
         <Box
           style={{
             height: 40 + 78,
             width: 308
           }}
         >
-          <label htmlFor='password'>
+          <label htmlFor='segment'>
+            Tipo de formulário
+            <span>*</span>
+          </label>
+          <TextField
+            style={{
+              marginTop: 7
+            }}
+            select
+            control={control}
+            name='segment'
+            variant='outlined'
+          >
+            {options.map((option, index) => (
+              <MenuItem key={index} value={option.key}>
+                {option.value}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+        <Box
+          style={{
+            height: 40 + 78,
+            width: 308
+          }}
+        >
+          <label htmlFor='name'>
             Nome do formulário
             <span>*</span>
           </label>
