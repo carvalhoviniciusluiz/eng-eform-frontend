@@ -81,10 +81,10 @@ function PersonContactForm({
           marginTop: 33
         }}
       >
+        <label htmlFor='contactType'>Tipo de contato</label>
         <SelectField
           id={`${data.id}-contact`}
           name='contactType'
-          label='Tipo de contato'
           defaultValue={contact.contactType}
           options={[
             { key: 'EMAIL', value: 'E-mail' },

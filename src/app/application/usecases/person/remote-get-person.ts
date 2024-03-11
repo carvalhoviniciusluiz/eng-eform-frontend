@@ -13,7 +13,7 @@ export class RemoteGetPerson implements GetPerson {
 
   async execute(input: GetPerson.Input): Promise<GetPerson.Output> {
     const httpResponse = await this.httpGetClient.get({
-      url: `${this.url}?name=${input.name}`
+      url: `${this.url}/${input.name}`
     });
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:

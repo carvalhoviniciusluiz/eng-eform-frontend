@@ -73,10 +73,10 @@ function PersonDocumentForm({
           marginTop: 33
         }}
       >
+        <label htmlFor='documentType'>Tipo de documento</label>
         <SelectField
           id={`${data.id}-document`}
           name='documentType'
-          label='Tipo de documento'
           defaultValue={document.documentType}
           options={[
             { key: 'CPF', value: 'CPF' },
