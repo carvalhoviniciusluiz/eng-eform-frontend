@@ -2,7 +2,11 @@ import {
   HttpGetClient,
   HttpStatusCode
 } from '~/app/application/protocols/http';
-import { BadRequestError, UnexpectedError } from '~/app/domain/errors';
+import {
+  BadRequestError,
+  UnauthorizedError,
+  UnexpectedError
+} from '~/app/domain/errors';
 import { GetFormInputProtocols } from '~/app/domain/usecases';
 
 export class RemoteGetFormInputProtocols implements GetFormInputProtocols {
@@ -25,6 +29,8 @@ export class RemoteGetFormInputProtocols implements GetFormInputProtocols {
         return httpResponse.body as GetFormInputProtocols.Output[];
       case HttpStatusCode.badRequest:
         throw new BadRequestError();
+      case HttpStatusCode.unauthorized:
+        throw new UnauthorizedError();
       default:
         throw new UnexpectedError();
     }

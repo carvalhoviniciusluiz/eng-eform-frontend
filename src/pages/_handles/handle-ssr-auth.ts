@@ -4,7 +4,7 @@ import {
   GetServerSidePropsResult
 } from 'next';
 import { destroyCookie, parseCookies } from 'nookies';
-import { AccessDeniedError } from '~/app/domain/errors';
+import { AccessDeniedError, UnauthorizedError } from '~/app/domain/errors';
 
 export default function handleSSRAuth<P extends { [key: string]: any }>(
   fn: GetServerSideProps<P>
@@ -22,20 +22,18 @@ export default function handleSSRAuth<P extends { [key: string]: any }>(
         permanent: false
       }
     };
-
     if (!cookie) {
       return toLogin;
     }
-
     try {
       return await fn(context);
     } catch (error) {
       const isAccessDeniedError = error instanceof AccessDeniedError;
-      if (isAccessDeniedError) {
+      const isUnauthorizedError = error instanceof UnauthorizedError;
+      if (isAccessDeniedError || isUnauthorizedError) {
         destroyCookie(context, cookieKey);
         return toLogin;
       }
-
       throw error;
     }
   };
