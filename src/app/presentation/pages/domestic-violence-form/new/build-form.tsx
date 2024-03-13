@@ -239,7 +239,8 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
             <FormControl
               style={{
                 marginLeft: '1.5rem',
-                marginBottom: '1.5rem'
+                marginBottom: '1.5rem',
+                display: 'flex'
               }}
             >
               <FormLabel
