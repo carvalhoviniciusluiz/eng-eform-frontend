@@ -25,17 +25,14 @@ type Props = {
 
 function BuildForm({ question, questionsResponse, submit }: Props) {
   const [selectedQuestions, setSelectedQuestions] = useState({});
+  const [questions, setQuestions] = useState<GetPerson.Question[]>([]);
   useEffect(() => {
     submit && submit(selectedQuestions);
   }, [selectedQuestions]);
   useEffect(() => {
     const hasResponse = !!questionsResponse?.length;
     if (hasResponse) {
-      //
-
-      console.log({ questionsResponse });
-
-      //
+      setQuestions([...questionsResponse]);
     }
   }, [questionsResponse]);
   function handleQuestionTypeMultipleStore(
@@ -68,6 +65,17 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
       updateSelectedQuestions[question.id] = event.target.value;
       return updateSelectedQuestions;
     });
+    setQuestions(prevState => {
+      const index = prevState.findIndex(prev => prev[question.id]);
+      if (index === -1) {
+        return prevState;
+      }
+      prevState.splice(index, 1);
+      prevState.push({
+        [question.id]: event.target.value
+      } as GetPerson.Question);
+      return prevState;
+    });
   }
   function handleQuestionTypePlainTextStore(
     event: any,
@@ -81,6 +89,15 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
       const updateSelectedQuestions = { ...prevState };
       updateSelectedQuestions[question.id] = answerSelected;
       return updateSelectedQuestions;
+    });
+    setQuestions(prevState => {
+      const index = prevState.findIndex(prev => prev[question.id]);
+      if (index === -1) {
+        return prevState;
+      }
+      prevState.splice(index, 1);
+      prevState.push({ [question.id]: answerSelected } as GetPerson.Question);
+      return prevState;
     });
   }
   function getId(obj: any): any {
@@ -97,9 +114,7 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
     question: LoadFullForms.Question,
     answer?: LoadFullForms.Answer
   ) {
-    const questionFound = questionsResponse?.find(
-      qtr => getId(qtr) === question.id
-    );
+    const questionFound = questions?.find(qtr => getId(qtr) === question.id);
     const answerId = getFirstValue(questionFound);
     switch (question.type) {
       case QuestionType.OBJECTIVE: {
@@ -167,9 +182,7 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
     if (!question.answers) {
       return;
     }
-    const questionFound = questionsResponse?.find(
-      qtr => getId(qtr) === question.id
-    );
+    const questionFound = questions?.find(qtr => getId(qtr) === question.id);
     let defaultValue = '';
     if (questionFound) {
       const [value] = Object.values(questionFound);
