@@ -14,11 +14,10 @@ export default function handleSSRGuest<P extends { [key: string]: any }>(
     const cookieKey = 'eform:account';
     const cookies = parseCookies(context);
     const { [cookieKey]: cookie } = cookies;
-
     if (cookie) {
       return {
         redirect: {
-          destination: '/',
+          destination: '/vdf',
           permanent: false
         }
       };

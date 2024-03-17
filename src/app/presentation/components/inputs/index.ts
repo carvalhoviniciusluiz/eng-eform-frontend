@@ -1,3 +1,4 @@
+export * from './editor';
 export * from './password-field';
 export * from './select-field';
 export * from './text-area';

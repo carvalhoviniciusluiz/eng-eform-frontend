@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { AiOutlineDoubleRight as ExpandIcon } from 'react-icons/ai';
 import { QuestionType } from '~/app/domain/models';
 import { GetPerson, LoadFullForms } from '~/app/domain/usecases';
-import { TextArea } from '~/app/presentation/components';
+import { Editor, TextArea } from '~/app/presentation/components';
 
 type Props = {
   question: LoadFullForms.Question;
@@ -82,9 +82,15 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
     question: LoadFullForms.Question,
     answer?: LoadFullForms.Answer
   ) {
-    const answerSelected = answer
-      ? { [answer.id]: event.target.value }
-      : { response: event.target.value };
+    const isObject = typeof event === 'object';
+    let answerSelected = null;
+    if (isObject) {
+      answerSelected = answer
+        ? { [answer.id]: event.target.value }
+        : { response: event.target.value };
+    } else {
+      answerSelected = answer ? { [answer.id]: event } : { response: event };
+    }
     setSelectedQuestions((prevState: any) => {
       const updateSelectedQuestions = { ...prevState };
       updateSelectedQuestions[question.id] = answerSelected;
@@ -163,16 +169,21 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
       case QuestionType.PLAIN_TEXT:
         const defaultValue = getFirstValue(questionFound)?.response;
         return (
-          <TextArea
-            defaultValue={defaultValue}
-            placeholder={question.content}
-            onChange={event =>
-              handleQuestionTypePlainTextStore(event, question, answer)
+          <Editor
+            onChange={value =>
+              handleQuestionTypePlainTextStore(value, question, answer)
             }
           />
+          // <TextArea
+          //   defaultValue={defaultValue}
+          //   placeholder={question.content}
+          //   onChange={event =>
+          //     handleQuestionTypePlainTextStore(event, question, answer)
+          //   }
+          // />
         );
       default:
-        return <></>;
+        return <Box style={{ marginLeft: 10 }} />;
     }
   }
   function handleQuestionWithAnswers(question: LoadFullForms.Question) {

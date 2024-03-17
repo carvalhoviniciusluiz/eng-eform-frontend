@@ -6,8 +6,7 @@ import handleSSRAuth from '~/pages/_handles/handle-ssr-auth';
 export const getServerSideProps = handleSSRAuth<LoadForms.Response>(
   async context => {
     const loadForms = makeRemoteLoadForms(context);
-    const httpResponse = await loadForms.loadAll({ orderBy: 'updatedAt.desc' });
-
+    const httpResponse = await loadForms.loadAll({ orderBy: 'order.desc' });
     return {
       props: httpResponse
     };

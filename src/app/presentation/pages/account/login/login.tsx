@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useForm, UseFormProps } from 'react-hook-form';
+import { UseFormProps, useForm } from 'react-hook-form';
 import { Authentication } from '~/app/domain/usecases';
 import { Link, PasswordField, TextField } from '~/app/presentation/components';
 
@@ -22,7 +22,7 @@ export default function LoginComponent({
     authentication
       .signIn(params)
       .then(() => {
-        router.push('/forms');
+        router.push('/vdf');
       })
       .catch(console.error);
   }
