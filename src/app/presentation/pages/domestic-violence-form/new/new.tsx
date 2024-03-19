@@ -2,6 +2,7 @@ import {
   AlertColor,
   BottomNavigation,
   BottomNavigationAction,
+  Button,
   Paper
 } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
@@ -17,9 +18,10 @@ import {
   LoadFullForms
 } from '~/app/domain/usecases';
 import { errorHandler } from '~/app/infra/error';
-import { Toast } from '~/app/presentation/components';
+import { Link, Toast } from '~/app/presentation/components';
 import DisplayQuestionsForm from './display-questions-form';
 import Header from './header';
+import useStyles from './new-styles';
 import PersonForm from './person-form';
 
 type TabPanelProps = {
@@ -88,12 +90,16 @@ export default function NewDomesticViolenceComponent({
   const [aggressorContacts, setAggressorContacts] = useState({});
   const [aggressorDocuments, setAggressorDocuments] = useState({});
   const [questionsMainForm, setQuestionsMainForm] = useState({});
+  const [responseMeta, setResponseMeta] = useState<AddFormInput.Output | null>(
+    null
+  );
   const [warn, setWarn] = useState({
     type: '',
     title: '',
     message: '',
     open: false
   });
+  const classes = useStyles();
   function handleChange(event: React.SyntheticEvent, newValue: number) {
     setValue(newValue);
   }
@@ -142,7 +148,7 @@ export default function NewDomesticViolenceComponent({
         },
         mainForms: questionsMainForm
       } as any)
-      .then(console.log)
+      .then(setResponseMeta)
       .catch(async error => {
         setWarn(() => ({
           ...errorHandler(error),
@@ -183,76 +189,165 @@ export default function NewDomesticViolenceComponent({
       }));
     }
   }
-  return (
-    <Box>
-      <Toast
-        type={warn.type as AlertColor}
-        title={warn.title}
-        message={warn.message}
-        open={warn.open}
-      />
-      <AppBar position='static' color='transparent'>
-        <Tabs value={value} onChange={handleChange} variant='fullWidth'>
-          <Tab label='Vítima' />
-          <Tab label='Agressor' />
-          <Tab label='Fixa de atendimento' />
-        </Tabs>
-      </AppBar>
-      <Header />
+  function handleMainForm() {
+    return (
+      <Box>
+        <Toast
+          type={warn.type as AlertColor}
+          title={warn.title}
+          message={warn.message}
+          open={warn.open}
+        />
+        <AppBar position='static' color='transparent'>
+          <Tabs value={value} onChange={handleChange} variant='fullWidth'>
+            <Tab label='Vítima' />
+            <Tab label='Agressor' />
+            <Tab label='Fixa de atendimento' />
+          </Tabs>
+        </AppBar>
+        <Header />
+        <Box
+          style={{
+            margin: '0 20%',
+            marginBottom: '14rem'
+          }}
+        >
+          <TabPanel value={value} index={0}>
+            <PersonForm
+              id='victim'
+              caption='Cadastro de vítima'
+              generalInformationsForm={state.generalInformationsForm}
+              onGetCep={handleGetCep}
+              adressesSubmit={setVictimAdresses}
+              contactsSubmit={setVictimContacts}
+              documentsSubmit={setVictimDocuments}
+              questionsSubmit={setVictimQuestions}
+              personSubmit={setVictimPerson}
+              personSearch={handlePersonSearch}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <PersonForm
+              id='aggressor'
+              caption='Cadastro de agressor'
+              generalInformationsForm={state.generalInformationsForm}
+              onGetCep={handleGetCep}
+              adressesSubmit={setAggressorAdresses}
+              contactsSubmit={setAggressorContacts}
+              documentsSubmit={setAggressorDocuments}
+              questionsSubmit={setAggressorQuestions}
+              personSubmit={setAggressorPerson}
+              personSearch={handlePersonSearch}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <DisplayQuestionsForm
+              data={state.forms}
+              submit={setQuestionsMainForm}
+            />
+          </TabPanel>
+        </Box>
+        <Paper
+          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
+          elevation={3}
+        >
+          <BottomNavigation style={{ height: 100 }} showLabels>
+            <BottomNavigationAction
+              label='Salvar'
+              icon={<SaveIcon fontSize={44} />}
+              onClick={handleSubmit}
+              disabled={false}
+            />
+          </BottomNavigation>
+        </Paper>
+      </Box>
+    );
+  }
+  function handleTicket() {
+    const divPrint = () => {
+      const content = document.querySelector('.printing-card')?.innerHTML;
+      const windowContant = window.open('', '', 'height=600,width=800');
+      if (windowContant) {
+        windowContant.document.write(
+          '<html><head><title>Cartão de Impressão</title></head><body>'
+        );
+        windowContant.document.write(
+          '<style>@media print { a, button { display: none; } }</style>'
+        );
+        windowContant.document.write(content || '');
+        windowContant.document.write('</body></html>');
+        windowContant.document.close();
+        windowContant.print();
+      }
+    };
+    return (
       <Box
+        className='printing-card'
         style={{
-          margin: '0 20%',
-          marginBottom: '14rem'
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 100
         }}
       >
-        <TabPanel value={value} index={0}>
-          <PersonForm
-            id='victim'
-            caption='Cadastro de vítima'
-            generalInformationsForm={state.generalInformationsForm}
-            onGetCep={handleGetCep}
-            adressesSubmit={setVictimAdresses}
-            contactsSubmit={setVictimContacts}
-            documentsSubmit={setVictimDocuments}
-            questionsSubmit={setVictimQuestions}
-            personSubmit={setVictimPerson}
-            personSearch={handlePersonSearch}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <PersonForm
-            id='aggressor'
-            caption='Cadastro de agressor'
-            generalInformationsForm={state.generalInformationsForm}
-            onGetCep={handleGetCep}
-            adressesSubmit={setAggressorAdresses}
-            contactsSubmit={setAggressorContacts}
-            documentsSubmit={setAggressorDocuments}
-            questionsSubmit={setAggressorQuestions}
-            personSubmit={setAggressorPerson}
-            personSearch={handlePersonSearch}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <DisplayQuestionsForm
-            data={state.forms}
-            submit={setQuestionsMainForm}
-          />
-        </TabPanel>
+        <div
+          style={{
+            border: '1px solid #2469ce',
+            padding: 60
+          }}
+        >
+          <div style={{ padding: '6px 0' }}>
+            <strong>Nº DE Registro: </strong>
+            <span>{responseMeta?.protocolNumber}</span>
+          </div>
+          <div style={{ padding: '6px 0' }}>
+            <strong>Id. Do Centro: </strong>
+            <span>{responseMeta?.companyCurrent.code}</span>
+          </div>
+          <div style={{ padding: '6px 0' }}>
+            <strong>Identificação da Recepcionista: </strong>
+            <span>{responseMeta?.receptionist.username}</span>
+          </div>
+          <div style={{ padding: '6px 0' }}>
+            <strong>Data de entrada: </strong>
+            <span>{responseMeta?.createdDateTime.dateLong}</span>
+          </div>
+          <div style={{ padding: '6px 0' }}>
+            <strong>Horário: </strong>
+            <span>{responseMeta?.createdDateTime.timeLong}</span>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: 33
+            }}
+          >
+            <Button
+              style={{
+                color: '#2469ce'
+              }}
+              onClick={divPrint}
+            >
+              Imprimir
+            </Button>
+          </div>
+        </div>
+        <Box
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'center'}
+          gap={5}
+          padding={7}
+        >
+          <a className={classes.btnNew} href='/vdf/new'>
+            Novo questionário
+          </a>
+          <Link href='/vdf'>Seguir para o acompanhamento</Link>
+        </Box>
       </Box>
-      <Paper
-        sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
-        elevation={3}
-      >
-        <BottomNavigation style={{ height: 100 }} showLabels>
-          <BottomNavigationAction
-            label='Salvar'
-            icon={<SaveIcon fontSize={44} />}
-            onClick={handleSubmit}
-            disabled={false}
-          />
-        </BottomNavigation>
-      </Paper>
-    </Box>
-  );
+    );
+  }
+  return <>{responseMeta ? handleTicket() : handleMainForm()}</>;
 }

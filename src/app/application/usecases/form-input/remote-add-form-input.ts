@@ -22,7 +22,23 @@ export class RemoteAddFormInput implements AddFormInput {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
       case HttpStatusCode.created:
-        return httpResponse.body as AddFormInput.Response;
+        const response = httpResponse.body as AddFormInput.Response;
+        return {
+          protocolNumber: response.protocolNumber,
+          companyCurrent: {
+            name: response.companyCurrent.name,
+            initials: response.companyCurrent.initials,
+            code: response.companyCurrent.code
+          },
+          receptionist: {
+            username: response.receptionist.username,
+            email: response.receptionist.email
+          },
+          createdDateTime: {
+            dateLong: new Date(response.createdAt).toLocaleDateString(),
+            timeLong: new Date(response.createdAt).toLocaleTimeString()
+          }
+        };
       case HttpStatusCode.badRequest: {
         const { body } = httpResponse.body as any;
         throw new ValueError(body.errors);
