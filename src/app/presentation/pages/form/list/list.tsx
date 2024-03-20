@@ -25,7 +25,10 @@ type FormListComponentProps = LoadForms.Response & {
   deleteForm: DeleteForm;
 };
 
-const GENERAL_INFORMATION_FORM_ID = 'f594187f-504c-4266-b313-6d1fb19bb197';
+const IGNORE_IDS = [
+  'f594187f-504c-4266-b313-6d1fb19bb197',
+  '64f9e7dd-de6d-400b-877c-252c965c0f12'
+];
 
 export default function FormListComponent({
   data,
@@ -126,7 +129,7 @@ export default function FormListComponent({
               <StatsIcon fill='#C8C8C8' size={32} />
             </Link>
           )}
-          {addDeleteOption && form.id !== GENERAL_INFORMATION_FORM_ID ? (
+          {addDeleteOption && !IGNORE_IDS.includes(form.id) ? (
             <button
               className={classes.delete}
               onClick={() => handleDestroy(form.id)}

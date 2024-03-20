@@ -60,7 +60,10 @@ type Props = {
  *
  */
 
-const GENERAL_INFORMATION_FORM_ID = 'f594187f-504c-4266-b313-6d1fb19bb197';
+const IGNORE_IDS = [
+  'f594187f-504c-4266-b313-6d1fb19bb197',
+  '64f9e7dd-de6d-400b-877c-252c965c0f12'
+];
 
 export default function NewDomesticViolenceComponent({
   getCep,
@@ -69,9 +72,9 @@ export default function NewDomesticViolenceComponent({
   getPerson
 }: Props) {
   const [state] = useState(() => {
-    const forms = data.filter(form => form.id !== GENERAL_INFORMATION_FORM_ID);
-    const generalInformationsForm = data.filter(
-      form => form.id === GENERAL_INFORMATION_FORM_ID
+    const forms = data.filter(form => !IGNORE_IDS.includes(form.id));
+    const generalInformationsForm = data.filter(form =>
+      IGNORE_IDS.includes(form.id)
     )[0];
     return {
       forms,
