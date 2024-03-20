@@ -1,14 +1,16 @@
-import { Box, Button, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  TextField,
+  Typography
+} from '@mui/material';
 import { useState } from 'react';
-import { GetFormInputProtocols, GetPeople } from '~/app/domain/usecases';
-import { SelectField } from '~/app/presentation/components/inputs';
 import useStyles from './list-styles';
 
 type Props = {
   hasData: boolean;
-  protocols: GetFormInputProtocols.Output[];
-  victims: GetPeople.Output[];
-  aggressors: GetPeople.Output[];
   onSubmit: (param: {
     protocolNumber: string;
     aggressorId: string;
@@ -22,34 +24,8 @@ const defaultValue = {
   victimId: ''
 };
 
-export default function TableFilter({
-  hasData,
-  protocols,
-  aggressors,
-  victims,
-  onSubmit
-}: Props) {
+export default function TableFilter({ hasData, onSubmit }: Props) {
   const [state, setState] = useState(() => defaultValue);
-  function handleProtocolOptions() {
-    const isEmpty = !Boolean(protocols.length);
-    if (isEmpty) {
-      return [];
-    }
-    return protocols.map(protocol => ({
-      key: protocol.number,
-      value: protocol.number
-    }));
-  }
-  function handlePersonOptions(values: GetPeople.Output[]) {
-    const isEmpty = !Boolean(values.length);
-    if (isEmpty) {
-      return [];
-    }
-    return values.map(value => ({
-      key: value.id,
-      value: value.name
-    }));
-  }
   function handleClick() {
     onSubmit({ ...state });
     setState(defaultValue);
@@ -95,64 +71,67 @@ export default function TableFilter({
           }}
         >
           <Box>
-            <label htmlFor='protocol'>Protocolo</label>
-            <SelectField
-              name='protocol'
-              defaultValue={'0'}
-              options={[
-                {
-                  key: '0',
-                  value: 'Selecionar uma opção...'
-                },
-                ...handleProtocolOptions()
-              ]}
-              onChange={protocolNumber =>
-                setState(prevState => ({
-                  ...prevState,
-                  protocolNumber
-                }))
-              }
-            />
+            <InputLabel>Protocolo</InputLabel>
+            <FormControl fullWidth>
+              <TextField
+                style={{
+                  background: '#fff',
+                  borderTopLeftRadius: 6,
+                  borderTopRightRadius: 6,
+                  marginBottom: 22
+                }}
+                placeholder='Protocolo'
+                name='protocol'
+                onChange={event => {
+                  setState(prevState => ({
+                    ...prevState,
+                    protocolNumber: event.target.value
+                  }));
+                }}
+              />
+            </FormControl>
           </Box>
           <Box>
-            <label htmlFor='victin'>Vítima</label>
-            <SelectField
-              name='victin'
-              defaultValue={'0'}
-              options={[
-                {
-                  key: '0',
-                  value: 'Selecionar uma opção...'
-                },
-                ...handlePersonOptions(victims)
-              ]}
-              onChange={victimId =>
-                setState(prevState => ({
-                  ...prevState,
-                  victimId
-                }))
-              }
-            />
+            <InputLabel>Vítima</InputLabel>
+            <FormControl fullWidth>
+              <TextField
+                style={{
+                  background: '#fff',
+                  borderTopLeftRadius: 6,
+                  borderTopRightRadius: 6,
+                  marginBottom: 22
+                }}
+                placeholder='Vítima'
+                name='victin'
+                onChange={event => {
+                  setState(prevState => ({
+                    ...prevState,
+                    victimId: event.target.value
+                  }));
+                }}
+              />
+            </FormControl>
           </Box>
           <Box>
-            <label htmlFor='aggressor'>Agressor</label>
-            <SelectField
-              name='aggressor'
-              defaultValue={'0'}
-              options={[
-                {
-                  key: '0',
-                  value: 'Selecionar uma opção...'
-                },
-                ...handlePersonOptions(aggressors)
-              ]}
-              onChange={aggressorId =>
-                setState(prevState => ({
-                  ...prevState,
-                  aggressorId
-                }))
-              }
-            />
+            <InputLabel>Agressor</InputLabel>
+            <FormControl fullWidth>
+              <TextField
+                style={{
+                  background: '#fff',
+                  borderTopLeftRadius: 6,
+                  borderTopRightRadius: 6,
+                  marginBottom: 44
+                }}
+                placeholder='Agressor'
+                name='aggressor'
+                onChange={event => {
+                  setState(prevState => ({
+                    ...prevState,
+                    aggressorId: event.target.value
+                  }));
+                }}
+              />
+            </FormControl>
           </Box>
         </Box>
       </Box>

@@ -1,10 +1,6 @@
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-import {
-  GetFormInputProtocols,
-  GetFormInputs,
-  GetPeople
-} from '~/app/domain/usecases';
+import { GetFormInputs } from '~/app/domain/usecases';
 import {
   BasicTable,
   Link,
@@ -48,16 +44,10 @@ type RowData = {
 };
 
 type Props = {
-  data: {
-    protocols: GetFormInputProtocols.Output[];
-    victims: GetPeople.Output[];
-    aggressors: GetPeople.Output[];
-  };
   getFormInputs: GetFormInputs;
 };
 
 export default function ListDomesticViolenceComponent({
-  data,
   getFormInputs
 }: Props) {
   const [inputs, setInputs] = useState<RowData[]>([]);
@@ -105,13 +95,7 @@ export default function ListDomesticViolenceComponent({
           margin: 50
         }}
       >
-        <TableFilter
-          hasData={!!inputs.length}
-          aggressors={data.aggressors}
-          victims={data.victims}
-          protocols={data.protocols}
-          onSubmit={handleFilterApply}
-        />
+        <TableFilter hasData={!!inputs.length} onSubmit={handleFilterApply} />
         <BasicTable
           hasData={!!inputs.length}
           columns={columns}
