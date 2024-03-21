@@ -18,12 +18,18 @@ import { GetPerson, LoadFullForms } from '~/app/domain/usecases';
 import { Editor, TextArea } from '~/app/presentation/components';
 
 type Props = {
+  defaultExpanded?: boolean;
   question: LoadFullForms.Question;
   questionsResponse?: GetPerson.Question[];
   submit?: (value: any) => void;
 };
 
-function BuildForm({ question, questionsResponse, submit }: Props) {
+function BuildForm({
+  question,
+  questionsResponse,
+  submit,
+  defaultExpanded = false
+}: Props) {
   const [selectedQuestions, setSelectedQuestions] = useState({});
   const [questions, setQuestions] = useState<GetPerson.Question[]>([]);
   useEffect(() => {
@@ -270,7 +276,7 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
     );
   }
   return (
-    <Accordion key={question.id}>
+    <Accordion key={question.id} defaultExpanded={defaultExpanded}>
       <AccordionSummary
         expandIcon={<ExpandIcon />}
         aria-controls={`${question.id}-content`}

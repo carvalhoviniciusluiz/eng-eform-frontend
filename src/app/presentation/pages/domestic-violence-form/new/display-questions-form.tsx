@@ -1,7 +1,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { LoadFullForms } from '~/app/domain/usecases';
-import BuildForm from './build-form';
+import { BuildForm } from '../shared';
 
 type Props = {
   data: LoadFullForms.Response;

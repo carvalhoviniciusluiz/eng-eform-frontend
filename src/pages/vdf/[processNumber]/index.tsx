@@ -1,20 +1,35 @@
 import { GetFormByProcessNumber } from '~/app/domain/usecases';
 import { makeFormInput } from '~/app/main/factories/pages';
-import { makeRemoteGetFormByProcessNumber } from '~/app/main/factories/usecases';
+import {
+  makeRemoteGetFormByProcessNumber,
+  makeRemoteLoadFullForms
+} from '~/app/main/factories/usecases';
 import handleSSRAuth from '~/pages/_handles/handle-ssr-auth';
 
 export const getServerSideProps = handleSSRAuth(async context => {
   const processNumber = context.query.processNumber as string;
   const getFormByProcessNumber = makeRemoteGetFormByProcessNumber(context);
-  const response = await getFormByProcessNumber.execute({
+  const formInputResponse = await getFormByProcessNumber.execute({
     processNumber
   });
+  const loadForms = makeRemoteLoadFullForms(context);
+  const formResponse = await loadForms.execute({
+    only: ['64f9e7dd-de6d-400b-877c-252c965c0f12']
+  });
   return {
-    props: response
+    props: {
+      ticket: formInputResponse,
+      forms: formResponse
+    }
   };
 });
 
-function ProcessNumberPage(props: GetFormByProcessNumber.Output) {
+type Props = {
+  ticket: GetFormByProcessNumber.Output;
+  forms: GetFormByProcessNumber.Form[];
+};
+
+function ProcessNumberPage(props: Props) {
   return makeFormInput(props);
 }
 

@@ -9,7 +9,7 @@ import {
   TextInput,
   TextInputIcon
 } from '~/app/presentation/components/custom';
-import BuildForm from './build-form';
+import { BuildForm } from '../shared';
 import PersonAddressForm from './person-address-form';
 import PersonContactForm from './person-contact-form';
 import PersonDocumentForm from './person-document-form';

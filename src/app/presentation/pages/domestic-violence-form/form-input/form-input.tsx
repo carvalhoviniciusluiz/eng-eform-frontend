@@ -1,14 +1,24 @@
-import { Button } from '@mui/material';
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Button,
+  Paper
+} from '@mui/material';
 import Box from '@mui/material/Box';
+import { useState } from 'react';
+import { AiFillSave as SaveIcon } from 'react-icons/ai';
 import { GetFormByProcessNumber } from '~/app/domain/usecases';
+import { BuildForm } from '../shared';
 import useStyles from './form-input-styles';
 import Header from './header';
 
 type Props = {
   ticket: GetFormByProcessNumber.Output;
+  forms: GetFormByProcessNumber.Form[];
 };
 
-export default function FormInputComponent({ ticket }: Props) {
+export default function FormInputComponent({ ticket, forms }: Props) {
+  const [form] = useState<GetFormByProcessNumber.Form>(() => forms[0]);
   const classes = useStyles();
   function handleTicket() {
     const divPrint = () => {
@@ -19,7 +29,7 @@ export default function FormInputComponent({ ticket }: Props) {
           '<html><head><title>Cartão de Impressão</title></head><body>'
         );
         windowContant.document.write(
-          '<style>@media print { button { display: none; } }</style>'
+          '<style>@media print { a, button { display: none; } }</style>'
         );
         windowContant.document.write(content || '');
         windowContant.document.write('</body></html>');
@@ -146,7 +156,43 @@ export default function FormInputComponent({ ticket }: Props) {
       >
         {handleTicket()}
         {handlePeople()}
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            padding: 8,
+            background: '#F5F5F5',
+            borderRadius: 4,
+            marginTop: '3rem',
+            marginBottom: '8rem'
+          }}
+        >
+          {form.questions.map((question, index) => (
+            <BuildForm
+              key={index}
+              defaultExpanded
+              question={question}
+              submit={selectedQuestions => {
+                console.log({ selectedQuestions });
+              }}
+            />
+          ))}
+        </Paper>
       </Box>
+      <Paper
+        sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
+        elevation={3}
+      >
+        <BottomNavigation style={{ height: 100 }} showLabels>
+          <BottomNavigationAction
+            label='Salvar'
+            icon={<SaveIcon fontSize={44} />}
+            onClick={() => console.log('clicked')}
+            disabled={false}
+          />
+        </BottomNavigation>
+      </Paper>
     </Box>
   );
 }
