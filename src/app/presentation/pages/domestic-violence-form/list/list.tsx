@@ -122,7 +122,7 @@ export default function ListDomesticViolenceComponent({
                     color: '#6082C5',
                     textDecoration: 'none'
                   }}
-                  href='#'
+                  href={`/vdf/${row.protocol}`}
                 >
                   {'Avaliação >>'}
                 </Link>

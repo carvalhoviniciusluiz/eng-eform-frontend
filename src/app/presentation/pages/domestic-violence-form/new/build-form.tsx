@@ -83,7 +83,7 @@ function BuildForm({ question, questionsResponse, submit }: Props) {
     answer?: LoadFullForms.Answer
   ) {
     const isObject = typeof event === 'object';
-    let answerSelected = null;
+    let answerSelected: any = null;
     if (isObject) {
       answerSelected = answer
         ? { [answer.id]: event.target.value }

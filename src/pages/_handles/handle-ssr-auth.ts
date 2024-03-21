@@ -27,6 +27,7 @@ export default function handleSSRAuth<P extends { [key: string]: any }>(
     try {
       return await fn(context);
     } catch (error) {
+      console.log({ error });
       destroyCookie(context, cookieKey);
       return toLogin;
     }

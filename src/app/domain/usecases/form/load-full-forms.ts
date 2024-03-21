@@ -43,6 +43,9 @@ export namespace LoadFullForms {
     deleted: string;
     questions: Question[];
   };
-  export type Params = {};
+  export type Params = {
+    except?: string[];
+    only?: string[];
+  };
   export type Response = Form[];
 }

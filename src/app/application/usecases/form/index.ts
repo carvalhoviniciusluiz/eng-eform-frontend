@@ -3,6 +3,7 @@ export * from './remote-add-public-form';
 export * from './remote-delete-form';
 export * from './remote-edit-form';
 export * from './remote-get-form';
+export * from './remote-get-form-by-process-number';
 export * from './remote-get-form-stats';
 export * from './remote-load-forms';
 export * from './remote-load-full-forms';
