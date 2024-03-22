@@ -1,13 +1,20 @@
 import {
+  AlertColor,
   BottomNavigation,
   BottomNavigationAction,
   Button,
   Paper
 } from '@mui/material';
 import Box from '@mui/material/Box';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { AiFillSave as SaveIcon } from 'react-icons/ai';
-import { GetFormByProcessNumber } from '~/app/domain/usecases';
+import {
+  GetFormByProcessNumber,
+  PostFormInputByProcessNumber
+} from '~/app/domain/usecases';
+import { errorHandler } from '~/app/infra/error';
+import { Toast } from '~/app/presentation/components';
 import { BuildForm } from '../shared';
 import useStyles from './form-input-styles';
 import Header from './header';
@@ -15,11 +22,39 @@ import Header from './header';
 type Props = {
   ticket: GetFormByProcessNumber.Output;
   forms: GetFormByProcessNumber.Form[];
+  postFormInputByProcessNumber: PostFormInputByProcessNumber;
 };
 
-export default function FormInputComponent({ ticket, forms }: Props) {
+export default function FormInputComponent({
+  ticket,
+  forms,
+  postFormInputByProcessNumber
+}: Props) {
   const [form] = useState<GetFormByProcessNumber.Form>(() => forms[0]);
+  const [warn, setWarn] = useState({
+    type: '',
+    title: '',
+    message: '',
+    open: false
+  });
+  const [questions, setQuestions] = useState({});
   const classes = useStyles();
+  const router = useRouter();
+  function handleSubmit() {
+    postFormInputByProcessNumber
+      .execute({
+        processNumber: ticket.input.number,
+        questions: questions
+      })
+      .then(() => router.push('/vdf'))
+      .catch(async error => {
+        setWarn(() => ({
+          ...errorHandler(error),
+          type: 'error',
+          open: true
+        }));
+      });
+  }
   function handleTicket() {
     const divPrint = () => {
       const content = document.querySelector('.printing-card')?.innerHTML;
@@ -143,6 +178,12 @@ export default function FormInputComponent({ ticket, forms }: Props) {
   }
   return (
     <Box>
+      <Toast
+        type={warn.type as AlertColor}
+        title={warn.title}
+        message={warn.message}
+        open={warn.open}
+      />
       <Header />
       <Box
         display={'flex'}
@@ -174,7 +215,20 @@ export default function FormInputComponent({ ticket, forms }: Props) {
               defaultExpanded
               question={question}
               submit={selectedQuestions => {
-                console.log({ selectedQuestions });
+                setQuestions(prevState => {
+                  const updatedQuestions: any = { ...prevState };
+                  for (const questionId in selectedQuestions) {
+                    if (prevState.hasOwnProperty(form.id)) {
+                      updatedQuestions[form.id][questionId] =
+                        selectedQuestions[questionId];
+                    } else {
+                      updatedQuestions[form.id] = {
+                        [questionId]: selectedQuestions[questionId]
+                      };
+                    }
+                  }
+                  return updatedQuestions;
+                });
               }}
             />
           ))}
@@ -188,7 +242,7 @@ export default function FormInputComponent({ ticket, forms }: Props) {
           <BottomNavigationAction
             label='Salvar'
             icon={<SaveIcon fontSize={44} />}
-            onClick={() => console.log('clicked')}
+            onClick={handleSubmit}
             disabled={false}
           />
         </BottomNavigation>
