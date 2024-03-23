@@ -18,6 +18,17 @@ export namespace LoadFullForms {
     updatedAt: string;
     deleted: string;
   };
+  export type QuestionAnswer = {
+    id: string;
+    questionId: string;
+    answer: {
+      id: string;
+      content: string;
+      createdAt: string;
+    };
+    response: string;
+    createdAt: string;
+  };
   export type Question = {
     id: string;
     content: string;
@@ -29,6 +40,7 @@ export namespace LoadFullForms {
     deleted: string;
     answers: Answer[];
     children: Question[];
+    questionAnswer: QuestionAnswer;
   };
   export type Form = {
     id: string;

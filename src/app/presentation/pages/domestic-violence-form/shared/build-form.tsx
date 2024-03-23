@@ -92,10 +92,18 @@ function BuildForm({
     let answerSelected: any = null;
     if (isObject) {
       answerSelected = answer
-        ? { [answer.id]: event.target.value }
-        : { response: event.target.value };
+        ? {
+            [answer.id]: event.target.value,
+            questionAnswerId: question?.questionAnswer?.id
+          }
+        : {
+            response: event.target.value,
+            questionAnswerId: question?.questionAnswer?.id
+          };
     } else {
-      answerSelected = answer ? { [answer.id]: event } : { response: event };
+      answerSelected = answer
+        ? { [answer.id]: event, questionAnswerId: question.questionAnswer?.id }
+        : { response: event, questionAnswerId: question?.questionAnswer?.id };
     }
     setSelectedQuestions((prevState: any) => {
       const updateSelectedQuestions = { ...prevState };
@@ -173,20 +181,14 @@ function BuildForm({
         );
       }
       case QuestionType.PLAIN_TEXT:
-        const defaultValue = getFirstValue(questionFound)?.response;
+        const defaultValue = question?.questionAnswer?.response ?? '';
         return (
           <Editor
+            defaultValue={defaultValue}
             onChange={value =>
               handleQuestionTypePlainTextStore(value, question, answer)
             }
           />
-          // <TextArea
-          //   defaultValue={defaultValue}
-          //   placeholder={question.content}
-          //   onChange={event =>
-          //     handleQuestionTypePlainTextStore(event, question, answer)
-          //   }
-          // />
         );
       default:
         return <Box style={{ marginLeft: 10 }} />;
@@ -233,8 +235,12 @@ function BuildForm({
               </Box>
             );
           }
+          const checked = question?.questionAnswer
+            ? question.questionAnswer.answer.id === answer.id
+            : undefined;
           return (
             <FormControlLabel
+              checked={checked}
               key={answer.id}
               value={answer.id}
               control={handleInputToggle(question, answer)}

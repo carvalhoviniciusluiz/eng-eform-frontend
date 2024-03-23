@@ -7,11 +7,12 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 });
 
 type Props = {
+  defaultValue?: string;
   onChange?: (value: string) => void;
 };
 
-export function Editor({ onChange }: Props) {
-  const [editorHtml, setEditorHtml] = useState<string>('');
+export function Editor({ defaultValue = '', onChange }: Props) {
+  const [editorHtml, setEditorHtml] = useState<string>(defaultValue);
   useEffect(() => {
     if (typeof window !== 'undefined') {
     }

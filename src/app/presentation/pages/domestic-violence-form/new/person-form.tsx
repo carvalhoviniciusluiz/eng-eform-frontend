@@ -111,9 +111,9 @@ function PersonForm({
     { id: crypto.randomUUID() }
   ]);
   const [questions, setQuestions] = useState({});
-  // const [questionsResponse, setQuestionsResponse] = useState<
-  //   GetPerson.Question[]
-  // >([]);
+  const [questionsResponse, setQuestionsResponse] = useState<
+    GetPerson.Question[]
+  >([]);
   // TODO: vvv
   useEffect(() => {
     personSubmit(person);
@@ -194,7 +194,7 @@ function PersonForm({
             <BuildForm
               key={index}
               question={question}
-              // questionsResponse={questionsResponse}
+              questionsResponse={questionsResponse}
               submit={selectedQuestions => {
                 setQuestions(prevState => {
                   return {
@@ -353,7 +353,7 @@ function PersonForm({
       seDocuments(personData.documents);
       seAdresses(personData.adresses);
       seContacts(personData.contacts);
-      // setQuestionsResponse(personData.questions);
+      setQuestionsResponse(personData.questions);
     } else {
       console.log('Many respnose:', response);
     }

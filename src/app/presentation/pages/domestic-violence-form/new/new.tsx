@@ -352,5 +352,6 @@ export default function NewDomesticViolenceComponent({
       </Box>
     );
   }
-  return <>{responseMeta ? handleTicket() : handleMainForm()}</>;
+  // return <>{responseMeta ? handleTicket() : handleMainForm()}</>;
+  return <>{handleMainForm()}</>;
 }
