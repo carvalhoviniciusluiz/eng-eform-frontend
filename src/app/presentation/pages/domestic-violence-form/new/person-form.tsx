@@ -3,6 +3,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { useEffect, useState } from 'react';
 import { MdSearch as SearchIcon } from 'react-icons/md';
+import { v4 as randomUUID } from 'uuid';
 import { GetCep, GetPerson, LoadFullForms } from '~/app/domain/usecases';
 import {
   MaskField,
@@ -96,19 +97,19 @@ function PersonForm({
 }: Props) {
   const [tabValue, setTabValue] = useState(0);
   const [person, setPerson] = useState<Person>(() => ({
-    id: crypto.randomUUID(),
+    id: randomUUID(),
     name: '',
     socialName: '',
     birthDate: ''
   }));
   const [documents, seDocuments] = useState<PersonDocument[]>([
-    { id: crypto.randomUUID() }
+    { id: randomUUID() }
   ]);
   const [adresses, seAdresses] = useState<PersonAddress[]>([
-    { id: crypto.randomUUID() }
+    { id: randomUUID() }
   ]);
   const [contacts, seContacts] = useState<PersonContact[]>([
-    { id: crypto.randomUUID() }
+    { id: randomUUID() }
   ]);
   const [questions, setQuestions] = useState({});
   const [questionsResponse, setQuestionsResponse] = useState<
@@ -135,7 +136,7 @@ function PersonForm({
     setTabValue(newTabValue);
   }
   function handleOnAddNewAddress() {
-    seAdresses(prevState => [...prevState, { id: crypto.randomUUID() }]);
+    seAdresses(prevState => [...prevState, { id: randomUUID() }]);
   }
   function handleOnRemoveAddress(addressId: string) {
     seAdresses(prevState => {
@@ -146,7 +147,7 @@ function PersonForm({
     });
   }
   function handleOnAddNewDocument() {
-    seDocuments(prevState => [...prevState, { id: crypto.randomUUID() }]);
+    seDocuments(prevState => [...prevState, { id: randomUUID() }]);
   }
   function handleOnRemoveDocument(documentId: string) {
     seDocuments(prevState => {
@@ -157,7 +158,7 @@ function PersonForm({
     });
   }
   function handleOnAddNewContact() {
-    seContacts(prevState => [...prevState, { id: crypto.randomUUID() }]);
+    seContacts(prevState => [...prevState, { id: randomUUID() }]);
   }
   function handleOnRemoveContact(contactId: string) {
     seContacts(prevState => {
